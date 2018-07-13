@@ -1,0 +1,98 @@
+/* pages/send/send.wxss */
+page{
+  background:#f2f2f2;
+  font-size: 30rpx;
+}
+/*标题lan开始  */
+#navgationBar{
+  font-size: 36rpx;
+  font-weight: bold;
+  
+  top:2%;
+  left:0;
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: flex-start;
+  align-content: flex-end;
+  padding-left:40rpx;
+}
+
+ 
+/*标题lan结束  */
+/*  */
+.container{
+  /* width:89.4%; */
+  /* margin:0 40rpx; */
+
+}
+/*  */
+/*栏目开始  */
+.service{
+  
+  margin-top:35%;
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+.service_item{
+  width:20%;
+  height:50%;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  /* background: red; */
+}
+.service_item .img{
+  width:82rpx;
+  height:82rpx;
+  margin-bottom:10rpx;
+}
+.service_item text{
+  color:#888888;
+}
+/*栏目结束  */
+/*发布页面开始  */
+.place{
+  position:absolute;
+  top:0;left:0;
+}
+.btn{
+  width:80%;
+  height:87rpx;
+  background: #f8794d;
+  border-radius: 87rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color:white;
+  margin-top:41rpx;
+  margin-bottom:50rpx;
+  /* font-size:28rpx; */
+}
+/*发布页面结束  */
+.form {
+  padding: 20rpx;
+  margin-top:20rpx;
+  font-size:30rpx;
+  background:#f2f2f2;
+}
+.form-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width:90%;
+  height:80rpx;
+  
+  margin:0 5%;
+  
+  border-bottom:2rpx solid #f2f2f2;
+}
+
+.form-item .form-item__label{
+  flex: 160rpx 0 0;
+}
+.form-item .form-item__input{
+  flex: 1;
+  text-align:right;
+}

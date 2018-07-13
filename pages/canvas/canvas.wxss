@@ -1,0 +1,24 @@
+/* pages/canvas/canvas.wxss */
+/*标题lan开始  */
+
+#navgationBar {
+  font-size: 18px;
+  /* font-weight: bold; */
+  background: red;
+  /* transform: translateY(50%); */
+  display: flex;
+  /* flex-direction: column-reverse; */
+  justify-content: center;
+  align-items: flex-end;
+  box-sizing: border-box;
+   padding-bottom: 15rpx; 
+  /* padding-left:40rpx; */
+}
+.img{
+   position:absolute;
+   z-index: 2;
+   transform: translateY(60%); 
+   /* background: green; */
+   
+}
+/*标题lan结束  */

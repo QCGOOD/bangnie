@@ -1,0 +1,55 @@
+/* pages/allcomments/allcomment.wxss */
+
+  page{
+  font-size: 30rpx;
+  font-family: Arial, Helvetica, sans-serif;
+  letter-spacing: 2rpx;
+}
+
+/*标题lan开始  */
+
+#navgationBar {
+  font-size: 36rpx;
+   font-weight: bold; 
+  /* background: red; */
+  /* transform: translateY(50%); */
+  display: flex;
+  /* flex-direction: column-reverse; */
+  justify-content: center;
+  align-items: flex-end;
+  box-sizing: border-box;
+   padding-bottom: 15rpx; 
+  /* padding-left:40rpx; */
+}
+.img{
+   position:absolute;
+   z-index: 2;
+   transform: translateY(60%); 
+   /* background: green; */
+   
+}
+/*标题lan结束  */
+.user_message{
+  width:100%;
+  height:12%;
+  /* background: purple; */
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.user_message .ima{
+  width:82rpx;
+  height:82rpx;
+  float:left;
+  margin-left:10px;
+  border-radius: 50%;
+}
+.user_message .name{
+  margin-left:10px;
+  float: left;
+}
+.content{
+  width:100%;
+  height:auto;
+  /* background: green; */
+}

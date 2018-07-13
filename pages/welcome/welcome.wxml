@@ -1,0 +1,38 @@
+<!--pages/welcome/welcome.wxml-->
+
+<!--标题设置开始  -->
+ <!-- <view id="navgationBar" style='width:100%;height:{{height*0.08}}px;background:white;position:fixed;'>帮你科技国际站</view>  -->
+<!--标题设置结束  -->
+
+<!-- 内容开始 -->
+<view id='box' style='width:100%;height:auto;' wx:if="{{login&&second}}">
+  <view style='width:100%;height:auto;' wx:if="{{!phone_flag}}">
+    <view class='search'>
+      <image wx:if="{{flag}}" class="icon" src='/images/search.png' style='width:28rpx;height:28rpx;position:absolute;z-index:2;transform:translateY(12%);'></image>
+      <input name="search" placeholder='请输入完整的城市名称' placeholder-style='padding-left:36rpx;padding-top:3rpx;' class='searchInput' bindinput='inputValue' bindblur='blur' bindfocus='focus'></input>
+    </view>
+    <view class='locationAuto'>
+      <view class='title'>当前定位的城市</view>
+      <view class="loca" bindtap='click2' data-value="{{city}}">{{city}}</view>
+    </view>
+
+    <block wx:for="{{cityData}}">
+      <view class='chooseone'>
+        <view class='title'>{{item.name}}</view>
+        <view class="for">
+
+          <view class='item' wx:for="{{item.childList}}" bindtap='click' wx:for-item="child_item" data-value="{{child_item.name}}" data-id="{{child_item.id}}">{{child_item.name}}</view>
+        </view>
+      </view>
+
+    </block>
+  </view>
+  <view wx:if="{{phone_flag}}" style='position:fixed;top:50%;left:0;transformY(-50%);width:100%;height:100rpx;'>
+    <button open-type="getPhoneNumber" style="width:90%;margin:0 5%;" bindgetphonenumber="getPhoneNumber">获取手机号</button>
+  </view>
+</view>
+<view class='login' wx:if="{{(!login)&&second}}">
+  <button open-type='getUserInfo' bindgetuserinfo='getUserInfo' class='btn'>登录</button>
+</view>
+
+<!-- 内容结束 -->

@@ -1,0 +1,246 @@
+/* pages/main/main.wxss */
+page{
+  
+  font-size: 30rpx;
+  font-family: "冬青黑体",Noto,Arial, Helvetica, sans-serif;
+  color:#0E0E0E;
+  background:#F0F0F0;
+  letter-spacing: 2rpx;
+
+}
+/*标题lan开始  */
+
+#navgationBar{
+  font-size: 36rpx;
+  font-weight: bold;
+  
+  top:2%;
+  left:0;
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: flex-start;
+  align-content: flex-end;
+  padding-left:40rpx;
+}
+/*标题lan结束  */
+/*容器开始  */
+.search{
+  display: flex;
+  justify-content: flex-start;
+  /* padding-left:20rpx; */
+   background: white; 
+  align-items: center;
+}
+
+.searchInput{
+  background: #F0F0F0;
+   flex: 5;
+  height:72rpx;
+  margin-left:5%;
+  border-radius:72rpx;
+  width:70%;
+}
+.ceshi{
+  /* padding-left: 200rpx; */
+}
+.select_box{
+  background: #fff;
+  width: 20%;
+  margin:0rpx auto;
+  position: relative;
+  flex:2;
+}
+.select{
+  box-sizing: border-box;
+  width: 100%;
+  height: 70rpx;
+  
+  border-radius: 8rpx;
+  display: flex;
+  align-items: center;
+  padding: 0 20rpx;
+}
+.select_text{
+  font-size: 30rpx;
+  flex: 1;
+}
+.select_img{
+  width: 16rpx;
+  height: 8rpx;
+  display: block;
+  
+}
+
+.option_box{
+  position: absolute;
+  top: 70rpx;
+  width: 100%;
+  border:1px solid #efefef;
+  box-sizing: border-box;
+  height: 0;
+  overflow-y: auto;
+  border-top: 0;
+  background: #fff;
+  transition: height 0.3s;
+}
+.option{
+  display: block;
+  line-height: 40rpx;
+  font-size: 30rpx;
+  border-bottom: 1px solid #efefef;
+  padding: 10rpx;
+}
+/*轮播图开始  */
+.swiper{
+  margin:20rpx auto;
+  margin-top:-10rpx;
+  /* background:green; */
+  /* padding-left:20rpx; */
+   background: white;
+}
+
+.slide-image{
+  width:100%;
+  height:100%;
+}
+/*轮播图结束  */
+/*栏目开始  */
+.service{
+  
+   background: white; 
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  /* padding-left:20rpx; */
+   background: white;
+}
+.service_item{
+  width:20%;
+  height:50%;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  /* background: red; */
+  margin:20rpx 0;
+  
+}
+.service_item image{
+  width:82rpx;
+  height:82rpx;
+  margin-bottom:10rpx;
+}
+.service_item text{
+  color:#888888;
+}
+/*栏目结束  */
+/*广告栏开始  */
+.ad{
+  margin:20rpx auto;
+  
+  /* padding-left:20rpx; */
+   background: white;
+   background: white; 
+  display: flex;
+  align-items: center;
+}
+.ad_text{
+   flex: 6; 
+  /* background: yellow; */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  margin-left:20rpx;
+}
+.ad_text text{
+  width:600rpx;
+  height:50%;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+/*广告栏结束 */
+/*朋友圈开始  */
+.curcle{
+  width:100%;
+  height:auto;
+  /* background: yellowgreen; */
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+   /* border-bottom:5px solid #888888; */
+   padding-left:20rpx;
+   background: white;
+}
+.curcle view{
+  /* margin-right:20px; */
+  padding-bottom: 20rpx;
+  padding-top:20rpx;
+   /* border-bottom:5px solid #888888;  */
+   font-size:32rpx;
+}
+.on{
+  color:#F56F4B;
+  border-bottom:5px solid #F56F4B;
+}
+.off{
+  color:#888888;
+}
+swiper-item{
+  overflow-x:hidden;
+  overflow-y:auto;
+}
+.user_message{
+  width:100%;
+  height:12%;
+  /* background: purple; */
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.user_message image{
+  width:82rpx;
+  height:82rpx;
+  float:left;
+  /* margin-left:10px; */
+  border-radius: 50%;
+}
+.user_message .name{
+  margin-left:10px;
+  float: left;
+}
+.content{
+  width:100%;
+  height:auto;
+  /* background: green; */
+}
+.address{
+  margin:10rpx 0rpx;
+  /* background: yellow; */
+}
+.others{
+  display: flex;
+  justify-content: flex-start;
+  /* background: yellow; */
+  margin-bottom:20rpx;
+}
+.others1{
+  margin-right:20rpx;
+  /* background: pink; */
+  width:135rpx;
+}
+/*朋友圈结束  */
+/*发布按钮开始  */
+.send{
+  /* position: fixed;
+  left:50%;
+  bottom:0;
+  width:104rpx;
+  height:104rpx;
+  border-radius: 50%;
+  border-top:2px solid #888888;
+   transform: translate(-50%,50%); 
+   z-index:3; */
+}
+/*发布按钮结束 */
+/*容器结束  */

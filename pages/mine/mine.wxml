@@ -1,0 +1,58 @@
+<!--pages/mine/mine.wxml-->
+<!--标题设置开始  -->
+
+<view id="navgationBar" style='width:100%;height:{{height*0.092}}px;background:white;'>帮你科技国际站</view>
+
+<!--标题设置结束  -->
+<view class='container' style='width:{{width}}px;height:{{height*0.8365}}px;background:#f2f2f2;' wx:if="{{index}}">
+
+  <view style='width:100%;height:auto;background:white;display:flex;flex-wrap:no-wrap;padding-left:7.5%;padding-top:40rpx;padding-bottom:20rpx;'>
+    <view>
+      <image src='{{userData.img}}' style='width:100rpx;height:100rpx;border-radius:50%;'></image>
+    </view>
+
+    <view style='width:200rpx;height:100rpx;display:flex;justify-content:center;flex-wrap:wrap;align-items:center;margin-left:20rpx;'>
+      <view style="width:100%;height:auto;">
+        <text style='text-overflow: ellipsis;white-space: nowrap;overflow: hidden;display:block;float:left;width:82%;font-size:30rpx;'>{{userData.name}}</text>
+        <image src='/images/write.png' style='width:22rpx;height:22rpx;margin-left:10rpx;float:right;transform:translateY(50%)' bindtap="intoZiliao"></image>
+      </view>
+      <view style="width:100%;height:auto;color:#808080">{{userData.phone?userData.phone:"000000"}}</view>
+    </view>
+  </view>
+  <view style="margin:20rpx auto;width:85%;height:auto;background:white;width:100%;height:200rpx;">
+    <view style='width:100%;height:100rpx;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #eee;'>
+      <view style='padding-left:7.5%;'>
+        <image src='/images/putfor.png' style='width:30rpx;height:30rpx;'></image>
+        <text style='margin-left:15rpx;'>我发起的</text>
+      </view>
+      <image src='/images/inDetails.png' style='width:17rpx;height:31rpx;padding-right:7.5%;' bindtap='putfor'></image>
+    </view>
+    <view style='width:100%;height:100rpx;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #eee;'>
+      <view style='padding-left:7.5%;'>
+        <image src='/images/mess.png' style='width:30rpx;height:30rpx;transform:translateY(10%);'></image>
+        <text style='margin-left:15rpx;'>我的消息</text>
+      </view>
+      <image src='/images/inDetails.png' style='width:17rpx;height:31rpx;padding-right:7.5%;' bindtap='mes'></image>
+    </view>
+  </view>
+  <view style='width:100%;height:auto;background:white;'>
+    <view style='width:100%;height:100rpx;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #eee;'>
+      <view style='padding-left:7.5%;display:flex;justify-content:center;'>
+        <image src='/images/qe.png' style='width:30rpx;height:30rpx;transform:translateY(25%);'></image>
+        <text style='margin-left:15rpx;'>常见问题</text>
+      </view>
+      <image src='/images/inDetails.png' style='width:17rpx;height:31rpx;padding-right:7.5%;' bindtap='ques'></image>
+    </view>
+    <view style='width:100%;height:100rpx;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #eee;'>
+      <view style='padding-left:7.5%;'>
+        <image src='/images/kefu.png' style='width:30rpx;height:30rpx;transform:translateY(15%);'></image>
+        <text style='margin-left:15rpx;'>联系客服</text>
+      </view>
+      <image src='/images/inDetails.png' style='width:17rpx;height:31rpx;padding-right:7.5%;' bindtap='contact'></image>
+
+    </view>
+  </view>
+</view>
+<!--各个分栏目展示  -->
+
+

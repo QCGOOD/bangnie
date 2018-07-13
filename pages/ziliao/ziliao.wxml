@@ -1,0 +1,67 @@
+<!--pages/ziliao/ziliao.wxml-->
+<!--标题设置开始  -->
+<!-- <image class='img' src='/images/back.png' style='width:36px;height:36px;' bindtap='back' /> -->
+<!-- <view id="navgationBar" style='width:100%;height:{{height*0.092}}px;background:white;font-size: 32rpx;font-family: "冬青黑体",Noto;color:#1E1E1E;'>编辑资料</view> -->
+<!--标题设置结束  -->
+<!--内容  -->
+<view style='width:100%;height:20rpx;background:#f0f0f0;'></view>
+<view class='container' style='width:100%;height:{{height*0.903-10}}px;'>
+  <view style='width:100%;height:240rpx;background:white;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;'>
+    <view style='width:100%;height:auto;background:white;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;'>
+      <image src='{{userData.img}}' style='border-radius:50%;width:160rpx;height:160rpx;'></image>
+    </view>
+    <view style='width:100%;height:auto;background:white;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;'>
+      <text style='margin-top:10rpx;'>{{userData.name}}</text>
+    </view>
+  </view>
+  <form bindsubmit='formsubmit'>
+    <!-- <view style='width:100%;height:100rpx;;background:white;display:flex;align-items:center;justify-content:flex-start;flex-wrap:wrap;border-bottom:2rpx solid #F6F6F6;'>
+      <label for='name' style='margin-left:5%'>姓名：</label>
+      <input id='name' name="name" style='margin-left:15%;font-size:30rpx;' placeholder='请输入你的称呼' value="{{userData.name}}"></input>
+    </view>
+    <view style='width:100%;height:100rpx;background:white;display:flex;align-items:center;justify-content:flex-start;flex-wrap:wrap;'>
+      <label for='phone' style="margin-left:5%">手机：</label>
+     
+      <text style='margin-left:15%;font-size:30rpx;'>{{userData.phone}}</text>
+    </view>
+<view style='width:100%;height:100rpx;background:white;display:flex;align-items:center;justify-content:flex-start;flex-wrap:wrap;' wx:if="{{getCode=='true'}}">
+      <button  style="margin-left:5%" bindtap="yanZM">获取验证码</button>
+      <input id='phone' name="code" style='margin-left:15%;'  placeholder-style='font-size:30rpx;' placeholder='请输入验证码'></input>
+    </view>
+    <view style='margin-top:20rpx;width:100%;height:100rpx;background:white;'>
+      <view style='width:100%;height:100rpx;;background:white;display:flex;align-items:center;justify-content:flex-start;flex-wrap:wrap;border-bottom:2rpx solid #F6F6F6;'>
+        <label for='name' style="margin-left:5%">公司：</label>
+        <input id='name' name="gs" style='margin-left:15%' placeholder='请输入你的公司' placeholder-style='font-size:30rpx;' value="{{userData.gs}}"></input>
+      </view>
+      <view style='width:100%;height:100rpx;background:white;display:flex;align-items:center;justify-content:flex-start;flex-wrap:wrap;'>
+        <label for='phone' style="margin-left:5%;">职位：</label>
+        <input id='phone' name="zw" style="margin-left:15%;" placeholder='请输入你的职位' placeholder-style='font-size:30rpx;' value="{{userData.zw}}"></input>
+      </view>
+    </view>
+    <view style='margin-top:150rpx;color:#757575;margin-left:5%;'>信息完整即可成为认证用户</view>
+    <view>
+      <button form-type='submit' style='margin-top:168rpx; displar:flex;justify-content:center;align-items:center;width:90%;height:100rpx;background:#F56F4A;color:white;letter-space:4rpx;'>保存</button>
+    </view>  -->
+    <view class='form-item'>
+      <label class="form-item__label" for="name">称呼</label>
+      <input class="form-item__input" placeholder='请输入称呼（何先生/何小姐）' name="name" id='name' value="{{userData.name}}"></input>
+    </view>
+    <view class='form-item'>
+      <label class="form-item__label" for="phone">手机</label>
+      <text class="form-item__input" placeholder='15011934278' name="phone" id='phone'>{{userData.phone}}</text>
+    </view>
+    <view style='width:100%;height:20rpx;background:#f0f0f0;'></view>
+    <view class='form-item'>
+      <label class="form-item__label" for="gs">公司</label>
+      <input class="form-item__input" placeholder='请输入称呼（何先生/何小姐）' name="gs" id='gs' value="{{userData.gs}}"></input>
+    </view>
+    <view class='form-item'>
+      <label class="form-item__label" for="zw">职位</label>
+      <input class="form-item__input" placeholder='15011934278' name="zw" id='zw'>value="{{userData.zw}}"</input>
+    </view>
+    <view style='padding-top:40rpx;color:#757575;padding-left:5%;background:#f0f0f0;padding-bottom:418rpx;'>信息完整即可成为认证用户</view>
+    <view style='background:#f0f0f0;'>
+      <button form-type='submit' style=' displar:flex;justify-content:center;align-items:center;width:90%;height:100rpx;background:#F56F4A;color:white;letter-space:4rpx;transform:translateY(-200%);'>保存</button>
+    </view>
+  </form>
+</view>

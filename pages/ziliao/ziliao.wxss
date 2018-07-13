@@ -1,0 +1,61 @@
+/* pages/ziliao/ziliao.wxss */
+page{
+  font-size: 30rpx;
+  font-family: "冬青黑体",Noto;
+  color:#0E0E0E;
+}
+/*标题lan开始  */
+
+#navgationBar {
+    font-size: 18px;
+      /* font-weight: bold; */
+        background: red;
+        
+
+}
+/*标题lan开始  */
+
+#navgationBar {
+  font-size: 18px;
+  /* font-weight: bold; */
+  background: red;
+  /* transform: translateY(50%); */
+  display: flex;
+  /* flex-direction: column-reverse; */
+  justify-content: center;
+  align-items: flex-end;
+  box-sizing: border-box;
+   padding-bottom: 15rpx; 
+  /* padding-left:40rpx; */
+}
+.img{
+   position:absolute;
+   z-index: 2;
+   transform: translateY(60%); 
+   /* background: green; */
+   
+}
+/*标题lan结束  */
+.container{
+  /* margin-top:20rpx; */
+  background:white;
+}
+.form-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width:90%;
+  height:80rpx;
+  
+  margin:0 5%;
+  
+  border-bottom:2rpx solid #f2f2f2;
+}
+
+.form-item .form-item__label{
+  flex: 160rpx 0 0;
+}
+.form-item .form-item__input{
+  flex: 1;
+  text-align:right;
+}

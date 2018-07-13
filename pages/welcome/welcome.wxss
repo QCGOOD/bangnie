@@ -1,0 +1,99 @@
+/* pages/welcome/welcome.wxss */
+/*标题lan开始  */
+#navgationBar{
+  font-size: 36rpx;
+  font-weight: bold;
+  
+  top:2%;
+  left:0;
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: flex-start;
+  align-content: flex-end;
+  padding-left:40rpx;
+}
+/*标题lan结束  */
+
+/*内容开始  */
+#box{
+   position: fixed; 
+  
+}
+.search{
+  width:90%;
+  height:18%;
+  /* background: yellow; */
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-top:85rpx;
+  margin: 0 5%;
+}
+.searchInput{
+
+  width:100%;
+   background-color:#F8F8F8; 
+   height:80rpx;
+   background:#F8F8F8; 
+}
+.searchInput::-webkit-input-placeholder{
+  color:black;
+}
+.searchInput::-moz-placeholder{
+  color:black;
+}
+
+.locationAuto{
+  width:100%;
+  /* background: purple; */
+  height:18%;
+  /* padding-left:40rpx; */
+  margin-top:20rpx;
+  margin-bottom:155rpx;
+}
+.loca{
+  transform: translate(6%,100%);
+  /* background:red; */
+  font-size:16px;
+}
+.title{
+  color:#7B7B7B;
+  margin-top:60rpx;
+   padding-left:40rpx; 
+}
+.chooseone{
+  width:100%;
+   /* background: green;  */
+  height:auto;
+  /* height:30%; */
+  /* padding-left:40rpx; */
+  margin-top:20rpx;
+}
+.for{
+  display: flex;
+  justify-content:flex-start;
+  align-content: flex-start;
+   flex-wrap: wrap; 
+}
+.item{
+  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width:208rpx;
+  height:115rpx;
+  font-size:16px;
+   background: #F8F8F8; 
+   margin:12rpx 21rpx;
+}
+.choosetwo{
+  width:100%;
+  /* background: black; */
+  height:34%;
+  padding-left:40rpx;
+}
+/*内容结束  */
+.btn{
+  width:60%;
+  margin-top:50%;
+}

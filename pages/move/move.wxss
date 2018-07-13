@@ -1,0 +1,94 @@
+/* pages/move/move.wxss */
+
+/*标题lan开始  */
+
+#navgationBar {
+  font-size: 18px;
+  /* font-weight: bold; */
+  background: red;
+  /* transform: translateY(50%); */
+  display: flex;
+  /* flex-direction: column-reverse; */
+  justify-content: center;
+  align-items: flex-end;
+  box-sizing: border-box;
+   padding-bottom: 15rpx; 
+  /* padding-left:40rpx; */
+}
+.img{
+   position:absolute;
+   z-index: 2;
+   transform: translateY(60%); 
+   /* background: green; */
+   
+}
+/*标题lan结束  */
+/*栏目开始  */
+.curcle{
+  width:100%;
+  height:auto;
+  /* background: yellowgreen; */
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+   /* border-bottom:5px solid #888888; */
+   /* margin-bottom: 20rpx; */
+}
+.curcle view{
+  
+  padding-bottom: 20rpx;
+  padding-top: 20rpx;
+  
+}
+.on{
+  color:#F56F4B;
+  border-bottom:5px solid #F56F4B;
+}
+.off{
+  color:#888888;
+}
+/*栏目结束  */
+/*朋友圈开始  */
+.user_message{
+  width:100%;
+  height:12%;
+  /* background: purple; */
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.user_message image{
+  width:82rpx;
+  height:82rpx;
+  float:left;
+  margin-left:10px;
+}
+.user_message .name{
+  margin-left:10px;
+  float: left;
+}
+.content{
+  width:100%;
+  height:auto;
+  /* background: green; */
+}
+.address{
+  margin:10rpx 0rpx;
+  /* background: yellow; */
+}
+.others{
+  display: flex;
+  justify-content: flex-start;
+  /* background: yellow; */
+}
+.others1{
+  margin-right:20rpx;
+  /* background: pink; */
+  width:135rpx;
+}
+.else_intro{
+  position:relative;top:0;left:50%;transform: translateX(-50%);width:330rpx;height:60rpx;
+  color:#848484;
+  font-size:36rpx;
+}
+/*朋友圈结束  */
