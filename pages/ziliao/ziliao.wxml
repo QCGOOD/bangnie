@@ -53,11 +53,11 @@
     <view style='width:100%;height:20rpx;background:#f0f0f0;'></view>
     <view class='form-item'>
       <label class="form-item__label" for="gs">公司</label>
-      <input class="form-item__input" placeholder='请输入称呼（何先生/何小姐）' name="gs" id='gs' value="{{userData.gs}}"></input>
+      <input class="form-item__input" placeholder='请输入您的公司名称' name="gs" id='gs' value="{{userData.gs}}"></input>
     </view>
     <view class='form-item'>
       <label class="form-item__label" for="zw">职位</label>
-      <input class="form-item__input" placeholder='15011934278' name="zw" id='zw'>value="{{userData.zw}}"</input>
+      <input class="form-item__input" placeholder='请输入您的职位' name="zw" id='zw'>value="{{userData.zw}}"</input>
     </view>
     <view style='padding-top:40rpx;color:#757575;padding-left:5%;background:#f0f0f0;padding-bottom:418rpx;'>信息完整即可成为认证用户</view>
     <view style='background:#f0f0f0;'>

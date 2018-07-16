@@ -8,7 +8,6 @@ Page({
    */
   data: {
     userData:{},
-  
     commentsData: [],//留言信息的存储
     show:false,//对底部进行隐藏
     toggle:false,//大图是否显示
@@ -52,7 +51,7 @@ Page({
     this.getDetails(id);
     //获取留言列表
     wx.request({
-      url: app.http+'app/comment/page',
+      url: `${app.http}/app/comment/page`,
 
 
       method: "GET",
@@ -278,10 +277,8 @@ getDetails:function(id){
   var t=this;
   console.log("id是："+id);
   wx.request({
-    url: app.http+'app/information/get',
-   
-      
-      method: "GET",
+    url: `${app.http}/app/information/get`,
+  method: "GET",
       header: {
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
       },
@@ -364,7 +361,7 @@ sendLY:function(){
   var t=this;
   console.log(wx.getStorageSync("key"), this.data.sourceId, this.data.neirong);
   wx.request({
-    url: app.http+'app/comment/insert',
+    url: `${app.http}/app/comment/insert`,
 
 
     method: "POST",
@@ -458,7 +455,7 @@ dianzanT: function (e) {
   var t = this;
   console.log(e);
   wx.request({
-    url: app.http+'app/praise/insert',
+    url: `${app.http}/app/praise/insert`,
     method: "POST",
     header: {
       'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
@@ -488,7 +485,7 @@ dianzanF: function (e) {
   var t = this;
   console.log(e);
   wx.request({
-    url: app.http+'app/praise/delete',
+    url: `${app.http}/app/praise/delete`,
     method: "POST",
     header: {
       'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
@@ -527,7 +524,7 @@ clickback:function(){
 getImg: function () {
   var t = this;
   wx.request({
-    url: app.http+'attachment/list',
+    url: `${app.http}/attachment/list`,
     method: "GET",
     header: {
       'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'

@@ -22,7 +22,7 @@ Page({
       trueheight: app.trueHeight,
     });
     that.getDetails(options.sourceId);
-
+// that.erweima(options.sourceId);
 
 
   },
@@ -170,7 +170,7 @@ lineHeight:字行高，自己定义个值即可
     var t = this;
     console.log("id是：" + id);
     wx.request({
-      url: app.http+'app/information/get',
+      url: `${app.http}/app/information/get`,
 
 
       method: "GET",
@@ -199,7 +199,7 @@ lineHeight:字行高，自己定义个值即可
         if (res.data.data.imgUrl != '') {
           content = res.data.data.imgUrl.split(','); //记得修改
           for (let l = 0; l < content.length; l++) {
-            content[l] = 'http://helpyou-1255600302.cosgz.myqcloud.com' + content[l]
+            content[l] = 'https://helpyou-1255600302.cosgz.myqcloud.com' + content[l]
           }
         } else {
           content = [];
@@ -391,5 +391,34 @@ var va=29*height/667;
       //   }
       // })
     });
-  }
+  },
+erweima:function(id){
+  wx.request({
+    url: 'http://192.168.1.18:8011/helpyou/api/v1/app/qrcode/get',
+
+
+    method: "GET",
+    
+    data: {
+      wego168SessionKey: wx.getStorageSync("key"),
+      id: id
+    },
+
+    success: function (res) {
+      console.log(res);
+      if (res.data.message == "用户未登录或登录已失效") {
+        wx.showToast({
+          title: '用户未登录或登录已失效',
+          icon: 'loading',
+          duration: 1000
+        });
+        wx.navigateTo({
+          url: '/pages/welcome/welcome',
+        })
+      }
+      
+    }
+
+  })
+},
 })

@@ -6,29 +6,15 @@
   letter-spacing: 2rpx;
 }
 
-/*标题lan开始  */
-
-#navgationBar {
-  font-size: 36rpx;
-   font-weight: bold; 
-  /* background: red; */
-  /* transform: translateY(50%); */
-  display: flex;
-  /* flex-direction: column-reverse; */
-  justify-content: center;
-  align-items: flex-end;
-  box-sizing: border-box;
-   padding-bottom: 15rpx; 
-  /* padding-left:40rpx; */
+.container{
+  margin-top:20rpx;
+  width:100%;
+  height:auto;
+  background:white;
 }
-.img{
-   position:absolute;
-   z-index: 2;
-   transform: translateY(60%); 
-   /* background: green; */
-   
+.forBox{
+  border-bottom:1px solid #eee;padding:10rpx 0 10rpx 0;
 }
-/*标题lan结束  */
 .user_message{
   width:100%;
   height:12%;
@@ -44,12 +30,28 @@
   margin-left:10px;
   border-radius: 50%;
 }
+.stamp{
+  padding:10rpx 0;font-size:28rpx;color:#878787;
+}
+.name_name{
+  padding:10rpx 0;font-size:28rpx;
+}
 .user_message .name{
   margin-left:10px;
   float: left;
 }
+
 .content{
   width:100%;
   height:auto;
-  /* background: green; */
+  margin-top:20rpx;margin-left:120rpx;margin-bottom:20rpx;font-size:30rpx;
+}
+.none{
+  background:white;display:flex;align-items:center;justify-content:center;flex-direction:column;flex-wrap:wrap;
+}
+.none_img{
+  width:500rpx;transform:translateY(-30%);
+}
+.none_text{
+  color:#797979;transform:translateY(-200%);font-size:28rpx;
 }

@@ -22,7 +22,7 @@ Page({
     });
     //获取留言列表
     wx.request({
-      url: app.http + 'app/comment/page',
+      url: `${app.http}/app/comment/page`,
 
 
       method: "GET",

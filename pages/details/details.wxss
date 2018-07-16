@@ -26,6 +26,9 @@ color:#000000;
 /* border: 0px solid purple; */
 
 }
+.service_id{
+  background:#f2f2f2;color:#797979;margin-top:14rpx;margin-bottom:14rpx;font-size:28rpx;padding-left:5%;
+}
 button::after{
   content: '';
   border: none;
@@ -38,10 +41,13 @@ button::after{
    background: #F0F0F0; 
   /* margin:0 20rpx; */
 }
+.userBox{
+  width:100%;background:white;position:relative;
+}
 .user_message{
   width:100%;
   height:12%;
-  /* background: purple; */
+ padding-top:20rpx;padding-bottom:20rpx;
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -62,12 +68,30 @@ button::after{
   height:auto;
   /* background: green; */
 }
+.content_text{
+  padding-top:20rpx;padding-bottom:20rpx;font-size:30rpx;
+}
+.userBox_timeStamp{
+  color:#777777;font-size:28rpx;margin-top:12rpx;margin-left:-5rpx;
+}
+.content_image{
+  display:flex;justify-content:flex-start;flex-wrap:wrap;
+}
+.mainimg{
+  width:222rpx;margin:5px 2px;
+}
 .address{
  
   width:100%;
   height:auto;
   background: white;
- 
+ display:flex;justify-content:space-between;padding-bottom:16rpx;
+}
+.address_detail{
+  color:#717171;font-size:26rpx;flex:3 ;
+}
+.address_liulan{
+  flex:1;font-size:26rpx;color:#717171;padding-left:10rpx;
 }
 /* .adderss::after{
   content: ".";
@@ -78,6 +102,30 @@ button::after{
 } */
 /* .clearfix{overflow:hidden;_zoom:1;} */
 /*留言开始  */
+.liuyan_hd{
+  width:100%;background:white;position:relative;
+}
+.comments{
+  width:90%;margin:20rpx 5%;height:auto;margin-top:20rpx;background:white;
+}
+.liuyan_nav{
+  width:100%;height:100rpx;display:flex;align-items:center;
+}
+.liuyan_nav1{
+  flex:1;display:flex;justify-content:flex-start;font-size:30rpx;
+}
+.liuyan_nav2{
+  flex:1;display:flex;justify-content:flex-end;font-size:30rpx;
+}
+.allcom{
+  width:17rpx;height:31rpx;transform:translateY(20%);margin-left:10rpx;
+}
+.liuyan_time{
+  color:#777777;font-size:28rpx;margin-top:12rpx;margin-left:-5rpx;
+}
+.liuyan_content{
+  margin-top:20rpx;margin-left:100rpx;
+}
 .box{
   
   height:300rpx;width:100%;
@@ -102,7 +150,9 @@ button::after{
   /* margin-left:20rpx; */
   border-radius:50%;
 }
-
+#img3{
+  width:41rpx;transform:translateX(600%);
+}
 .user_message .name{
   margin-left:10px;
   float: left;
@@ -110,6 +160,9 @@ button::after{
 /*留言结束  */
 /*详情结束  */
 /*大图介绍开始  */
+.adBox{
+  width:100%;background:white;
+}
 .intro{
   position:absolute;
   top:8%;
@@ -117,8 +170,41 @@ button::after{
   transform: translateX(-50%);
   font-size:40rpx;
 }
+.ad{
+  margin-top:20rpx;margin-bottom:20rpx;background:white;margin:20rpx 5%;width:90%;
+}
+.adBox_text{
+  display:flex;align-items:center;height:70rpx;font-size:30rpx;
+}
 /*大图介绍结束*/
+.bottom{
+  position:fixed;z-index:4;bottom:0;left:0;display:flex;flex-wrap:nowrap;background:white;
+}
+.bottom_title{
+  flex:3;display:flex;justify-content:center;align-items:center;font-size:28rpx;
+}
+.bottom_share{
+  width:34rpx;height:34rpx;margin-right:10rpx;font-size:28rpx;
+}
+.bottom_liuyan{
+width:38rpx;height:29rpx;margin-right:10rpx;font-size:28rpx;
+}
+.bottom_dianzan{
+width:35rpx;margin-right:10rpx;
+}
+.bottom_call{
+  flex:4;background:#F56F4A;display:flex;justify-content:center;align-items:center;
+}
+.bottom_call image{
+width:26rpx;height:26rpx;margin-right:10rpx;
+}
+.bottom_call text{
+  
+}
 /*去除button按钮残留边框  */
+.buttonone{
+  display:flex;justify-content:center;flex-wrap:wrap;
+}
 .buttonone::after{
   border:none;
 }
@@ -140,4 +226,58 @@ button{
 .btn:hover{
   /* background: yellowgreen; */
 }
-/*发布留言结束  */
+/*发布留言结束    */
+.hiddenPage{
+  position:fixed;z-index:5;bottom:0;left:0;display:flex;flex-wrap:nowrap;background:white;
+}
+.item{
+  flex:3;display:flex;justify-content:center;align-items:center;
+}
+.share_img{
+  width:100%;display:flex;justify-content:center;
+}
+.share_img image{
+  width:78rpx;height:78rpx;transform:translateY(25%);
+}
+.tofriends{
+  width:100%;margin-top:25rpx;display:flex;justify-content:center;font-size:30rpx;
+}
+.draw{
+  display:flex;justify-content:center;flex-wrap:wrap;
+}
+.draw_img{
+  width:100%;display:flex;justify-content:center;
+}
+.draw_img image{
+width:78rpx;height:78rpx;transform:translateX(45%);
+}
+.draw_img text{
+  font-size:26rpx;color:#828282;transform:translateX(150%);
+}
+.make_share{
+  width:100%;margin-top:25rpx;display:flex;justify-content:center;font-size:30rpx;
+}
+/*发送留言框  */
+.liuyanbox{
+  position:absolute;z-index:7;width:95%;height:60rpx;background:white;top:50%;left:;transform:translateY(-50%);margin-left:20rpx;margin-right:20rpx;
+}
+.liuyanbox input{
+  display:inline-block;width:80%;height:100%;
+}
+
+
+.pictures{
+  background:black;opacity:0.8;position:fixed;z-index:7;
+}
+.pic_child{
+  position:fixed;z-index:8
+}
+.pic_pos{
+  position:absolute;z-index:1;
+}
+.img{
+  width:36px;height:36px;
+}
+.mainAction{
+  position:absolute;transform:translate(-50%,-50%);left:50%;top:50%;display:inline-block
+}

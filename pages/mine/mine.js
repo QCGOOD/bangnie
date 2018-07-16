@@ -13,7 +13,7 @@ Page({
     concact: false,
     show:false,
     page: 1,
-    vip:false
+    vip:true
   },
 
   /**
@@ -114,7 +114,7 @@ Page({
   ziliao: function () {
     var t = this;
     wx.request({
-      url: app.http+'app/memberAuthenticate/get',
+      url: `${app.http}/app/memberAuthenticate/get`,
       method: "GET",
       header: {
         "Content-Type": "application/x-www-form-urlencoded;charset=utf-8"
@@ -142,7 +142,7 @@ Page({
         console.log(img, zw);
         if(res.data.data.bindStatus==1){
           console.log("ok");
-          var vip=true;
+          var vip=false;
         }
         t.data.userData = {
           // name:
@@ -175,7 +175,7 @@ Page({
     console.log(categoryId);
 
     wx.request({
-      url: app.http+'app/information/page',
+      url: `${app.http}/app/information/page`,
       method: "GET",
       header: {
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'

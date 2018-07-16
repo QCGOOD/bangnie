@@ -36,7 +36,7 @@ Page({
         this.login();
         this.getCityList();
         wx.request({
-          url: app.http + 'app/recentlyArea',
+          url: `${app.http}/app/recentlyArea`,
           method: "GET",
           header: {
             'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
@@ -180,6 +180,10 @@ Page({
           province: res.result.address_component.province,
           city: res.result.address_component.city.substring(0, len - 1),
         });
+        wx.showToast({
+          title: '请稍候~',
+          icon: 'loading'
+        })
       },
       fail: function(info) {}
     });
@@ -202,10 +206,7 @@ Page({
   getCityList: function() {
     var t = this;
 
-    wx.showToast({
-      title: '请稍候~',
-      icon:'loading'
-    })
+    
 
     // 正确代码
     // console.log(wx.getStorageSync("key"));
@@ -214,7 +215,7 @@ Page({
     // }
     console.log(app.http);
     wx.request({
-      url: app.http + 'area/listWithChild',
+      url: `${app.http}/area/listWithChild`,
       // url: 'http://192.168.1.18:8011/helpyou/api/v1/area/listWithChild',
       method: "GET",
       header: {
@@ -381,8 +382,9 @@ Page({
       headImage: e.detail.userInfo.avatarUrl,
       sex: e.detail.userInfo.gender
     };
+    
     wx.request({
-      url: app.http + 'app/member/save',
+      url: `${app.http}/app/member/save`,
       method: "POST",
       header: {
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
@@ -422,7 +424,7 @@ Page({
         // 发送 res.code 到后台换取 openId, sessionKey, unionId
         console.log(res);
         wx.request({
-          url: app.http + 'app/login',
+          url: `${app.http}/app/login`,
           method: "POST",
           header: {
             'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
@@ -488,7 +490,7 @@ Page({
 
     console.log(wx.getStorageSync("key"));
     wx.request({
-      url: app.http + 'app/choose',
+      url: `${app.http}/app/choose`,
       method: "POST",
       header: {
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
@@ -531,7 +533,7 @@ Page({
   judgePhone: function() {
     var t = this;
     wx.request({
-      url: app.http + 'app/isNeed',
+      url: `${app.http}/app/isNeed`,
       method: "GET",
       header: {
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
@@ -557,7 +559,7 @@ Page({
     console.log(e.detail.encryptedData, e.detail.iv);
     if (e.detail.errMsg == "getPhoneNumber:ok") {
       wx.request({
-        url: app.http + 'app/phone',
+        url: `${app.http}/app/phone`,
         method: "POST",
         header: {
           'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
