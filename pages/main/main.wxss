@@ -206,7 +206,7 @@ page {
 }
 
 .menssage-item .content .text .tag {
-  font-size: 30rpx;
+  font-size: 28rpx;
   color: #7399d8;
 }
 
@@ -216,10 +216,26 @@ page {
   flex-wrap: wrap;
 }
 
+.menssage-item .content .images .img_single {
+  width: 222rpx;
+  margin: 5px 2px;
+  height: 222rpx;
+}
+
+.menssage-item .content .images .img_more {
+  width: 300rpx;
+  margin: 5px 2px;
+  height: 300rpx;
+}
+
 .menssage-item .address {
   margin: 20rpx 0rpx;
   font-size: 24rpx;
   color: #808080;
+}
+
+.menssage-item .icon {
+  font-size: 26rpx;
 }
 
 .menssage-item .others {
@@ -228,7 +244,7 @@ page {
 }
 
 .menssage-item .others .list {
-  margin-right: 10px;
+  margin-right: 80rpx;
   color: #808080;
 }
 

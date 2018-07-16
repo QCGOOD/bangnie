@@ -21,7 +21,7 @@ Page({
     newData: [],
     newSearch: {
       pageNum: 1,
-      pageSize: 20,
+      pageSize: 2,
       pageTotal: -1,
       type: 1,
       wego168SessionKey: wx.getStorageSync("key"),
@@ -57,6 +57,11 @@ Page({
     });
     that.getImg();
     that.getKind();
+    this.setData({
+      newData: [],
+      hotData: []
+    })
+    this.data.newSearch.pageNum = 1
     that.getMessage(this.data.newSearch);
   },
   onPageScroll() {
@@ -78,7 +83,6 @@ Page({
   onPullDownRefresh: function() {
     this.onLoad();
   },
-
   /**
    * 页面上拉触底事件的处理函数
    */
@@ -94,12 +98,7 @@ Page({
     }
     return false
   },
-  //跳转测试
-  nav: function(e) {
-    wx.navigateTo({
-      url: '/pages/move/move?serviceId=' + e.currentTarget.dataset.service_id,
-    })
-  },
+  
   //切换最新最热
   changeTabbar: function(e) {
     let index = e.currentTarget.dataset.index
@@ -111,18 +110,6 @@ Page({
     } else {
       this.getMessage(this.data.hotSearch);
     }
-  },
-  //进入说说的详情页面
-  intoDetails: function(e) {
-    wx.navigateTo({
-      url: '/pages/details/details?id=' + e.currentTarget.dataset.id + "&isPraise=" + e.currentTarget.dataset.ispraise
-    })
-  },
-  //重新选择城市
-  choose: function() {
-    wx.redirectTo({
-      url: '/pages/welcome/welcome?back=' + 1,
-    })
   },
   //输入框失焦事件
   blur: function() {
@@ -172,7 +159,9 @@ Page({
             })
           }
           res.data.data.list.map(res => {
-            return res.imgUrl = res.imgUrl.split(',')
+            if (res.imgUrl != '') {
+              return res.imgUrl = res.imgUrl.split(',')
+            }
           })
           if (data.type == 1) {
             _this.setData({
@@ -221,121 +210,42 @@ Page({
       }
     })
   },
-  // 点击选取城市
-  click: function(e) {
-    wx.switchTab({
-      url: '/pages/main/main',
-    })
-    wx.setStorage({
-      key: 'city',
-      data: e.currentTarget.dataset.value,
-    })
-    wx.setStorage({
-      key: 'id',
-      data: e.currentTarget.dataset.id,
-    })
-    wx.request({
-      url: `${app.http}/app/choose`,
-      method: "POST",
-      header: {
-        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-      },
-      data: {
-        wego168SessionKey: wx.getStorageSync("key"),
-        id: e.currentTarget.dataset.id
-      },
-      success: function(res) {
-
-      }
-    })
-    // this.getMessage(page);
-  },
   //点赞开始
-  dianzanT: function(e) {
-    var t = this;
-    let numFather = t.data.userData[e.currentTarget.dataset.index];
-    numFather.others[2] = {
-      key: "/images/succ.png",
-      value: numFather.others[2].value + 1,
-      flag: true
-
+  onLike: function(e) {
+    console.log(e.currentTarget.dataset.type)
+    let index = e.currentTarget.dataset.index, url = `${app.http}/app/praise/insert`, type = e.currentTarget.dataset.type;
+    
+    if (this.data[type][index].isPraise) {
+      // 取消点赞
+      url = `${app.http}/app/praise/delete`
+      this.data[type][index].isPraise = false
+      this.data[type][index].praiseQuantity -= 1
+    } else {
+      // 点赞
+      this.data[type][index].isPraise = true
+      this.data[type][index].praiseQuantity += 1
     }
-    t.setData({
-      userData: t.data.userData
+    this.setData({
+      [type]: this.data[type]
     })
     wx.request({
-      url: `${app.http}/app/praise/insert`,
+      url: url,
       method: "POST",
       header: {
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
       },
       data: {
         wego168SessionKey: wx.getStorageSync("key"),
-
-        sourceId: e.currentTarget.dataset.sourceid
+        sourceId: this.data[type][index].id
       },
       success: function(res) {
-        if (res.data.code == 20000) {}
+        console.log('点赞功能 请求到数据了');
       }
-    });
-  },
-  //取消点赞
-  dianzanF: function(e) {
-    var t = this;
-    let numFather = t.data.userData[e.currentTarget.dataset.index];
-    numFather.others[2] = {
-      key: "/images/dianzan.png",
-      value: numFather.others[2].value - 1,
-      flag: false
-    }
-    t.setData({
-      userData: t.data.userData
-    })
-    wx.request({
-      url: `${app.http}/app/praise/delete`,
-      method: "POST",
-      header: {
-        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-      },
-      data: {
-        wego168SessionKey: wx.getStorageSync("key"),
-
-        sourceId: e.currentTarget.dataset.sourceid
-      },
-      success: function(res) {
-        if (res.data.code == 20000) {
-          // let numFather = t.data.userData[e.currentTarget.dataset.index];
-          // numFather.others[2] = {
-          //   key: "/images/dianzan.png",
-          //   value: numFather.others[2].value - 1,
-          //   flag:false
-          // }
-
-        }
-        // t.setData({
-        //   userData: t.data.userData
-        // })
-      }
-    });
-  },
-  // 获取用户的绑定手机号
-  getPhoneNumber: function(e) {
-    wx.request({
-      url: `${app.http}/app/phone`,
-      method: "POST",
-      header: {
-        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-      },
-      data: {
-        encryptedData: e.detail.encryptedData,
-        iv: e.detail.iv
-      },
-      success: function(res) {}
     });
   },
   //获取城市轮播图片
   getImg: function() {
-    var t = this;
+    let _this = this;
     wx.request({
       url: `${app.http}/attachment/list`,
       method: "GET",
@@ -346,23 +256,34 @@ Page({
         areaId: wx.getStorageSync("id")
       },
       success: function(res) {
-        t.data.imgUrls = [];
-        for (let i = 0; i < res.data.data.length; i++) {
-          t.data.imgUrls.push({
-            id: i,
-            url: 'http://helpyou-1255600302.cosgz.myqcloud.com' + res.data.data[i].url
-          });
-        }
-        t.setData({
-          imgUrls: t.data.imgUrls
+        _this.setData({
+          imgUrls: res.data.data
         });
       }
     });
   },
   //进入留言
-  intoComments: function(e) {
+  jumpComments: function(e) {
     wx.navigateTo({
       url: '/pages/allcomments/allcomment?sourceId=' + e.currentTarget.dataset.sourceid,
     })
-  }
+  },
+  //重新选择城市
+  jumpChoosePage: function () {
+    wx.redirectTo({
+      url: '/pages/welcome/welcome?back=' + 1,
+    })
+  },
+  //跳转测试
+  jumpNav: function (e) {
+    wx.navigateTo({
+      url: '/pages/move/move?serviceId=' + e.currentTarget.dataset.service_id,
+    })
+  },
+  //进入说说的详情页面
+  jumpDetails: function (e) {
+    wx.navigateTo({
+      url: '/pages/details/details?id=' + e.currentTarget.dataset.id + "&isPraise=" + e.currentTarget.dataset.ispraise
+    })
+  },
 })

@@ -1,6 +1,6 @@
 <!--搜索框开始  -->
 <view class='search'>
-  <view class='search__select'>
+  <view class='search__select' bindtap='jumpChoosePage'>
     <text class='text'>{{selectData}}</text>
     <text class="icon i-jiantouxia"></text>
   </view>
@@ -12,9 +12,9 @@
 
 <!--轮播图开始  -->
 <swiper indicator-dots="true" autoplay="2000" class='swiper'>
-  <block wx:for="{{imgUrls}}" wx:key="{{item.url}}">
+  <block wx:for="{{imgUrls}}" wx:key="{{item.id}}">
     <swiper-item>
-      <image src="{{item.url}}" class="slide-image" />
+      <image src="{{imgHost}}{{item.url}}" class="slide-image" />
     </swiper-item>
   </block>
 </swiper>
@@ -23,7 +23,7 @@
 <!--栏目开始  -->
 <view class='service'>
   <block wx:for="{{serviceData}}" wx:key="item.service_id">
-    <view class='service_item' bindtap='nav' data-service_id="{{item.service_id}}">
+    <view class='service_item' bindtap='jumpNav' data-service_id="{{item.service_id}}">
       <image src='{{item.url}}' />
       <text>{{item.text}}</text>
     </view>
@@ -51,7 +51,7 @@
 </view>
 <view style="height:1px" id="tabbar" />
 
-<view wx:for="{{newData}}" wx:key="{{totalIndex}}" wx:for-index="totalIndex" hidden='{{swiperIndex != 0}}'>
+<view wx:for="{{newData}}" wx:key="{{newData.id}}" hidden='{{swiperIndex != 0}}'>
   <view class="menssage-item">
     <view class="user">
       <image src="{{item.headImage}}"></image>
@@ -60,17 +60,17 @@
         <view class='time'>{{item.createTime}}</view>
       </view>
     </view>
-    <view class="content" bindtap='intoDetails' data-id="{{item.id}}">
+    <view class="content" bindtap='jumpDetails' data-id="{{item.id}}">
       <view class='text'>
         <text class="tag">#{{item.category}}#</text>{{item.content}}
       </view>
-      <view class="images" wx:if="{{item.imgUrl}}">
+      <view class="images" wx:if="{{item.imgUrl.length > 0}}">
         <block wx:for="{{item.imgUrl}}" wx:key="img" wx:for-item="img">
-          <image src="{{imgHost}}{{img}}" style='{{item.content.length==1?"width:300rpx;margin:5px 2px;height:300rpx;":"width:222rpx;margin:5px 2px;height:222rpx;"}}' binderror='error' data-index="{{index}}" data-totalIndex="{{totalIndex}}"></image>
+          <image class='{{item.imgUrl.length > 1 ? "img_more" : "img_single"}}' mode='scaleToFill' src="{{imgHost}}{{img}}" data-index="{{index}}"></image>
         </block>
       </view>
     </view>
-    <view class="address">
+    <view class="address" wx:if="{{item.address}}">
       <text class="icon i-didian"></text>
       <text class="text">{{item.address}}</text>
     </view>
@@ -79,12 +79,12 @@
         <text class='icon i-liulanliang'></text>
         <text class="num">{{item.visitQuantity}}</text>
       </view>
-      <view class="list" data-sourceId="{{item.id}}" catchtap='intoComments'>
+      <view class="list" data-sourceId="{{item.id}}" catchtap='jumpComments'>
         <text class='icon i-pinglun'></text>
         <text class="num">{{item.commentQuantity}}</text>
       </view>
-      <view class="list" bindtap='onLike'>
-        <text class='icon i-dianzan {{item.isPraise ? "i-color" : ""}}'  data-isPraise="{{item.isPraise}}"></text>
+      <view class="list" bindtap='onLike' data-index="{{index}}" data-type="newData">
+        <text class='icon i-dianzan {{item.isPraise ? "i-color" : ""}}' data-isPraise="{{item.isPraise}}"></text>
         <text class="num">{{item.praiseQuantity}}</text>
       </view>
       <view class="list">
@@ -94,7 +94,7 @@
     </view>
   </view>
 </view>
-<view hidden='{{swiperIndex != 1}}' wx:for="{{hotData}}" wx:key="{{totalIndex}}" wx:for-index="totalIndex">
+<view hidden='{{swiperIndex != 1}}' wx:for="{{hotData}}" wx:key="{{item.id}}">
   <view class="menssage-item">
     <view class="user">
       <image src="{{item.headImage}}"></image>
@@ -103,13 +103,13 @@
         <view class='time'>{{item.createTime}}</view>
       </view>
     </view>
-    <view class="content" bindtap='intoDetails' data-id="{{item.message_id}}" data-isPraise="{{item.others[2].flag}}">
+    <view class="content" bindtap='jumpDetails' data-id="{{item.id}}">
       <view class='text'>
         <text class="tag">#{{item.category}}#</text>{{item.content}}
       </view>
       <view class="images" wx:if="{{item.imgUrl}}">
         <block wx:for="{{item.imgUrl}}" wx:key="img" wx:for-item="img">
-          <image src="{{imgHost}}{{img}}" style='{{item.content.length==1?"width:300rpx;margin:5px 2px;height:300rpx;":"width:222rpx;margin:5px 2px;height:222rpx;"}}' binderror='error' data-index="{{index}}" data-totalIndex="{{totalIndex}}"></image>
+          <image class='{{item.imgUrl.length > 1 ? "img_more" : "img_single"}}' mode='widthFix' src="{{imgHost}}{{img}}" data-index="{{index}}"></image>
         </block>
       </view>
     </view>
@@ -122,12 +122,12 @@
         <text class='icon i-liulanliang'></text>
         <text class="num">{{item.visitQuantity}}</text>
       </view>
-      <view class="list" data-sourceId="{{item.id}}" catchtap='intoComments'>
+      <view class="list" data-sourceId="{{item.id}}" catchtap='jumpComments'>
         <text class='icon i-pinglun'></text>
         <text class="num">{{item.commentQuantity}}</text>
       </view>
-      <view class="list">
-        <text class='icon i-dianzan'></text>
+      <view class="list" bindtap='onLike' data-index="{{index}}" data-type="hotData">
+        <text class='icon i-dianzan {{item.isPraise ? "i-color" : ""}}'></text>
         <text class="num">{{item.praiseQuantity}}</text>
       </view>
       <view class="list">
