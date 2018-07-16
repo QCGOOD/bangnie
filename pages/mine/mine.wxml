@@ -9,7 +9,9 @@
 
   <view style='width:100%;height:auto;background:white;display:flex;flex-wrap:no-wrap;padding-left:7.5%;padding-top:40rpx;padding-bottom:20rpx;position:relative;'>
     <view>
-      <image src='{{userData.img}}' style='width:100rpx;height:100rpx;border-radius:50%;'></image>
+    <!-- <icon class='icon i-sousuo' size='23'></icon> -->
+      <image src='{{userData.img}}' style='width:100rpx;height:100rpx;border-radius:50%;' class="v"></image>
+      <image src='/images/vip.png' style='width:28rpx;height:28rpx;transform:translateX(-100%);' hidden='{{vip}}'></image>
     </view>
 
     <view style='width:200rpx;height:100rpx;display:flex;justify-content:center;flex-wrap:wrap;align-items:center;margin-left:20rpx;'>

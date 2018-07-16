@@ -29,12 +29,13 @@
     <view style='width:90%;height:auto;background:white;margin:0 5%;'>
       <view style='color:#7E9BCF;margin-top:20rpx;background:white;font-size:32rpx;padding-top:20rpx;' bindtap='goIndex'>#{{name}}#</view>
       <view style='width:100%;height:50rpx;'>
-        <textarea placeholder='一直做梦，晚上一直睡不好，心情抑郁烦躁，咋么回事？' placeholder-style='padding-top:20rpx;' style='background:white;margin-top:20rpx;' bindblur='blur' bindinput='input' auto-focus value="{{value1}}"></textarea>
+        <textarea placeholder='一直做梦，晚上一直睡不好，心情抑郁烦躁，咋么回事？' placeholder-style='padding-top:20rpx;' style='background:white;margin-top:20rpx;height:240rpx;' bindblur='blur' bindinput='input' auto-focus value="{{value1}}"></textarea>
       </view>
       <view style='width:100%;height:auto;background:white;margin-top:270rpx;padding-bottom:20rpx;' bindtap='upImg'>
         <image src='/images/add.png' style='width:118rpx; height:118rpx;display:inline-block;border:2rpx solid #ccc;margin-right:10rpx;' wx:if='{{!none}}'></image>
         <block wx:for="{{temp}}">
           <image src='{{item}}' style='width:122rpx;height:122rpx;display:inline-block;margin-right:10rpx;' mode='scaleToFill'></image>
+          <image  src="/images/shanchu.png" class='icon icon-shanchu' style='width:20rpx;height:20rpx;transform:translate(-150%,-510%);' catchtap='chehui' data-index="{{index}}"></image>
         </block>
       </view>
 

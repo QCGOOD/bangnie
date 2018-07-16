@@ -34,6 +34,7 @@ Page({
       if (!options.back) {
         this.checkLogin();
         this.login();
+        this.getCityList();
         wx.request({
           url: app.http + 'app/recentlyArea',
           method: "GET",
@@ -201,7 +202,10 @@ Page({
   getCityList: function() {
     var t = this;
 
-
+    wx.showToast({
+      title: '请稍候~',
+      icon:'loading'
+    })
 
     // 正确代码
     // console.log(wx.getStorageSync("key"));
@@ -258,9 +262,9 @@ Page({
           }
         } catch (e) {
           console.log("trycatch已经执行了");
-          wx.showToast({
-            title: '请稍候~',
-          })
+          // wx.showToast({
+          //   title: '请稍候~',
+          // })
           t.login();
           // t.login(); t.getCityList();
           // if(t.data.net_flag<=4){

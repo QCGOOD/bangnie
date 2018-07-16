@@ -344,4 +344,14 @@ t.setData({
       }
     })
   },
+  chehui:function(e){
+    var t=this;
+console.log(e.currentTarget.dataset.index);
+console.log(t.data.temp);
+    t.data.temp.splice(e.currentTarget.dataset.index,1);
+    t.setData({
+      temp:t.data.temp
+    });
+
+  },
 })
