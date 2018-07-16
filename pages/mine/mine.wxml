@@ -1,12 +1,13 @@
 <!--pages/mine/mine.wxml-->
 <!--标题设置开始  -->
 
-<view id="navgationBar" style='width:100%;height:{{height*0.092}}px;background:white;'>帮你科技国际站</view>
+<!-- <view id="navgationBar" style='width:100%;height:{{height*0.092}}px;background:white;'>帮你科技国际站</view> -->
+
 
 <!--标题设置结束  -->
-<view class='container' style='width:{{width}}px;height:{{height*0.8365}}px;background:#f2f2f2;' wx:if="{{index}}">
+<view class='container' style='width:{{width}}px;height:{{height-50}}px;background:#f2f2f2;position:relative;' wx:if="{{!show}}">
 
-  <view style='width:100%;height:auto;background:white;display:flex;flex-wrap:no-wrap;padding-left:7.5%;padding-top:40rpx;padding-bottom:20rpx;'>
+  <view style='width:100%;height:auto;background:white;display:flex;flex-wrap:no-wrap;padding-left:7.5%;padding-top:40rpx;padding-bottom:20rpx;position:relative;'>
     <view>
       <image src='{{userData.img}}' style='width:100rpx;height:100rpx;border-radius:50%;'></image>
     </view>
@@ -19,7 +20,7 @@
       <view style="width:100%;height:auto;color:#808080">{{userData.phone?userData.phone:"000000"}}</view>
     </view>
   </view>
-  <view style="margin:20rpx auto;width:85%;height:auto;background:white;width:100%;height:200rpx;">
+  <view style="margin:10px auto;width:85%;height:auto;background:white;width:100%;height:200rpx;position:relative;">
     <view style='width:100%;height:100rpx;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #eee;'>
       <view style='padding-left:7.5%;'>
         <image src='/images/putfor.png' style='width:30rpx;height:30rpx;'></image>
@@ -35,7 +36,7 @@
       <image src='/images/inDetails.png' style='width:17rpx;height:31rpx;padding-right:7.5%;' bindtap='mes'></image>
     </view>
   </view>
-  <view style='width:100%;height:auto;background:white;'>
+  <view style='width:100%;height:auto;background:white;position:relative;'>
     <view style='width:100%;height:100rpx;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #eee;'>
       <view style='padding-left:7.5%;display:flex;justify-content:center;'>
         <image src='/images/qe.png' style='width:30rpx;height:30rpx;transform:translateY(25%);'></image>
@@ -54,5 +55,57 @@
   </view>
 </view>
 <!--各个分栏目展示  -->
+<view class='conteiner' style='width:100%;height:{{height*0.908-10}}px;margin-top:10px;background:#F0F0F0;' wx:if="{{show}}">
 
+  <scroll-view style='width:100%;height:{{height*0.908-10}}px;' scroll-y="true">
+  <cover-view><cover-image src='/images/back.png' style='width:36px;height:36px;postition:absolute;top:0;left:0;transform:transform(20%);' bindtap='back' ></cover-image></cover-view>
+    <block wx:for="{{userData}}">
 
+      <view class='inBox' style='width:100%;height:auto;margin-bottom:20rpx;background:white;padding-left:20rpx;padding-top:40rpx;'>
+        <view class='user_message'>
+          <image src="{{item.avatarUrl}}"></image>
+          <view class='name'>
+            <view style='font-size:28rpx;color:#090909;'>{{item.name}}</view>
+            <view style='color:#757575;margin-left:-6rpx;font-size:26rpx;margin-top:12rpx;'>{{item.timeStamp}}</view>
+          </view>
+        </view>
+        <view class="content" bindtap='intoDetails' data-id="{{item.message_id}}" data-isPraise="{{item.others[2].flag}}">
+          <view class='content_text'>
+            <text style='color:#7399D8;font-size:30rpx;margin-top:20rpx;margin-bottom:10rpx;'>#{{item.category}}#</text>{{item.text}}</view>
+          <view class='content_image' style='display:flex;justify-content:flex-start;flex-wrap:wrap;' wx:if="{{item.len}}">
+            <block wx:for="{{item.content}}" wx:for-item="child_item">
+              <image src='{{child_item}}' style='width:222rpx;margin:5px 2px;height:222rpx;' binderror='error' data-index="{{index}}" data-totalIndex="{{totalIndex}}" wx:if="{{item.len}}"></image>
+            </block>
+          </view>
+        </view>
+        <view class="address">
+
+          <image src="/images/loc.png" style="width:10px;margin-right:20rpx;" mode='widthFix' />
+          <text style='color:#aeaeae;font-size:26rpx;'>{{item.address}}</text>
+        </view>
+        <view class='others' style='padding-bottom:20rpx;'>
+          <!-- <block wx:for="{{item.others}}" wx:for-item="others_item"> -->
+          <view class='others1'>
+            <image src="{{item.others[0].key}}" style="width:30rpx;margin-right:20rpx;transform:translateY(-15%);" mode='widthFix' wx:if="{{item.others[0].key}}" />
+            <text style='color:#aeaeae;font-size:26rpx;'>{{item.others[0].value}}</text>
+          </view>
+          <view class='others1'>
+            <image src="{{item.others[1].key}}" style="width:30rpx;margin-right:20rpx;" mode='widthFix' wx:if="{{item.others[1].key}}" />
+            <text style='color:#aeaeae;font-size:26rpx;'>{{item.others[1].value}}</text>
+          </view>
+          <view class='others1'>
+            <image src="/images/succ.png" class="{{item.others[2].flag}}" style="width:30rpx;margin-right:20rpx;" data-sourceId="{{item.message_id}}" data-index="{{totalIndex}}" mode='widthFix' catchtap='dianzanF' wx:if="{{item.others[2].flag}}" />
+            <image src="/images/dianzan.png" style="width:30rpx;margin-right:20rpx;" data-sourceId="{{item.message_id}}" data-index="{{totalIndex}}" mode='widthFix' catchtap='dianzanT' wx:else />
+            <text style='color:#aeaeae;font-size:26rpx;'>{{item.others[2].value}}</text>
+          </view>
+          <view class='others1'>
+            <image src="{{item.others[3].key}}" style="width:30rpx;margin-right:20rpx;transform:translateY(15%);" mode='widthFix' wx:if="{{item.others[3].key}}" />
+            <text style='color:#aeaeae;font-size:26rpx;'>{{item.others[3].value}}</text>
+          </view>
+          <!-- </block> -->
+
+        </view>
+      </view>
+    </block>
+  </scroll-view>
+</view>

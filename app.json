@@ -1,69 +1,51 @@
 {
-  "pages":[
+  "pages": [
     "pages/welcome/welcome",
     "pages/details/details",
     "pages/ziliao/ziliao",
-    
-   "pages/que/que",
-     "pages/kefu/kefu",   
+    "pages/que/que",
+    "pages/kefu/kefu",
     "pages/myMessage/myMessage",
-    
     "pages/main/main",
     "pages/mySend/mySend",
     "pages/send/send",
     "pages/canvas/canvas",
     "pages/index/index",
-    
-    
-    
     "pages/move/move",
     "pages/allcomments/allcomment",
-    
-    
     "pages/mine/mine",
-    
     "pages/logs/logs",
     "pages/food/food",
     "pages/but/but"
-        
-            
-                    
-                        
-    
-    
-        
-    
   ],
-  "window":{
-    "backgroundTextStyle":"light",
+  "window": {
+    "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "帮你哦",
-    "navigationBarTextStyle":"black",
-    
-    "enablePullDownRefresh":true
+    "navigationBarTextStyle": "black",
+    "enablePullDownRefresh": true
   },
-    "tabBar": {
-      "selectedColor": "#F84A13",
-      "list": [
-        {
-          "pagePath": "pages/main/main",
-          "text": "首页",
-          "iconPath": "images/12.png",
-          "selectedIconPath": "images/11.png"
-        },
-        {
-          "pagePath": "pages/send/send",
-          "text": "发布",
-          "iconPath": "images/15.png",
-          "selectedIconPath": "images/15.png"       
-          
-        },
-        {
-          "pagePath": "pages/mine/mine",
-          "text": "我的",
-          "iconPath": "images/13.png",
-          "selectedIconPath": "images/14.png"
-        }
-      ]
-    }
+  "tabBar": {
+    "selectedColor": "#F84A13",
+    "list": [
+      {
+        "pagePath": "pages/main/main",
+        "text": "首页",
+        "iconPath": "images/12.png",
+        "selectedIconPath": "images/11.png"
+      },
+      {
+        "pagePath": "pages/send/send",
+        "text": "发布",
+        "iconPath": "images/15.png",
+        "selectedIconPath": "images/15.png"
+      },
+      {
+        "pagePath": "pages/mine/mine",
+        "text": "我的",
+        "iconPath": "images/13.png",
+        "selectedIconPath": "images/14.png"
+      }
+    ]
+  }
 }

@@ -1,4 +1,10 @@
 {
-  
-  "navigationBarBackgroundColor": "#000000"
+ 
+   "navigationBarBackgroundColor": "#ffffff",
+   "navigationBarTextStyle": "black",
+   "navigationBarTitleText": "帮你哦",
+   "backgroundColor": "#eeeeee",
+   "backgroundTextStyle": "light",
+   "enablePullDownRefresh": false
+ 
 }

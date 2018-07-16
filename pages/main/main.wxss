@@ -1,246 +1,252 @@
 /* pages/main/main.wxss */
-page{
-  
+
+page {
   font-size: 30rpx;
-  font-family: "冬青黑体",Noto,Arial, Helvetica, sans-serif;
-  color:#0E0E0E;
-  background:#F0F0F0;
+  font-family: "冬青黑体", Noto, Arial, Helvetica, sans-serif;
+  color: #0e0e0e;
+  background: #f0f0f0;
   letter-spacing: 2rpx;
-
 }
-/*标题lan开始  */
 
-#navgationBar{
-  font-size: 36rpx;
-  font-weight: bold;
-  
-  top:2%;
-  left:0;
-  display: flex;
-  flex-direction: column-reverse;
-  justify-content: flex-start;
-  align-content: flex-end;
-  padding-left:40rpx;
-}
-/*标题lan结束  */
 /*容器开始  */
-.search{
+
+.search {
+  padding: 20rpx;
   display: flex;
-  justify-content: flex-start;
-  /* padding-left:20rpx; */
-   background: white; 
   align-items: center;
+  background: #fff;
 }
 
-.searchInput{
-  background: #F0F0F0;
-   flex: 5;
-  height:72rpx;
-  margin-left:5%;
-  border-radius:72rpx;
-  width:70%;
-}
-.ceshi{
-  /* padding-left: 200rpx; */
-}
-.select_box{
+.search__select {
+  margin-right: 10px;
   background: #fff;
-  width: 20%;
-  margin:0rpx auto;
-  position: relative;
-  flex:2;
 }
-.select{
-  box-sizing: border-box;
-  width: 100%;
-  height: 70rpx;
-  
-  border-radius: 8rpx;
-  display: flex;
-  align-items: center;
-  padding: 0 20rpx;
+
+.search__select .text {
+  width: 120rpx;
+  display: inline-block;
+  font-size: 28rpx;
 }
-.select_text{
-  font-size: 30rpx;
+
+.search__select .icon {
+  font-size: 24rpx;
+}
+
+.search__input {
   flex: 1;
-}
-.select_img{
-  width: 16rpx;
-  height: 8rpx;
-  display: block;
-  
+  padding: 10rpx 0;
+  background: #f0f0f0;
+  border-radius: 25px;
+  overflow: hidden;
 }
 
-.option_box{
-  position: absolute;
-  top: 70rpx;
-  width: 100%;
-  border:1px solid #efefef;
-  box-sizing: border-box;
-  height: 0;
-  overflow-y: auto;
-  border-top: 0;
-  background: #fff;
-  transition: height 0.3s;
+.search__input input {
+  width: 90%;
+  margin: 0 auto;
+  background: #f0f0f0;
 }
-.option{
-  display: block;
-  line-height: 40rpx;
-  font-size: 30rpx;
-  border-bottom: 1px solid #efefef;
-  padding: 10rpx;
-}
+
 /*轮播图开始  */
-.swiper{
-  margin:20rpx auto;
-  margin-top:-10rpx;
-  /* background:green; */
-  /* padding-left:20rpx; */
-   background: white;
+
+.swiper {
+  padding: 0 15rpx;
+  background: white;
 }
 
-.slide-image{
-  width:100%;
-  height:100%;
+.slide-image {
+  width: 100%;
+  height: 100%;
 }
+
 /*轮播图结束  */
+
 /*栏目开始  */
-.service{
-  
-   background: white; 
+
+.service {
+  background: white;
   display: flex;
   justify-content: flex-start;
   flex-wrap: wrap;
-  /* padding-left:20rpx; */
-   background: white;
+  background: white;
 }
-.service_item{
-  width:20%;
-  height:50%;
+
+.service_item {
+  width: 20%;
+  height: 50%;
   display: flex;
   align-content: center;
   justify-content: center;
   flex-wrap: wrap;
   /* background: red; */
-  margin:20rpx 0;
-  
+  margin: 20rpx 0;
 }
-.service_item image{
-  width:82rpx;
-  height:82rpx;
-  margin-bottom:10rpx;
+
+.service_item image {
+  width: 82rpx;
+  height: 82rpx;
+  margin-bottom: 10rpx;
 }
-.service_item text{
-  color:#888888;
+
+.service_item text {
+  font-size: 24rpx;
+  color: #888;
 }
+
 /*栏目结束  */
+
 /*广告栏开始  */
-.ad{
-  margin:20rpx auto;
-  
-  /* padding-left:20rpx; */
-   background: white;
-   background: white; 
+
+.ad {
+  padding: 20rpx;
+  margin: 20rpx auto;
   display: flex;
   align-items: center;
+  background: white;
 }
-.ad_text{
-   flex: 6; 
-  /* background: yellow; */
+
+.ad_text {
+  flex: 6;
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
-  margin-left:20rpx;
+  margin-left: 20rpx;
 }
-.ad_text text{
-  width:600rpx;
-  height:50%;
+
+.ad_text text {
+  width: 600rpx;
+  height: 50%;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
 }
+
 /*广告栏结束 */
+
 /*朋友圈开始  */
-.curcle{
-  width:100%;
-  height:auto;
-  /* background: yellowgreen; */
+
+.curcle {
+  padding: 0 20rpx;
+  width: 100%;
   display: flex;
   justify-content: space-around;
   align-items: center;
-   /* border-bottom:5px solid #888888; */
-   padding-left:20rpx;
-   background: white;
+  box-sizing: border-box;
+  background: white;
 }
-.curcle view{
-  /* margin-right:20px; */
-  padding-bottom: 20rpx;
-  padding-top:20rpx;
-   /* border-bottom:5px solid #888888;  */
-   font-size:32rpx;
+
+.curcle.flexd {
+  position: fixed;
+  top: 0;
+  left: 0;
 }
-.on{
-  color:#F56F4B;
-  border-bottom:5px solid #F56F4B;
+
+.curcle view {
+  padding: 30rpx 0;
+  font-size: 30rpx;
+  font-weight: bold;
 }
-.off{
-  color:#888888;
+
+.on {
+  color: #f56f4b;
+  border-bottom: 5rpx solid #f56f4b;
 }
-swiper-item{
-  overflow-x:hidden;
-  overflow-y:auto;
+
+.off {
+  color: #888;
+  border-bottom: 5rpx solid #fff;
 }
-.user_message{
-  width:100%;
-  height:12%;
-  /* background: purple; */
+
+/*朋友圈结束  */
+
+/* 信息流 */
+
+.menssage-item {
+  width: 100%;
+  margin-bottom: 20rpx;
+  background: white;
+  padding: 40rpx 20rpx 0;
+  box-sizing: border-box;
+}
+
+.menssage-item .user {
+  width: 100%;
+  height: 12%;
   display: flex;
   justify-content: flex-start;
   align-items: center;
 }
-.user_message image{
-  width:82rpx;
-  height:82rpx;
-  float:left;
-  /* margin-left:10px; */
+
+.menssage-item .user image {
+  width: 82rpx;
+  height: 82rpx;
   border-radius: 50%;
 }
-.user_message .name{
-  margin-left:10px;
-  float: left;
+
+.menssage-item .user .user__info {
+  margin-left: 10px;
 }
-.content{
-  width:100%;
-  height:auto;
-  /* background: green; */
+
+.menssage-item .user .user__info .name {
+  font-size: 28rpx;
+  color: #090909;
 }
-.address{
-  margin:10rpx 0rpx;
-  /* background: yellow; */
+
+.menssage-item .user .user__info .time {
+  margin-top: 8rpx;
+  font-size: 24rpx;
+  color: #757575;
 }
-.others{
+
+.menssage-item .content {
+  margin: 30rpx 0 20rpx;
+}
+
+.menssage-item .content .text {
+  font-size: 28rpx;
+}
+
+.menssage-item .content .text .tag {
+  font-size: 30rpx;
+  color: #7399d8;
+}
+
+.menssage-item .content .images {
   display: flex;
   justify-content: flex-start;
-  /* background: yellow; */
-  margin-bottom:20rpx;
+  flex-wrap: wrap;
 }
-.others1{
-  margin-right:20rpx;
-  /* background: pink; */
-  width:135rpx;
+
+.menssage-item .address {
+  margin: 20rpx 0rpx;
+  font-size: 24rpx;
+  color: #808080;
 }
-/*朋友圈结束  */
-/*发布按钮开始  */
-.send{
-  /* position: fixed;
-  left:50%;
-  bottom:0;
-  width:104rpx;
-  height:104rpx;
-  border-radius: 50%;
-  border-top:2px solid #888888;
-   transform: translate(-50%,50%); 
-   z-index:3; */
+
+.menssage-item .others {
+  display: flex;
+  align-items: center;
 }
-/*发布按钮结束 */
-/*容器结束  */
+
+.menssage-item .others .list {
+  margin-right: 10px;
+  color: #808080;
+}
+
+.menssage-item .others .list .icon {
+  font-size: 24rpx;
+}
+
+.menssage-item .others .list .i-color {
+  color: #f84a12;
+}
+
+.i-liulanliang, .i-pinglun {
+  font-size: 20rpx !important;
+}
+
+.menssage-item .others .list .num {
+  margin-left: 5px;
+  font-size: 24rpx;
+}
+
+/* 信息流 */

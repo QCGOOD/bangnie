@@ -81,7 +81,7 @@ Page({
   getKind: function () {
     var t = this;
     wx.request({
-      url: 'http://192.168.1.18:8011/helpyou/api/v1/category/page',
+      url: app.http+'category/page',
       method: "GET",
       header: {
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
@@ -94,6 +94,16 @@ Page({
       },
       success: function (res) {
         console.log(res);
+        if (res.data.message == "用户未登录或登录已失效") {
+          wx.showToast({
+            title: '用户未登录或登录已失效',
+            icon: 'loading',
+            duration: 1000
+          });
+          wx.navigateTo({
+            url: '/pages/welcome/welcome',
+          })
+        }
         for (let i = 0; i < res.data.data.list.length; i++) {
           t.data.serviceData.push({
             url: 'http://helpyou-1255600302.cosgz.myqcloud.com' + res.data.data.list[i].iconUrl,
@@ -164,7 +174,7 @@ Page({
       validateCodeByMember = '';
       }
     wx.request({
-      url: 'http://192.168.1.18:8011/helpyou/api/v1/app/information/save',
+      url: app.http+'app/information/save',
       method: "POST",
       header: {
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
@@ -187,7 +197,12 @@ Page({
           icon:'success',
           duration:1000
         })
-
+t.setData({
+  temp:[],
+  value1: '',
+  value2: '',
+  value3:'',
+});
       }
     })
   },
@@ -220,7 +235,7 @@ Page({
         //   }
         // })
         wx.uploadFile({
-          url: 'http://192.168.1.18:8011/helpyou/api/v1/attachments/images/tencent_cloud',
+          url: app.http+'attachments/images/tencent_cloud',
           filePath: tempFilePaths[0] ,
           name:'file',
           formData:{
@@ -269,7 +284,7 @@ Page({
     var t=this;
     console.log(e);
     wx.request({
-      url: 'http://192.168.1.18:8011/helpyou/api/v1/app/information/validatePhone',
+      url: app.http+'app/information/validatePhone',
       method: "GET",
       header: {
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
@@ -305,7 +320,7 @@ Page({
     // console.log(typeof t.data.phone);
     // console.log(typeof ''+t.data.phone);
     wx.request({
-      url: 'http://192.168.1.18:8011/helpyou/api/v1/app/validateCode',
+      url: app.http+'app/validateCode',
       method: "POST",
       header: {
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'

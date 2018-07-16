@@ -1,10 +1,10 @@
 <!--pages/mySend/mySend.wxml-->
 <!--标题设置开始  -->
-<image class='img' src='/images/back.png' style='width:36px;height:36px;' bindtap='back' />
-<view id="navgationBar" style='width:100%;height:{{height*0.092}}px;background:white;'>我发起的</view>
+<!-- <image class='img' src='/images/back.png' style='width:36px;height:36px;' bindtap='back' />
+<view id="navgationBar" style='width:100%;height:{{height*0.092}}px;background:white;'>我发起的</view> -->
 <!--标题设置结束  -->
-<view class='conteiner' style='width:100%;height:{{height*0.908-10}}px;margin-top:10px;background:#F0F0F0;'>
-  <scroll-view style='width:100%;height:{{height*0.908-10}}px;' scroll-y="true">
+<view class='conteiner' style='width:100%;height:{{height}}px;margin-top:10px;background:#F0F0F0;'>
+  <scroll-view style='width:100%;height:{{height}}px;' scroll-y="true">
     <block wx:for="{{userData}}">
 
       <view class='inBox' style='width:100%;height:auto;margin-bottom:20rpx;background:white;padding-left:20rpx;padding-top:40rpx;'>

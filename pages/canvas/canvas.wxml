@@ -1,7 +1,7 @@
 <!--pages/canvas/canvas.wxml-->
 <!--标题设置开始  -->
-<image class='img' src='/images/back.png' style='width:36px;height:36px;' bindtap='back' />
-<view id="navgationBar" style='width:100%;height:{{height*0.092}}px;background:white;'>分享图</view>
+<!-- <image class='img' src='/images/back.png' style='width:36px;height:36px;' bindtap='back' />
+<view id="navgationBar" style='width:100%;height:{{height*0.092}}px;background:white;'>分享图</view> -->
 <!--标题设置结束  -->
 <!--canvas画板开始  -->
 <canvas canvas-id='sharehidden' class='canvas' style='width:{{width}}px;height:{{trueheight*0.8}}px;'>

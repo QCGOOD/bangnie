@@ -26,8 +26,9 @@ const getSystem=()=>{
 }
 function request(urlLastAdded,method,data,resolve,reject){
   // var result;
+  var app=getApp().globalData;
   wx.request({
-    url: 'http://192.168.1.18:8011/helpyou/api/v1/' + urlLastAdded,
+    url:app.http + urlLastAdded,
     method:method,
     header:{
       'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
@@ -43,36 +44,38 @@ function request(urlLastAdded,method,data,resolve,reject){
   // console.log(result);
   
 }
-const login=()=>{
-  var key;
-  wx.login({
-      success: res => {
-        // 发送 res.code 到后台换取 openId, sessionKey, unionId
-        console.log(res);
-        wx.request({
-          url: 'http://192.168.1.18:8011/helpyou/api/v1/app/login',
-          method:"POST",
-          header:{
-            'content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
-          },
-          data:{
-            code:""+res.code
-          },
-          success:function(r){
-            // console.log(r.data.data.wego168SessionKey);
-            key = r.data.data.wego168SessionKey;
-          }
+// const login=()=>{
+//   var key;
+  
+//   wx.login({
+//       success: res => {
+//         // 发送 res.code 到后台换取 openId, sessionKey, unionId
+//         console.log(res);
+//         var app=getApp().globalData;
+//         wx.request({
+//           url: app.http+'app/login',
+//           method:"POST",
+//           header:{
+//             'content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
+//           },
+//           data:{
+//             code:""+res.code
+//           },
+//           success:function(r){
+//             // console.log(r.data.data.wego168SessionKey);
+//             key = r.data.data.wego168SessionKey;
+//           }
           
-        })
-      }
-    })
-    return key;
-}
+//         })
+//       }
+//     })
+//     return key;
+// }
 
 
 module.exports = {
   formatTime: formatTime,
   getSystem:getSystem,
-  login:login,
+  
   request:request
 }

@@ -52,7 +52,7 @@ Page({
     this.getDetails(id);
     //获取留言列表
     wx.request({
-      url: 'http://192.168.1.18:8011/helpyou/api/v1/app/comment/page',
+      url: app.http+'app/comment/page',
 
 
       method: "GET",
@@ -91,6 +91,7 @@ Page({
       }
 
     })
+    t.getImg();
   },
 
   /**
@@ -158,7 +159,7 @@ Page({
   share:function(){
     // console.log("zhixingle");
       this.setData({
-        show:!this.data.show
+        show:true
       })
   },
   //view点击查看大图
@@ -277,7 +278,7 @@ getDetails:function(id){
   var t=this;
   console.log("id是："+id);
   wx.request({
-    url: 'http://192.168.1.18:8011/helpyou/api/v1/app/information/get',
+    url: app.http+'app/information/get',
    
       
       method: "GET",
@@ -291,6 +292,16 @@ getDetails:function(id){
         
       success: function (res) {
         console.log(res);
+        if (res.data.message == "用户未登录或登录已失效") {
+          wx.showToast({
+            title: '用户未登录或登录已失效',
+            icon: 'loading',
+            duration: 1000
+          });
+          wx.navigateTo({
+            url: '/pages/welcome/welcome',
+          })
+        }
         let content=res.data.data.imgUrl.split(',');
         // console.log(content.length);
         if (res.data.data.imgUrl != '') {
@@ -305,6 +316,7 @@ getDetails:function(id){
           name: res.data.data.username, timeStamp: res.data.data.createTime, avatarUrl: res.data.data.headImage, text: res.data.data.content, content: content, 
           // address: res.data.data.address, 
           address: res.data.data.address,
+          praiseQuantity:res.data.data.praiseQuantity,
           others: [{
             key: "/images/liulan.png",
             value: res.data.data.visitQuantity
@@ -343,7 +355,8 @@ liuyan:function(){
 value:function(e){
   console.log(e.detail.value);
   this.setData({
-    neirong:e.detail.value
+    neirong:e.detail.value,
+    liuyan:false
   });
 },
 //发送留言
@@ -351,7 +364,7 @@ sendLY:function(){
   var t=this;
   console.log(wx.getStorageSync("key"), this.data.sourceId, this.data.neirong);
   wx.request({
-    url: 'http://192.168.1.18:8011/helpyou/api/v1/app/comment/insert',
+    url: app.http+'app/comment/insert',
 
 
     method: "POST",
@@ -445,7 +458,7 @@ dianzanT: function (e) {
   var t = this;
   console.log(e);
   wx.request({
-    url: 'http://192.168.1.18:8011/helpyou/api/v1/app/praise/insert',
+    url: app.http+'app/praise/insert',
     method: "POST",
     header: {
       'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
@@ -461,8 +474,9 @@ dianzanT: function (e) {
        
 
       }
+      t.data.userData.praiseQuantity = t.data.userData.praiseQuantity + 1;
       t.setData({
-
+        userData: t.data.userData,
         flag: "true"
       })
      
@@ -474,7 +488,7 @@ dianzanF: function (e) {
   var t = this;
   console.log(e);
   wx.request({
-    url: 'http://192.168.1.18:8011/helpyou/api/v1/app/praise/delete',
+    url: app.http+'app/praise/delete',
     method: "POST",
     header: {
       'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
@@ -490,9 +504,11 @@ dianzanF: function (e) {
         
         
       }
+      t.data.userData.praiseQuantity = t.data.userData.praiseQuantity-1;
       t.setData({
 
-        flag: "false"
+        flag: "false",
+userData:t.data.userData
       })
     }
   });
@@ -506,5 +522,34 @@ clickback:function(){
   this.setData({
     show:false
   });
-}
+},
+//获取城市轮播图片
+getImg: function () {
+  var t = this;
+  wx.request({
+    url: app.http+'attachment/list',
+    method: "GET",
+    header: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    data: {
+      areaId: wx.getStorageSync("id")
+    },
+    success: function (res) {
+      console.log(res);
+      t.data.imgUrls = [];
+      for (let i = 0; i < res.data.data.length; i++) {
+        t.data.imgUrls.push({
+          id: i,
+          url: 'http://helpyou-1255600302.cosgz.myqcloud.com' + res.data.data[i].url
+        });
+      }
+      // console.log(t.data.imgUrls[0]);
+      t.setData({
+        imgUrls: t.data.imgUrls
+      });
+
+    }
+  });
+},
 })

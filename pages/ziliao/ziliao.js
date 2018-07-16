@@ -84,7 +84,7 @@ Page({
   ziliao:function(){
     var t=this;
     wx.request({
-      url: 'http://192.168.1.18:8011/helpyou/api/v1/app/memberAuthenticate/get',
+      url: app.http+'app/memberAuthenticate/get',
       method:"GET",
       header:{
         "Content-Type":"application/x-www-form-urlencoded;charset=utf-8"
@@ -94,6 +94,16 @@ Page({
       },
       success:function(res){
         console.log(res);
+        if (res.data.message == "用户未登录或登录已失效") {
+          wx.showToast({
+            title: '用户未登录或登录已失效',
+            icon: 'loading',
+            duration: 1000
+          });
+          wx.navigateTo({
+            url: '/pages/welcome/welcome',
+          })
+        }
         let img = res.data.data.headImage || "/images/content1.png";
         let name = res.data.data.name || "未设置";
         let phone = res.data.data.phoneNumber || "";
@@ -122,7 +132,7 @@ Page({
       blur:true
     });
     wx.request({
-      url: 'http://192.168.1.18:8011/helpyou/api/v1/app/memberAuthenticate/isNeed',
+      url: app.http+'app/memberAuthenticate/isNeed',
       method: "GET",
       header: {
         "Content-Type": "application/x-www-form-urlencoded;charset=utf-8"
@@ -154,7 +164,7 @@ Page({
     // let code;
     // if(t.data.getCode){code=e.detail.value.code}else{code=''}
     wx.request({
-      url: 'http://192.168.1.18:8011/helpyou/api/v1/app/memberAuthenticate/update',
+      url: app.http+'app/memberAuthenticate/update',
       method: "POST",
       header: {
         "Content-Type": "application/x-www-form-urlencoded;charset=utf-8"
@@ -183,7 +193,7 @@ Page({
   yanZM:function(){
     var t=this;
     wx.request({
-      url: 'http://192.168.1.18:8011/helpyou/api/v1/app/validateCode',
+      url: app.http+'app/validateCode',
       method: "POST",
       header: {
         "Content-Type": "x-www-form-urlcoded;charset=utf-8"

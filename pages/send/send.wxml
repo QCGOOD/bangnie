@@ -1,8 +1,8 @@
 <!--pages/send/send.wxml-->
 <!--标题设置开始  -->
-<view id="navgationBar" style='width:{{width}}px;height:{{height*0.092}}px;background:white;'>{{nochange?"帮你科技国际站":name+"发布"}}</view>
+<!-- <view id="navgationBar" style='width:{{width}}px;height:{{height*0.092}}px;background:white;'>{{nochange?"帮你科技国际站":name+"发布"}}</view> -->
 <!--标题设置结束  -->
-<view class='container' style='width:{{width*0.894}}px;height:{{height*0.83}}px;position:fixed;padding:0 5%;background:white;' wx:if="{{nochange}}">
+<view class='container' style='width:{{width*0.894}}px;height:{{height*0.965}}px;position:fixed;padding:0 5%;background:white;' wx:if="{{nochange}}">
   <view style='height:50%;width:100%;'>
     <view style='font-size:32rpx;padding-top:2%;padding-top:10%;'>发布的信息一定要真实</view>
     <view style='font-size:28rpx;padding-top:2%;color:#808080;'>不可发布虚假消息</view>
@@ -25,50 +25,51 @@
 
 <!--真正的发布页  -->
 <view class='container' style='width:{{width}}px;height:{{height*0.82}}px;background:#f2f2f2;position:{{fixed?"fixed":"relative"}};' wx:else>
-  <view style='width:100%;height:542rpx;background:white;'>
-    <view style='width:90%;height:542rpx;background:white;margin:0 5%;'>
+  <view style='width:100%;height:auto;background:white;'>
+    <view style='width:90%;height:auto;background:white;margin:0 5%;'>
       <view style='color:#7E9BCF;margin-top:20rpx;background:white;font-size:32rpx;padding-top:20rpx;' bindtap='goIndex'>#{{name}}#</view>
-      <view style='width:100%;height:30%;'>
-        <textarea placeholder='一直做梦，晚上一直睡不好，心情抑郁烦躁，咋么回事？' placeholder-style='padding-top:20rpx;' style='background:white;width:100%;height:100%;margin-top:20rpx;' bindblur='blur' bindinput='input' auto-focus></textarea>
+      <view style='width:100%;height:50rpx;'>
+        <textarea placeholder='一直做梦，晚上一直睡不好，心情抑郁烦躁，咋么回事？' placeholder-style='padding-top:20rpx;' style='background:white;margin-top:20rpx;' bindblur='blur' bindinput='input' auto-focus value="{{value1}}"></textarea>
       </view>
-      <view style='width:100%;height:auto;background:white;margin-top:144rpx' bindtap='upImg'>
+      <view style='width:100%;height:auto;background:white;margin-top:270rpx;padding-bottom:20rpx;' bindtap='upImg'>
         <image src='/images/add.png' style='width:118rpx; height:118rpx;display:inline-block;border:2rpx solid #ccc;margin-right:10rpx;' wx:if='{{!none}}'></image>
         <block wx:for="{{temp}}">
           <image src='{{item}}' style='width:122rpx;height:122rpx;display:inline-block;margin-right:10rpx;' mode='scaleToFill'></image>
         </block>
       </view>
-      
+
     </view>
   </view>
-  <view style='width:100%;height:auto;background:#f2f2f2;margin-top:20rpx;'>
+  <view style='width:100%;height:20rpx;bakcground:#f2f2f2;'></view>
+  <view style='width:100%;height:auto;background:#f2f2f2;'>
     <form class='form' bindsubmit='formSubmit'>
-    <view style='background:white;'>
-    <view style='width:95%;height:12%;display:flex;justify-content:center;margin-left:5%;padding:20rpx 0;align-items:center;border-bottom:2rpx solid #f2f2f2;'>
-        <image src='/images/loc.png' style='width:30rpx;' mode='widthFix'></image>
-        <view style='width:100%;margin-left:10rpx;font-size:28rpx;'>{{LCDetails}}</view>
-      </view >
-      <view class='form-item'>
-        <label class="form-item__label" for="name">称呼</label>
-        <input class="form-item__input" placeholder='请输入称呼（何先生/何小姐）' name="name" id='name'></input>
-      </view>
-      <view class='form-item'>
-        <label class="form-item__label" for="phone">手机</label>
-        <input class="form-item__input" placeholder='15011934278' name="phone" id='phone' bindblur='phone_blur'></input>
-      </view>
+      <view style='background:white;'>
+        <view style='width:95%;height:12%;display:flex;justify-content:center;margin-left:5%;padding:20rpx 0;align-items:center;border-bottom:2rpx solid #f2f2f2;'>
+          <image src='/images/loc.png' style='width:30rpx;' mode='widthFix'></image>
+          <view style='width:100%;margin-left:10rpx;font-size:28rpx;'>{{LCDetails}}</view>
+        </view>
+        <view class='form-item'>
+          <label class="form-item__label" for="name">称呼</label>
+          <input class="form-item__input" placeholder='请输入称呼（何先生/何小姐）' name="name" id='name' value="{{value2}}"></input>
+        </view>
+        <view class='form-item'>
+          <label class="form-item__label" for="phone">手机</label>
+          <input class="form-item__input" placeholder='15011934278' name="phone" id='phone' bindblur='phone_blur' value="{{value3}}"></input>
+        </view>
 
-      
-      <view class='form-item' hidden="{{!getCode_flag}}">
-        <button style='background:#999;border:1px solid #ccc;flex: 0 0 280rpx;color:white;' bindtap='getCode'>获取验证码</button>
-        <input class="form-item__input" placeholder='请填写验证码' name="code" id='code'></input>
+
+        <view class='form-item' hidden="{{!getCode_flag}}">
+          <button style='background:#999;border:1px solid #ccc;flex: 0 0 280rpx;color:white;' bindtap='getCode'>获取验证码</button>
+          <input class="form-item__input" placeholder='请填写验证码' name="code" id='code'></input>
+        </view>
+        <view style='width:100%;height:20rpx;background:#F2F2F2;'></view>
+        <view class='form-item' style='border:none;'>
+          <label class="form-item__label" for="top">置顶</label>
+          <input class="form-item__input" placeholder='未开启' name="top" id='top'></input>
+        </view>
       </view>
-      <view style='width:100%;height:20rpx;background:#F2F2F2;'></view>
-      <view class='form-item' style='border:none;'>
-        <label class="form-item__label" for="top">置顶</label>
-        <input class="form-item__input" placeholder='未开启' name="top" id='top'></input>
-      </view>
-     </view>
       <button form-type='submit' class='btn'>发布</button>
-      
+
     </form>
   </view>
 

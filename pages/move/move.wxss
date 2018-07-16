@@ -26,7 +26,7 @@
 /*栏目开始  */
 .curcle{
   width:100%;
-  height:auto;
+  height:90rpx;
   /* background: yellowgreen; */
   display: flex;
   justify-content: space-around;

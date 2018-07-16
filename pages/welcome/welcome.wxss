@@ -20,6 +20,7 @@
   
 }
 .search{
+  background: #F8F8F8;
   width:90%;
   height:18%;
   /* background: yellow; */
@@ -49,12 +50,21 @@
   height:18%;
   /* padding-left:40rpx; */
   margin-top:20rpx;
-  margin-bottom:155rpx;
+  margin-bottom:62rpx;
 }
 .loca{
-  transform: translate(6%,100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* transform: translate(6%,100%); */
   /* background:red; */
+  /* font-size:16px; */
+   width:208rpx;
+  height:85rpx;
   font-size:16px;
+   background: #F8F8F8; 
+   margin-top:58rpx;
+   padding-left:40rpx; 
 }
 .title{
   color:#7B7B7B;
@@ -80,11 +90,13 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width:208rpx;
-  height:115rpx;
+  width:178rpx;
+  height:79rpx;
   font-size:16px;
-   background: #F8F8F8; 
-   margin:12rpx 21rpx;
+   background:#F9F9F9; 
+   margin:12rpx 35rpx;
+   border-radius:20rpx;
+   
 }
 .choosetwo{
   width:100%;

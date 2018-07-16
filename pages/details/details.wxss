@@ -102,13 +102,7 @@ button::after{
   /* margin-left:20rpx; */
   border-radius:50%;
 }
-#img3{
-  width:41rpx;
-  height:41rpx;
-  position: relative;
-  top:0;
-  left:57%;
-}
+
 .user_message .name{
   margin-left:10px;
   float: left;

@@ -88,7 +88,7 @@ t.getMessage(t.data.page);
     console.log(categoryId);
 
     wx.request({
-      url: 'http://192.168.1.18:8011/helpyou/api/v1/app/information/page',
+      url: app.http+'app/information/page',
       method: "GET",
       header: {
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
@@ -103,6 +103,16 @@ t.getMessage(t.data.page);
       },
       success: function (res) {
         console.log(res);
+        if (res.data.message == "用户未登录或登录已失效") {
+          wx.showToast({
+            title: '用户未登录或登录已失效',
+            icon: 'loading',
+            duration: 1000
+          });
+          wx.navigateTo({
+            url: '/pages/welcome/welcome',
+          })
+        }
         let tempArr = [];
         for (let i = 0; i < res.data.data.list.length; i++) {
           let content = [];

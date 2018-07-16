@@ -3,7 +3,7 @@
 var QQMapWX = require("../../libs/qqmap-wx-jssdk.min.js");
 var qqMapWX;
 var app = getApp().globalData;
-var rq = require("../../utils/util.js");
+// var rq = require("../../utils/util.js");
 // var page;
 // let key="";
 // console.log(app.key);
@@ -19,8 +19,8 @@ Page({
     login: false,
     // key:''
     second: true,
-    searchStr:{},
-    net_flag:0
+    searchStr: {},
+    net_flag: 0
   },
 
   /**
@@ -30,39 +30,54 @@ Page({
     var that = this;
     // console.log(options.back)
     //  page = 1;
-    if (!options.back) {
-      this.checkLogin();
-      this.login();
-      wx.request({
-        url: 'http://192.168.1.18:8011/helpyou/api/v1/app/recentlyArea',
-        method: "GET",
-        header: {
-          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-        },
-        data: {
-          wego168SessionKey: wx.getStorageSync("key")
-        },
-        success: function(res) {
-          try {
-            let id = "undefined" || res.data.data.id;
-            // console.log(res);
-            if (res.data.data.id != "undefined") {
-              that.setData({
-                second: false
-              });
-              console.log("zhixingle");
+    try {
+      if (!options.back) {
+        this.checkLogin();
+        this.login();
+        wx.request({
+          url: app.http + 'app/recentlyArea',
+          method: "GET",
+          header: {
+            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+          },
+          data: {
+            wego168SessionKey: wx.getStorageSync("key")
+          },
+          success: function(res) {
+            console.log(res);
+            try {
+              let id = "undefined" || res.data.data.id;
+              // console.log(res);
+              if (res.data.data.id != "undefined") {
+                that.setData({
+                  second: false
+                });
+                console.log("zhixingle");
 
-              wx.switchTab({
-                url: '/pages/main/main',
-              })
+                wx.switchTab({
+                  url: '/pages/main/main',
+                })
+              } else {
+                that.setData({
+                  login: true
+                });
+
+              }
+            } catch (er) {
+              console.log("未知错误！");
             }
-          } catch (err) {
-            console.log(err);
-          }
 
-        }
-      })
-    } else {
+
+
+          }
+        })
+      } else {
+        that.setData({
+          login: true
+        });
+        that.getCityList();
+      }
+    } catch (err) {
       that.setData({
         login: true
       });
@@ -193,8 +208,10 @@ Page({
     // if (wx.getStorageSync("key")==undefined){
     //     t.login();
     // }
+    console.log(app.http);
     wx.request({
-      url: 'http://192.168.1.18:8011/helpyou/api/v1/area/listWithChild',
+      url: app.http + 'area/listWithChild',
+      // url: 'http://192.168.1.18:8011/helpyou/api/v1/area/listWithChild',
       method: "GET",
       header: {
         "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
@@ -203,67 +220,74 @@ Page({
         wego168SessionKey: wx.getStorageSync("key")
       },
       success: function(res) {
-        console.log(res.data.data.list);
+        console.log(res);
+        // console.log(res.data.data.list);
         // console.log(res.data.data.list[1].childList)
-try{
-  var lis = res.data.data.list;
-  for (let n = 0; n < lis.length; n++) {
-    for (let c = 0; c < lis[n].childList.length; c++) {
-      //     // console.log(res.data.data.list[n].childList[c].id);
-      //     let name = res.data.data.list[n].childList[c].name;
-      //     let id = res.data.data.list[n].childList[c].id;
+        try {
+          var lis = res.data.data.list;
+          for (let n = 0; n < lis.length; n++) {
+            for (let c = 0; c < lis[n].childList.length; c++) {
+              //     // console.log(res.data.data.list[n].childList[c].id);
+              //     let name = res.data.data.list[n].childList[c].name;
+              //     let id = res.data.data.list[n].childList[c].id;
 
-      t.data.searchStr[res.data.data.list[n].childList[c].name] = res.data.data.list[n].childList[c].id;
+              t.data.searchStr[res.data.data.list[n].childList[c].name] = res.data.data.list[n].childList[c].id;
 
-    }
-  }
+            }
+          }
 
-  console.log(t.data.searchStr);
-  t.setData({
-    searchStr: t.data.searchStr
-  });
-  try {
+          // console.log(t.data.searchStr);
+          t.setData({
+            searchStr: t.data.searchStr
+          });
+          try {
 
-    t.data.cityData = res.data.data.list;
-    t.setData({
-      cityData: t.data.cityData,
+            t.data.cityData = res.data.data.list;
+            t.setData({
+              cityData: t.data.cityData,
 
-    });
+            });
 
-  } catch (err) {
-    console.log("登录失效");
-    t.setData({
-      login: false
-    });
-    t.login();
-    t.getCityList();
-  }
-}catch(e){
-  console.log("trycatch已经执行了");
-  wx.showToast({
-    title: '重新登录中~',
-  })
-  if(t.data.net_flag<=4){
-    t.login();
-    t.setData({
-      net_flag: t.data.net_flag + 1
-    });
-    
-  }else{
-    wx.showToast({
-      title: '请稍候再试~',
-    })
-  }
- 
-}
-        
+          } catch (err) {
+            console.log("登录失效");
+            t.setData({
+              login: false
+            });
+            t.login();
+            // t.getCityList();
+          }
+        } catch (e) {
+          console.log("trycatch已经执行了");
+          wx.showToast({
+            title: '请稍候~',
+          })
+          t.login();
+          // t.login(); t.getCityList();
+          // if(t.data.net_flag<=4){
+          //   t.login();t.getCityList();
+          t.setData({
+            net_flag: t.data.net_flag + 1
+          });
 
-       
+          // }else{
+          // let l=setTimeout(function(){
+          //   // wx.showToast({
+          //   //   title: '请稍候再试~',
+          //   // })
+          //   t.onUnload();
+          // },10000);
 
-
-    
+        }
 
       },
+
+
+
+
+
+
+
+
       fail: function() {
         console.log("登录失效");
         t.setData({
@@ -275,11 +299,15 @@ try{
   //输入框的聚焦事件
   focus: function() {
     // str=
-// t.data.li[str] = value;
+    // t.data.li[str] = value;
+    var t = this;
+    t.setData({
+      flag: false
+    })
   },
   //输入框失焦事件
   blur: function(e) {
-    var t=this;
+    var t = this;
     if (this.data.inputValue) {
       flag: false
     }
@@ -288,11 +316,11 @@ try{
         flag: true
       })
     }
-    console.log("blur:",e.detail.value);
-    for(let i in t.data.searchStr){
+    console.log("blur:", e.detail.value);
+    for (let i in t.data.searchStr) {
       console.log(i);
-      if (e.detail.value==i){
-        t.click(null,i,t.data.searchStr[i]);
+      if (e.detail.value == i) {
+        t.click(null, i, t.data.searchStr[i]);
         return;
       }
     }
@@ -320,7 +348,10 @@ try{
             duration: 500
           })
           // console.log(t.data.key);
-          t.getCityList();
+          // t.getCityList();
+          // wx.switchTab({
+          //   url: '/pages/main/main',
+          // })
         }
       }
     })
@@ -347,7 +378,7 @@ try{
       sex: e.detail.userInfo.gender
     };
     wx.request({
-      url: 'http://192.168.1.18:8011/helpyou/api/v1/app/member/save',
+      url: app.http + 'app/member/save',
       method: "POST",
       header: {
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
@@ -380,13 +411,14 @@ try{
         }
       }
     })
+    console.log("执行用户登录login");
     // 登录
     wx.login({
       success: res => {
         // 发送 res.code 到后台换取 openId, sessionKey, unionId
         console.log(res);
         wx.request({
-          url: 'http://192.168.1.18:8011/helpyou/api/v1/app/login',
+          url: app.http + 'app/login',
           method: "POST",
           header: {
             'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
@@ -396,6 +428,7 @@ try{
           },
           success: function(r) {
             console.log(r);
+            console.log("成功登录");
             // console.log(r.data.data.wego168SessionKey);
             if (r.data.data.wego168SessionKey == undefined) {
               console.log("网络不好");
@@ -410,9 +443,12 @@ try{
 
               }
             })
+            t.getCityList();
 
 
-
+          },
+          fail: function(err) {
+            console.log("失败了", err);
           }
 
         })
@@ -420,9 +456,9 @@ try{
     })
   },
   // 点击选取城市
-  click: function(e,cityName,searchId) {
+  click: function(e, cityName, searchId) {
     // console.log(e.currentTarget.dataset);
-    if(!e){
+    if (!e) {
       wx.setStorage({
         key: 'city',
         data: cityName,
@@ -431,24 +467,24 @@ try{
         key: 'id',
         data: searchId,
       })
-    }else{
+    } else {
       wx.setStorage({
         key: 'city',
         data: e.currentTarget.dataset.value,
       })
       wx.setStorage({
         key: 'id',
-        data: e.currentTarget.dataset.id ,
+        data: e.currentTarget.dataset.id,
       })
     }
     // console.log(city);
     wx.switchTab({
       url: '/pages/main/main',
     })
-    
+
     console.log(wx.getStorageSync("key"));
     wx.request({
-      url: 'http://192.168.1.18:8011/helpyou/api/v1/app/choose',
+      url: app.http + 'app/choose',
       method: "POST",
       header: {
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
@@ -465,25 +501,25 @@ try{
     // this.getMessage(page);
   },
   //对定位城市的服务判断
-  click2:function(e){
-    var t=this;
+  click2: function(e) {
+    var t = this;
     // console.log(e);
-    let flag=false;
+    let flag = false;
     for (let i in t.data.searchStr) {
       console.log(i);
       if (e.currentTarget.dataset.value == i) {
         // t.click(null, i, t.data.searchStr[i]);
-        flag=true;
+        flag = true;
         return;
       }
     }
-    if(flag){
+    if (flag) {
       t.click(null, e.currentTarget.dataset.value, t.data.searchStr[e.currentTarget.dataset.value]);
-    }else{
+    } else {
       wx.showToast({
         title: '当前城市未开放服务，敬请期待！',
-        icon:"fail",
-        duration:1000
+        icon: "fail",
+        duration: 1000
       })
     }
   },
@@ -491,7 +527,7 @@ try{
   judgePhone: function() {
     var t = this;
     wx.request({
-      url: 'http://192.168.1.18:8011/helpyou/api/v1/app/isNeed',
+      url: app.http + 'app/isNeed',
       method: "GET",
       header: {
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
@@ -517,7 +553,7 @@ try{
     console.log(e.detail.encryptedData, e.detail.iv);
     if (e.detail.errMsg == "getPhoneNumber:ok") {
       wx.request({
-        url: 'http://192.168.1.18:8011/helpyou/api/v1/app/phone',
+        url: app.http + 'app/phone',
         method: "POST",
         header: {
           'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'

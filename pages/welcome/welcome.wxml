@@ -8,12 +8,13 @@
 <view id='box' style='width:100%;height:auto;' wx:if="{{login&&second}}">
   <view style='width:100%;height:auto;' wx:if="{{!phone_flag}}">
     <view class='search'>
-      <image wx:if="{{flag}}" class="icon" src='/images/search.png' style='width:28rpx;height:28rpx;position:absolute;z-index:2;transform:translateY(12%);'></image>
-      <input name="search" placeholder='请输入完整的城市名称' placeholder-style='padding-left:36rpx;padding-top:3rpx;' class='searchInput' bindinput='inputValue' bindblur='blur' bindfocus='focus'></input>
+      
+      <icon class="weui-icon-search" type="search" size="14" ></icon>
+      <input name="search" placeholder='请输入完整的城市名称' placeholder-style='padding-left:36rpx padding-top:3rpx' class='searchInput' bindinput='inputValue' bindblur='blur' bindfocus='focus'></input>
     </view>
     <view class='locationAuto'>
       <view class='title'>当前定位的城市</view>
-      <view class="loca" bindtap='click2' data-value="{{city}}">{{city}}</view>
+      <view class="item" bindtap='click2' data-value="{{city}}">{{city}}</view>
     </view>
 
     <block wx:for="{{cityData}}">

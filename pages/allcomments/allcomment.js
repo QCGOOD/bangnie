@@ -6,15 +6,15 @@ Page({
    * 页面的初始数据
    */
   data: {
-    LYList:[]
+    LYList: []
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
+  onLoad: function(options) {
     console.log(options.sourceId);
-    var t=this;
+    var t = this;
     this.setData({
       width: app.width,
       height: app.height,
@@ -22,7 +22,7 @@ Page({
     });
     //获取留言列表
     wx.request({
-      url: 'http://192.168.1.18:8011/helpyou/api/v1/app/comment/page',
+      url: app.http + 'app/comment/page',
 
 
       method: "GET",
@@ -37,26 +37,36 @@ Page({
         pageNum: 1
       },
 
-      success: function (res) {
+      success: function(res) {
         console.log(res);
-        if(res.data.data.list.length==0){
+        if (res.data.message == "用户未登录或登录已失效") {
+          wx.showToast({
+            title: '用户未登录或登录已失效',
+            icon: 'loading',
+            duration: 1000
+          });
+          wx.navigateTo({
+            url: '/pages/welcome/welcome',
+          })
+        }
+        if (res.data.data.list.length == 0) {
           t.setData({
-            blank:true
+            blank: true
           });
         }
-        for(let i=0;i<res.data.data.list.length;i++){
+        for (let i = 0; i < res.data.data.list.length; i++) {
           t.data.LYList.push({
             imgUrl: res.data.data.list[i].memberHeadImage,
-            name:res.data.data.list[i].memberName,
-            timeStamp:res.data.data.list[i].createTime,
-            content:res.data.data.list[i].content
+            name: res.data.data.list[i].memberName,
+            timeStamp: res.data.data.list[i].createTime,
+            content: res.data.data.list[i].content
           });
         }
         console.log(t.data.LYList);
         t.setData({
-          LYList:t.data.LYList
+          LYList: t.data.LYList
         })
-        
+
 
       }
 
@@ -66,55 +76,55 @@ Page({
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
-  onReady: function () {
-  
+  onReady: function() {
+
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function () {
-  
+  onShow: function() {
+
   },
 
   /**
    * 生命周期函数--监听页面隐藏
    */
-  onHide: function () {
-  
+  onHide: function() {
+
   },
 
   /**
    * 生命周期函数--监听页面卸载
    */
-  onUnload: function () {
-  
+  onUnload: function() {
+
   },
 
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
-  onPullDownRefresh: function () {
-  
+  onPullDownRefresh: function() {
+
   },
 
   /**
    * 页面上拉触底事件的处理函数
    */
-  onReachBottom: function () {
-  
+  onReachBottom: function() {
+
   },
 
   /**
    * 用户点击右上角分享
    */
-  onShareAppMessage: function () {
-  
+  onShareAppMessage: function() {
+
   },
   //回到详情页面
-  back:function(){
+  back: function() {
     wx.navigateBack({
-      delta:1
+      delta: 1
     })
   },
 })

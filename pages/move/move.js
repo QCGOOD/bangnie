@@ -15,7 +15,7 @@ Page({
       text: "最热"
     }, ], //滑块数据
     userData: [{ name: '徐若海', timeStamp: '3分钟前', avatarUrl: "/images/service1.png", text: "这里只是一段测试的文字！这里只是一段测试的文字！这里只是一段测试的文字！这里只是一段测试的文字！", content: ["/images/content1.png", "/images/content1.png", "/images/content2.png", "/images/content3.png", "/images/content4.png",], address: "anhuitaihu", others: 'dianzan' }, { name: '徐若海', timeStamp: '3分钟前', avatarUrl: "/images/service1.png", text: "这里只是一段测试的文字！这里只是一段测试的文字！这里只是一段测试的文字！这里只是一段测试的文字！", content: ["/images/content1.png", "/images/content1.png", "/images/content2.png", "/images/content3.png", "/images/content4.png",], address: "anhuitaihu", others: 'dianzan' }, { name: '徐若海', timeStamp: '3分钟前', avatarUrl: "/images/service1.png", text: "这里只是一段测试的文字！这里只是一段测试的文字！这里只是一段测试的文字！这里只是一段测试的文字！", content: ["/images/content1.png", "/images/content1.png", "/images/content2.png", "/images/content3.png", "/images/content4.png",], address: "anhuitaihu", others: 'dianzan' }, { name: '徐若海', timeStamp: '3分钟前', avatarUrl: "/images/service1.png", text: "这里只是一段测试的文字！这里只是一段测试的文字！这里只是一段测试的文字！这里只是一段测试的文字！", content: ["/images/content1.png", "/images/content1.png", "/images/content2.png", "/images/content3.png", "/images/content4.png",], address: "anhuitaihu", others: 'dianzan' },],
-  show:true,//是否有数据显示
+  show:false,//是否有数据显示
   userData1:[],
   userData2:[],
   page:1
@@ -86,10 +86,18 @@ Page({
   },
   //切换最新最热
   change: function (e) {
+    var t=this;
     console.log(e);
     this.setData({
-      swiperIndex: e.currentTarget.dataset.index
+      swiperIndex: e.currentTarget.dataset.index,
+      page: 1
     });
+    if (e.currentTarget.dataset.index==0){
+      
+      t.getMessage(t.data.page, t.data.swiperIndex + 1, t.data.swiperIndex + 1, t.data.categoryId);
+    }else{
+      t.getMessage(t.data.page, t.data.swiperIndex + 1, t.data.swiperIndex + 1, t.data.categoryId);
+    }
   },
   ceshi: function (e) {
     console.log(e);
@@ -116,7 +124,7 @@ Page({
     console.log(categoryId);
 
     wx.request({
-      url: 'http://192.168.1.18:8011/helpyou/api/v1/app/information/page',
+      url: app.http+'app/information/page',
       method: "GET",
       header: {
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
@@ -127,7 +135,7 @@ Page({
         categoryId: categoryId,
         type: typekind,
         pageNum: page,
-        pageSize: 20
+        pageSize: 5
       },
       success: function (res) {
         console.log(res);
@@ -140,6 +148,14 @@ Page({
           wx.navigateTo({
             url: '/pages/welcome/welcome',
           })
+        }
+        t.setData({
+          page:t.data.page+1
+        });
+        if(res.data.data.list.length>0){
+          t.setData({
+            show:true
+          });
         }
         let tempArr = [];
         for (let i = 0; i < res.data.data.list.length; i++) {
@@ -208,4 +224,10 @@ Page({
       }
     })
   },
+  //上滑到底部继续加载
+  lower:function(){
+    var t=this;
+    console.log("我被触发了");
+    t.getMessage(t.data.page, t.data.swiperIndex + 1, t.data.swiperIndex + 1, t.data.categoryId);
+  }
 })

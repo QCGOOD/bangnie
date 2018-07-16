@@ -12,8 +12,9 @@
         <view class='name'>
           <view style='font-size:28rpx;'>{{userData.name}}</view>
           <view style='color:#777777;font-size:28rpx;margin-top:12rpx;margin-left:-5rpx;'>{{userData.timeStamp}}</view>
+
         </view>
-        <image src='/images/slideUp.png' id='img3'></image>
+        <image src='/images/slideUp.png' id='img3' style='width:41rpx;transform:translateX(600%);' mode='widthFix'></image>
       </view>
       <view class="content">
         <view class='content_text' style="padding-top:20rpx;padding-bottom:20rpx;font-size:30rpx;"> {{userData.text}}</view>
@@ -64,62 +65,62 @@
   <view style='width:100%;background:white;'>
     <view class='ad' style='margin-top:20rpx;margin-bottom:20rpx;background:white;margin:20rpx 5%;width:90%;'>
       <text style='display:flex;align-items:center;height:70rpx;font-size:30rpx;'>欢乐过六一，赚取积分拿ipone8</text>
-      <image src='/images/lunbo1.png' style='width:100%;' mode='widthFix'></image>
+      <image src='{{imgUrls[0].url}}' style='width:100%;' mode='widthFix'></image>
       <view class='blank' style='width:100%;height:120rpx;'></view>
     </view>
     <!--广告位结束 -->
   </view>
 
-<!--内容部分结束  -->
-<!--底部固定栏开始  -->
-<view style='position:fixed;z-index:4;bottom:0;left:0;width:{{width}}px;height:122rpx;display:flex;flex-wrap:nowrap;background:white;'>
-  <view style='flex:3;display:flex;justify-content:center;align-items:center;' bindtap='share'>
-    <image src='/images/share2.png' style='width:34rpx;height:34rpx;margin-right:10rpx;font-size:28rpx;' />分享</view>
-  <view style='flex:3;display:flex;justify-content:center;align-items:center;' bindtap='liuyan'>
-    <image src='/images/comments2.png' style='width:38rpx;height:29rpx;margin-right:10rpx;font-size:28rpx;' />留言</view>
-  <!-- <view style='flex:3;display:flex;justify-content:center;align-items:center;' hidden="{{flag}}">
+  <!--内容部分结束  -->
+  <!--底部固定栏开始  -->
+  <view style='position:fixed;z-index:4;bottom:0;left:0;width:{{width}}px;height:122rpx;display:flex;flex-wrap:nowrap;background:white;'>
+    <view style='flex:3;display:flex;justify-content:center;align-items:center;' catchtap='share'>
+      <image src='/images/share2.png' style='width:34rpx;height:34rpx;margin-right:10rpx;font-size:28rpx;' />分享</view>
+    <view style='flex:3;display:flex;justify-content:center;align-items:center;' catchtap='liuyan'>
+      <image src='/images/comments2.png' style='width:38rpx;height:29rpx;margin-right:10rpx;font-size:28rpx;' />留言</view>
+    <!-- <view style='flex:3;display:flex;justify-content:center;align-items:center;' hidden="{{flag}}">
       <image src="/images/dianzan.png" class="1" style="width:30rpx;margin-right:20rpx;" data-sourceId="{{sourceId}}" mode='widthFix' catchtap='dianzanT' >
       </image>
 
       点赞</view>  -->
-  <view style='flex:3;display:flex;justify-content:center;align-items:center;font-size:28rpx;' catchtap="{{flag=='true'?'dianzanF':'dianzanT'}}" data-sourceId="{{sourceId}}">
-    <image src="{{flag=='true'?'/images/succ.png':'/images/dianzan2.png'}}" class="2" style="width:35rpx;margin-right:10rpx;" data-sourceId="{{sourceId}}" catchtap="{{flag=='true'?'dianzanF':'dianzanT'}}" mode='widthFix'>
-    </image>
+    <view style='flex:3;display:flex;justify-content:center;align-items:center;font-size:28rpx;' catchtap="{{flag=='true'?'dianzanF':'dianzanT'}}" data-sourceId="{{sourceId}}">
+      <image src="{{flag=='true'?'/images/succ.png':'/images/dianzan2.png'}}" class="2" style="width:35rpx;margin-right:10rpx;" data-sourceId="{{sourceId}}" catchtap="{{flag=='true'?'dianzanF':'dianzanT'}}" mode='widthFix'>
+      </image>
 
-    点赞</view>
-  <!-- <image src="{{item.others[2].flag?'/images/succ.png':'/images/dianzan.png'}}" class="{{item.others[2].flag}}" style="width:30rpx;margin-right:20rpx;" data-sourceId="{{item.message_id}}" data-index="{{totalIndex}}" mode='widthFix' catchtap="{{item.others[2].flag?'dianzanF':'dianzanT'}}"  /> -->
+      {{userData.praiseQuantity}}</view>
 
-  <view style='flex:4;background:orange;display:flex;justify-content:center;align-items:center;' bindtap='call'>
-    <image src='/images/phone.png' style='width:26rpx;height:26rpx;margin-right:10rpx;' />
-    <text style='color:white;'>{{userData.call}}</text>
-  </view>
-</view>
-<!--底部固定栏结束  -->
-<!--底部隐藏固定栏开始  -->
-<view wx:if="{{show}}" style='position:fixed;z-index:5;bottom:0;left:0;width:{{width}}px;height:200rpx;display:flex;flex-wrap:nowrap;background:white;'>
-  <view style='flex:3;display:flex;justify-content:center;align-items:center;'>
-    <button style="display:flex;justify-content:center;flex-wrap:wrap;" class="buttonone" open-type='share'>
-      <view style='width:100%;display:flex;justify-content:center;'>
-        <image src='/images/sharetoF.png' style='width:78rpx;height:78rpx;transform:translateY(25%);' />
-      </view>
-      <view style='width:100%;margin-top:25rpx;display:flex;justify-content:center;font-size:30rpx;'>分享给朋友</view>
-    </button>
-  </view>
-  <view style='flex:3;display:flex;justify-content:center;align-items:center;'>
-    <view style="display:flex;justify-content:center;flex-wrap:wrap;" catchtap='drawImage'>
-      <view style='width:100%;display:flex;justify-content:center;'>
-        <image src='/images/makeS.png' style='width:78rpx;height:78rpx;transform:translateX(45%);' />
-        <text style='font-size:26rpx;color:#828282;transform:translateX(150%);' catchtap='clickback'>取消</text>
-      </view>
-      <view style='width:100%;margin-top:25rpx;display:flex;justify-content:center;font-size:30rpx;'>生成分享图</view>
+
+    <view style='flex:4;background:#F56F4A;display:flex;justify-content:center;align-items:center;' bindtap='call'>
+      <image src='/images/phone.png' style='width:26rpx;height:26rpx;margin-right:10rpx;' />
+      <text style='color:white;'>{{userData.call}}</text>
     </view>
   </view>
+  <!--底部固定栏结束  -->
+  <!--底部隐藏固定栏开始  -->
+  <view wx:if="{{show}}" style='position:fixed;z-index:5;bottom:0;left:0;width:{{width}}px;height:200rpx;display:flex;flex-wrap:nowrap;background:white;'>
+    <view style='flex:3;display:flex;justify-content:center;align-items:center;'>
+      <button style="display:flex;justify-content:center;flex-wrap:wrap;" class="buttonone" open-type='share'>
+        <view style='width:100%;display:flex;justify-content:center;'>
+          <image src='/images/sharetoF.png' style='width:78rpx;height:78rpx;transform:translateY(25%);' />
+        </view>
+        <view style='width:100%;margin-top:25rpx;display:flex;justify-content:center;font-size:30rpx;'>分享给朋友</view>
+      </button>
+    </view>
+    <view style='flex:3;display:flex;justify-content:center;align-items:center;'>
+      <view style="display:flex;justify-content:center;flex-wrap:wrap;" catchtap='drawImage'>
+        <view style='width:100%;display:flex;justify-content:center;'>
+          <image src='/images/makeS.png' style='width:78rpx;height:78rpx;transform:translateX(45%);' />
+          <text style='font-size:26rpx;color:#828282;transform:translateX(150%);' catchtap='clickback'>取消</text>
+        </view>
+        <view style='width:100%;margin-top:25rpx;display:flex;justify-content:center;font-size:30rpx;'>生成分享图</view>
+      </view>
+    </view>
 
-</view>
-<view style='position:absolute;z-index:7;width:95%;height:60rpx;background:white;top:50%;left:;transform:translateY(-50%);margin-left:20rpx;margin-right:20rpx;' wx:if="{{liuyan}}">
-  <input placeholder='请输入！' auto-focus style="display:inline-block;width:80%;height:100%;" bindblur='value' maxlength='100'></input>
-  <button class='btn' bindtap='sendLY'>发送</button>
-</view>
+  </view>
+  <view style='position:absolute;z-index:7;width:95%;height:60rpx;background:white;top:50%;left:;transform:translateY(-50%);margin-left:20rpx;margin-right:20rpx;' wx:if="{{liuyan}}">
+    <input placeholder='请输入！' auto-focus style="display:inline-block;width:80%;height:100%;" bindblur='value' maxlength='100'></input>
+    <button class='btn' bindtap='sendLY'>发送</button>
+  </view>
 </view>
 <!--底部隐藏固定栏结束  -->
 
