@@ -1,6 +1,6 @@
 <!--搜索框开始  -->
 <view class='search'>
-  <view class='search__select'>
+  <view class='search__select' bindtap='choose'>
     <text class='text'>{{selectData}}</text>
     <text class="icon i-jiantouxia"></text>
   </view>

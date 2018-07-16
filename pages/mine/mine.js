@@ -13,7 +13,7 @@ Page({
     concact: false,
     show:false,
     page: 1,
-    
+    vip:false
   },
 
   /**
@@ -140,13 +140,18 @@ Page({
         let gs = res.data.data.gs || "";
         let zw = res.data.data.zw || "";
         console.log(img, zw);
+        if(res.data.data.bindStatus==1){
+          console.log("ok");
+          var vip=true;
+        }
         t.data.userData = {
           // name:
           img: img,
           name: name,
           phone: phone,
           gs: gs,
-          zw: zw
+          zw: zw,
+          vip:vip
         };
         t.setData({
           userData: t.data.userData
