@@ -31,7 +31,7 @@ Page({
     var that = this;
     page = 1;
     if (!wx.getStorageSync("city")) {
-      that.choose();
+      that.jumpChoosePage();
     }
     console.log(wx.getStorageSync("key"));
     that.setData({

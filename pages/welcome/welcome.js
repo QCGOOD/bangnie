@@ -30,9 +30,10 @@ Page({
     var that = this;
     // console.log(options.back)
     //  page = 1;
+    this.checkLogin();
     try {
       if (!options.back) {
-        this.checkLogin();
+        
         this.login();
         
         this.getCityList();
@@ -348,6 +349,9 @@ Page({
         console.log(res);
         if (!res.authSetting["scope.userInfo"]) {
           console.log("没有授权");
+          t.setData({
+            login: false
+          });
         } else {
           t.setData({
             login: true

@@ -15,10 +15,7 @@
 /*标题lan结束  */
 
 /*内容开始  */
-#box{
-   position: fixed; 
-  
-}
+
 .search{
   background: #F8F8F8;
   width:90%;
