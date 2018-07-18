@@ -7,7 +7,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    userData:{},
+    detail: {},
     commentsData: [],//留言信息的存储
     show:false,//对底部进行隐藏
     toggle:false,//大图是否显示
@@ -35,7 +35,7 @@ Page({
     console.log("当前时间",time.formatTime(new Date()));
     console.log(options);
     let id=options.id;
-    let flag=options.isPraise;
+    let flag=options.isPraise||false;
     // console.log(typeof flag);
     console.log(flag);
     this.setData({
@@ -92,49 +92,6 @@ Page({
     })
     t.getImg();
   },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-  
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-  
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-  
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-  
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-  
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-  
-  },
-
   /**
    * 用户点击右上角分享
    */
@@ -268,83 +225,41 @@ Page({
   // 进入canvas画图界面
  drawImage:function(){
    var t=this;
-   t.erweima(t.data.sourceId);
-   wx.showToast({
-     title: '正在绘制中~~~',
-     icon: 'loading',
-     duration: 3000
+   wx.navigateTo({
+     url: '/pages/canvas/canvas?sourceId=' + t.data.sourceId,
    })
     
  },
 //  获取详情的资讯
-getDetails:function(id){
-  var t=this;
-  console.log("id是："+id);
+getDetails: function (id) {
+  var _this = this;
+  console.log("id是：" + id);
   wx.request({
     url: `${app.http}/app/information/get`,
-  method: "GET",
-      header: {
-        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-      },
-      data: {
-        wego168SessionKey: wx.getStorageSync("key"),
-        id: id
-      },
-        
-      success: function (res) {
-        console.log(res);
-        if (res.data.message == "用户未登录或登录已失效") {
-          wx.showToast({
-            title: '用户未登录或登录已失效',
-            icon: 'loading',
-            duration: 1000
-          });
-          wx.navigateTo({
-            url: '/pages/welcome/welcome',
-          })
-        }
-        let content=res.data.data.imgUrl.split(',');
-        // console.log(content.length);
-        if (res.data.data.imgUrl != '') {
-          content = res.data.data.imgUrl.split(','); //记得修改
-          for (let l = 0; l < content.length; l++) {
-            content[l] = 'http://helpyou-1255600302.cosgz.myqcloud.com' + content[l]
-          }
-        } else {
-          content = [];
-        }
-        t.data.userData = {
-          name: res.data.data.username, timeStamp: res.data.data.createTime, avatarUrl: res.data.data.headImage, text: res.data.data.content, content: content, 
-          // address: res.data.data.address, 
-          address: res.data.data.address,
-          praiseQuantity:res.data.data.praiseQuantity,
-          others: [{
-            key: "/images/liulan.png",
-            value: res.data.data.visitQuantity
-
-          }, {
-            key: "/images/comments.png",
-            value: "111"
-          }, {
-            key: "/images/dianzan.png",
-            value: res.data.data.praiseQuantity
-
-          }, {
-            key: "/images/share.png",
-            value: "111"
-          },], 
-          message_id: res.data.data.id,
-          call:res.data.data.appellation,
-          phone:res.data.data.phone,
-          visitQuantity:res.data.data.visitQuantity,
-          isPraise: res.data.data.isPraise,
-         }
-         console.log(t.data.userData);
-         t.setData({
-           userData:t.data.userData
-         });
+    method: "GET",
+    header: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    data: {
+      wego168SessionKey: wx.getStorageSync("key"),
+      id: id
+    },
+    success: function (res) {
+      if (res.data.message == "用户未登录或登录已失效") {
+        wx.showToast({
+          title: '用户未登录或登录已失效',
+          icon: 'loading',
+          duration: 1000
+        });
+        wx.navigateTo({
+          url: '/pages/welcome/welcome',
+        })
       }
-    
+      res.data.data.imgUrl = res.data.data.imgUrl.split(',');
+      _this.setData({
+        detail: res.data.data
+      })
+    }
   })
 },
 //用户留言
@@ -527,9 +442,7 @@ userData:t.data.userData
 },
 //点赞开始
 onLike: function (e) {
-  console.log(e.currentTarget.dataset.type)
   let url = `${app.http}/app/praise/insert`, type = e.currentTarget.dataset.type;
-
   if (this.data[type].isPraise) {
     // 取消点赞
     url = `${app.http}/app/praise/delete`
@@ -597,49 +510,5 @@ getImg: function () {
     }
   });
 },
-erweima: function (id) {
-  var that = this;
-  
-  wx.request({
-    url: `${app.http}/app/qrcode/get`,
 
-
-    method: "GET",
-
-    data: {
-      wego168SessionKey: wx.getStorageSync("key"),
-      id: id
-    },
-
-    success: function (res) {
-      console.log(res);
-      if (res.data.message == "用户未登录或登录已失效") {
-        wx.showToast({
-          title: '用户未登录或登录已失效',
-          icon: 'loading',
-          duration: 1000
-        });
-        wx.navigateTo({
-          url: '/pages/welcome/welcome',
-        })
-      }
-      wx.downloadFile({
-        url: 'https://helpyou-1255600302.cosgz.myqcloud.com' + res.data.message,
-        success: function (response) {
-          console.log(response);
-          if (response.statusCode == 200) {
-            // that.data.erweima = response.tempFilePath;
-            // that.setData({
-            //   erweima: that.data.erweima
-            // });
-            wx.navigateTo({
-              url: '/pages/canvas/canvas?path=' + response.tempFilePath+"&sourceId="+id,
-            })
-          }
-        }
-      })
-    }
-
-  })
-},
 })

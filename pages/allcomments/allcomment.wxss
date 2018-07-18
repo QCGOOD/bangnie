@@ -1,57 +1,28 @@
-/* pages/allcomments/allcomment.wxss */
-
-  page{
+page {
   font-size: 30rpx;
   font-family: Arial, Helvetica, sans-serif;
   letter-spacing: 2rpx;
 }
 
-.container{
-  margin-top:20rpx;
-  width:100%;
-  height:auto;
-  background:white;
-}
-.forBox{
-  border-bottom:1px solid #eee;padding:10rpx 0 10rpx 0;
-}
-.user_message{
-  width:100%;
-  height:12%;
-  /* background: purple; */
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-}
-.user_message .ima{
-  width:82rpx;
-  height:82rpx;
-  float:left;
-  margin-left:10px;
-  border-radius: 50%;
-}
-.stamp{
-  padding:10rpx 0;font-size:28rpx;color:#878787;
-}
-.name_name{
-  padding:10rpx 0;font-size:28rpx;
-}
-.user_message .name{
-  margin-left:10px;
-  float: left;
+.none_img {
+  width: 500rpx;
+  transform: translateY(-30%);
 }
 
-.content{
-  width:100%;
-  height:auto;
-  margin-top:20rpx;margin-left:120rpx;margin-bottom:20rpx;font-size:30rpx;
+.none_text {
+  color: #797979;
+  transform: translateY(-200%);
+  font-size: 28rpx;
 }
-.none{
-  background:white;display:flex;align-items:center;justify-content:center;flex-direction:column;flex-wrap:wrap;
+
+.comment-list {
+  padding: 30rpx;
+  border-top: 1px solid #eee;
+  background: #fff;
 }
-.none_img{
-  width:500rpx;transform:translateY(-30%);
-}
-.none_text{
-  color:#797979;transform:translateY(-200%);font-size:28rpx;
+
+.comment-list .text {
+  margin: 20rpx 0 0 102rpx;
+  font-size: 28rpx;
+  color: #808080;
 }

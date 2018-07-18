@@ -5,7 +5,7 @@
 <!--标题设置结束  -->
 
 <!-- 内容开始 -->
-<view id='box' style='width:100%;height:auto;' wx:if="{{login&&second}}">
+<view id='box' style='width:100%;height:auto;' >
   <view style='width:100%;height:auto;' wx:if="{{!phone_flag}}">
     <view class='search'>
       
@@ -32,8 +32,9 @@
     <button open-type="getPhoneNumber" style="width:90%;margin:0 5%;" bindgetphonenumber="getPhoneNumber">获取手机号</button>
   </view>
 </view>
-<view class='login' wx:if="{{(!login)&&second}}">
+ <view class='login' style='position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:400rpx;height:600rpx;background:red;' wx:if="{{!login}}">
+ <view>请授权登录</view>
   <button open-type='getUserInfo' bindgetuserinfo='getUserInfo' class='btn'>登录</button>
-</view>
+</view> 
 
 <!-- 内容结束 -->

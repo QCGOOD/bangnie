@@ -31,7 +31,7 @@ Page({
     var that = this;
     page = 1;
     if (!wx.getStorageSync("city")) {
-      that.choose();
+      that.jumpChoosePage();
     }
     console.log(wx.getStorageSync("key"));
     that.setData({
@@ -62,7 +62,8 @@ Page({
     that.getKind();
     this.setData({
       newData: [],
-      hotData: []
+      hotData: [],
+      swiperIndex: 0
     })
     this.data.newSearch.pageNum = 1
     that.getMessage(this.data.newSearch);
@@ -101,7 +102,7 @@ Page({
     }
     return false
   },
-  
+
   //切换最新最热
   changeTabbar: function(e) {
     let index = e.currentTarget.dataset.index
@@ -221,8 +222,10 @@ Page({
   //点赞开始
   onLike: function(e) {
     console.log(e.currentTarget.dataset.type)
-    let index = e.currentTarget.dataset.index, url = `${app.http}/app/praise/insert`, type = e.currentTarget.dataset.type;
-    
+    let index = e.currentTarget.dataset.index,
+      url = `${app.http}/app/praise/insert`,
+      type = e.currentTarget.dataset.type;
+
     if (this.data[type][index].isPraise) {
       // 取消点赞
       url = `${app.http}/app/praise/delete`
@@ -277,20 +280,19 @@ Page({
     })
   },
   //重新选择城市
-  jumpChoosePage: function () {
+  jumpChoosePage: function() {
     wx.redirectTo({
       url: '/pages/welcome/welcome?back=' + 1,
     })
   },
   //跳转测试
-  jumpNav: function (e) {
+  jumpNav: function(e) {
     wx.navigateTo({
       url: '/pages/move/move?serviceId=' + e.currentTarget.dataset.service_id,
     })
   },
   //进入说说的详情页面
-  jumpDetails: function (e) {
-    console.log(e.currentTarget.dataset.ispraise);
+  jumpDetails: function(e) {
     wx.navigateTo({
       url: '/pages/details/details?id=' + e.currentTarget.dataset.id + "&isPraise=" + e.currentTarget.dataset.ispraise
     })

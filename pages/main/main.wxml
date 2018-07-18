@@ -5,8 +5,8 @@
     <text class="icon i-jiantouxia"></text>
   </view>
   <view class='search__input'>
-   <icon class="weui-icon-search " type="search" size="14" style='transform: translate(100%,-30%);' ></icon>
-      <input name="search" placeholder='搜索当地华人服务' placeholder-style='padding-left:100rpx padding-top:3rpx' class='searchInput' bindinput='inputValue' bindblur='blur' bindfocus='focus' ></input>
+    <icon class="weui-icon-search " type="search" size="14" style='transform: translate(100%,-30%);'></icon>
+    <input name="search" placeholder='搜索当地华人服务' placeholder-style='padding-left:100rpx padding-top:3rpx' class='searchInput' bindinput='inputValue' bindblur='blur' bindfocus='focus'></input>
   </view>
 </view>
 <!--搜索框结束  -->
@@ -54,7 +54,7 @@
 
 <view wx:for="{{newData}}" wx:key="{{newData.id}}" hidden='{{swiperIndex != 0}}'>
   <view class="menssage-item">
-    <view class="user">
+    <view class="user-wrap">
       <image src="{{item.headImage}}"></image>
       <view class='user__info'>
         <view class='name'>{{item.username}}</view>
@@ -85,7 +85,7 @@
         <text class="num">{{item.commentQuantity}}</text>
       </view>
       <view class="list" bindtap='onLike' data-index="{{index}}" data-type="newData">
-        <image src='{{item.isPraise ? "/images/succ.png" : "/images/dianzan.png"}}' style='width:30rpx;' mode='widthFix' data-isPraise="{{item.isPraise}}"></image>
+        <text class='icon i-dianzan {{item.isPraise ? "i-color" : ""}}'></text>
         <text class="num">{{item.praiseQuantity}}</text>
       </view>
       <view class="list">
@@ -97,7 +97,7 @@
 </view>
 <view hidden='{{swiperIndex != 1}}' wx:for="{{hotData}}" wx:key="{{item.id}}">
   <view class="menssage-item">
-    <view class="user">
+    <view class="user-wrap">
       <image src="{{item.headImage}}"></image>
       <view class='user__info'>
         <view class='name'>{{item.username}}</view>
@@ -128,7 +128,7 @@
         <text class="num">{{item.commentQuantity}}</text>
       </view>
       <view class="list" bindtap='onLike' data-index="{{index}}" data-type="hotData">
-        <image src='{{item.isPraise ? "/images/succ.png" : "/images/dianzan.png"}}' style='width:26rpx;' mode='widthFix' data-isPraise="{{item.isPraise}}"></image>
+        <text class='icon i-dianzan {{item.isPraise ? "i-color" : ""}}' data-isPraise="{{item.isPraise}}"></text>
         <text class="num">{{item.praiseQuantity}}</text>
       </view>
       <view class="list">
