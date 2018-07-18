@@ -5,7 +5,7 @@
 <!--标题设置结束  -->
 <view class='conteiner' style='width:100%;height:{{height}}px;margin-top:10px;background:#F0F0F0;'>
   <scroll-view style='width:100%;height:{{height}}px;' scroll-y="true" bindscrolltolower="lower">
-    <block wx:for="{{userData}}" wx:for-index="total">
+    <block wx:for="{{userData}}" wx:for-index="total" wx:key="{{total}}">
 
       <view class='inBox' style='width:100%;height:auto;margin-bottom:20rpx;background:white;padding-left:20rpx;padding-top:40rpx;position:relative;'>
         <view class='user_message'>
@@ -20,7 +20,7 @@
           <view class='content_text'>
             <text style='color:#7399D8;font-size:30rpx;margin-top:20rpx;margin-bottom:10rpx;'>#{{item.category}}#</text>{{item.text}}</view>
           <view class='content_image' style='display:flex;justify-content:flex-start;flex-wrap:wrap;' wx:if="{{item.len}}">
-            <block wx:for="{{item.content}}" wx:for-item="child_item">
+            <block wx:for="{{item.content}}" wx:for-item="child_item" wx:for-key="child_index" wx:key="{{child_index}}">
               <image src='{{child_item}}' style='width:222rpx;margin:5px 2px;height:222rpx;' binderror='error' data-index="{{index}}"  wx:if="{{item.len}}"></image>
             </block>
           </view>
@@ -53,6 +53,7 @@
         </view>
       </view>
     </block>
+    <view wx:if="{{!userData.length > 0}}" style="color: #808080;text-align:center;padding-top: 49vh;">暂无数据</view>
   </scroll-view>
 </view>
 <!-- <view style='width:100%;height:auto;display:flex;flex-wrap:wrap;justify-content:space-between;'>

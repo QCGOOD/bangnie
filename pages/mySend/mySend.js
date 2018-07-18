@@ -1,5 +1,6 @@
 // pages/mySend/mySend.js
-var app=getApp().globalData;
+var app = getApp().globalData;
+var appJs = getApp();
 Page({
 
   /**
@@ -21,57 +22,9 @@ Page({
       height: app.height,
       trueheight: app.trueHeight,
     });
-t.getMessage(t.data.page);
+    t.getMessage(t.data.page);
   },
 
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-  
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-  
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-  
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-  
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-  
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-  
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-  
-  },
   // 回退到首页
   back: function () {
 
@@ -81,12 +34,11 @@ t.getMessage(t.data.page);
   },
   // 获取资讯列表
   getMessage: function (page) {
+    wx.showLoading()
     var t = this;
     console.log("获取资讯列表执行了" + wx.getStorageSync("id") + page);
     var categoryId = wx.getStorageSync("categoryId") || "";
-    // console.log(categoryId);
-    console.log(categoryId);
-// console.log("第"+page+"页");
+
     wx.request({
       url: `${app.http}/app/information/page`,
       method: "GET",
@@ -102,13 +54,9 @@ t.getMessage(t.data.page);
         listType:2
       },
       success: function (res) {
-        console.log(res);
+        wx.hideLoading()
         if (res.data.message == "用户未登录或登录已失效") {
-          wx.showToast({
-            title: '用户未登录或登录已失效',
-            icon: 'loading',
-            duration: 1000
-          });
+          appJs.toast('用户未登录或登录已失效')
           wx.navigateTo({
             url: '/pages/welcome/welcome',
           })
@@ -161,7 +109,6 @@ t.getMessage(t.data.page);
           };
         };
         t.data.userData = t.data.userData.concat(tempArr);
-        console.log(t.data.userData);
         t.setData({
           userData: t.data.userData,
           page:t.data.page+1
@@ -289,11 +236,7 @@ t.getMessage(t.data.page);
         success: function (res) {
           console.log(res);
           if (res.data.message == "用户未登录或登录已失效") {
-            wx.showToast({
-              title: '用户未登录或登录已失效',
-              icon: 'loading',
-              duration: 1000
-            });
+            appJs.toast('用户未登录或登录已失效')
             wx.navigateTo({
               url: '/pages/welcome/welcome',
             })

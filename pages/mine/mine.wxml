@@ -38,7 +38,7 @@
       <image src='/images/inDetails.png'  class="navInto"></image>
     </view>
   </view>
-  <view  class='ques'  bindtap='ques'>
+  <!-- <view  class='ques'  bindtap='ques'>
     <view  class='item_box' >
       <view  class='que_inline'>
         <image src='/images/qe.png'  class='que_img'></image>
@@ -52,8 +52,7 @@
         <text >联系客服</text>
       </view>
       <image src='/images/inDetails.png'   class="navInto"></image>
-
     </view>
-  </view>
+  </view> -->
 </view>
 <!--各个分栏目展示  -->
