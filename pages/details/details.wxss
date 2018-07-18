@@ -1,143 +1,144 @@
-/* pages/details/details.wxss */
-page{
-  font-size: 30rpx;
-  font-family: "冬青黑体",Noto,Arial, Helvetica, sans-serif;
-  color:#0E0E0E;
-  background:#F0F0F0;
+page {
+  background: #f2f2f2;
 }
-button{
-  position:relative;
-display:block;
-/* margin-left:auto;
-margin-right:auto;
-padding-left:14px;
-padding-right:14px; */
-/* box-sizing:border-box; */
-font-size:18px;
-text-align:center;
-text-decoration:none;
-line-height:2.55555556;
-/* border-radius:5px; */
--webkit-tap-highlight-color:transparent;
-overflow:hidden;
-color:#000000;
- background-color:white; 
-/* border: none; */
-/* border: 0px solid purple; */
 
+.tag {
+  padding: 15rpx 30rpx;
+  font-size: 26rpx;
+  color: #797979;
 }
-button::after{
-  content: '';
+
+.detail {
+  padding: 40rpx 30rpx 20rpx;
+}
+
+.detail .address {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.comment-column {
+  padding: 30rpx;
+  display: flex;
+  justify-content: space-between;
+  font-size: 28rpx;
+  background: #fff;
+}
+
+.comment-list {
+  padding: 30rpx;
+  border-top: 1px solid #eee;
+  background: #fff;
+}
+
+.comment-list .text {
+  margin: 20rpx 0 0 102rpx;
+  font-size: 28rpx;
+  color: #808080;
+}
+
+.button-group {
+  position: fixed;
+  z-index: 1;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 122rpx;
+  display: flex;
+  flex-wrap: nowrap;
+  background: white;
+  border-top: 1px solid #eee;
+}
+
+.button-group .button {
+  font-size: 28rpx;
+  flex: 1;
+  text-align: center;
+  line-height: 112rpx;
+}
+
+.button-group .button .i-color {
+  color: #f8794d;
+}
+
+.button-group .button.call {
+  background: #f8794d;
+  color: #fff;
+}
+
+.button-group .button.remark .icon {
+  font-size: 28rpx !important;
+}
+
+.share-wrap {
+  width: 100%;
+  height: 300rpx;
+  position: fixed;
+  bottom: 0;
+  display: flex;
+  justify-content: space-around;
+  font-size: 28rpx;
+  z-index: 2;
+  color: #000;
+  background: #fff;
+  align-items: center;
+  box-shadow: 0 -2px 100px #eee;
+}
+
+.share-wrap button {
+  padding: 0;
+  border: none;
+  background: none;
+  text-align: center;
+  font-size: 28rpx;
+  line-height: 38rpx;
+}
+
+.share-wrap button::after, .share-wrap button::before {
   border: none;
 }
 
-/*详情开始  */
-.container{
-  width:100%;
-  height: 100%;
-   background: #F0F0F0; 
-  /* margin:0 20rpx; */
-}
-.user_message{
-  width:100%;
-  height:12%;
-  /* background: purple; */
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-}
-.user_message .ima{
-  width:82rpx;
-  height:82rpx;
-  float:left;
-  /* margin-left:10px; */
-  border-radius: 50%;
-}
-.user_message .name{
-  margin-left:10px;
-  float: left;
-}
-.content{
-  width:100%;
-  height:auto;
-  /* background: green; */
-}
-.address{
- 
-  width:100%;
-  height:auto;
-  background: white;
- 
-}
-/* .adderss::after{
-  content: ".";
+.share-wrap image {
+  width: 120rpx;
+  height: 120rpx;
   display: block;
-  height: 0;
-  clear: both;
-  visibility: hidden;
-} */
-/* .clearfix{overflow:hidden;_zoom:1;} */
-/*留言开始  */
-.box{
-  
-  height:300rpx;width:100%;
-  text-overflow: ellipsis;
-  overflow: hidden;
-   white-space: wrap; 
-   border-bottom:2rpx solid #f0f0f0;
-  
-}
-.user_message{
-  width:100%;
-  height:100rpx;
-  /* background: purple; */
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-}
-.user_message .img2{
-  width:82rpx;
-  height:82rpx;
-  float:left;
-  /* margin-left:20rpx; */
-  border-radius:50%;
+  margin: 0 auto 20px;
 }
 
-.user_message .name{
-  margin-left:10px;
-  float: left;
+.share-wrap .close {
+  position: fixed;
+  right: 30rpx;
+  bottom: 245rpx;
+  font-size: 24rpx;
 }
-/*留言结束  */
-/*详情结束  */
-/*大图介绍开始  */
-.intro{
-  position:absolute;
-  top:8%;
-  left:50%;
-  transform: translateX(-50%);
-  font-size:40rpx;
-}
-/*大图介绍结束*/
-/*去除button按钮残留边框  */
-.buttonone::after{
-  border:none;
-}
-/*发布留言开始  */
-button{
 
-}
-.btn{
-  float:right;
-  /* margin-right:20rpx; */
-  width:20%;
-  height:100%;background:orange;
+.remark-wrap {
+  width: 100%;
+  position: fixed;
+  bottom: 124rpx;
   display: flex;
-  justify-content: center;
   align-items: center;
-  font-size:30rpx;
-  color:white;
+  justify-content: space-between;
+  background: #fff;
+  padding: 15rpx 30rpx;
+  box-sizing: border-box;
 }
-.btn:hover{
-  /* background: yellowgreen; */
+
+.remark-wrap button {
+  margin: 0;
+  padding: 36rpx 16rpx;
+  font-size: 32rpx;
+  background: #f8794d;
+  color: #fff;
+  line-height: 0;
 }
-/*发布留言结束  */
+
+.remark-wrap input {
+  flex: 1;
+  font-size: 28rpx;
+  padding: 10rpx 15rpx;
+  background: #eee;
+  margin-right: 30rpx;
+  border-radius: 3px;
+}

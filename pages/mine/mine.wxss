@@ -26,6 +26,9 @@ page{
   font-family: "冬青黑体",Arial, Helvetica, sans-serif;
   letter-spacing: 2rpx;
 }
+.container{
+  background:#f2f2f2;position:relative;
+}
 /*标题lan开始  */
 
 #navgationBar {
@@ -51,29 +54,32 @@ page{
 /*标题lan结束  */
 /*资讯开始  */
 /*朋友圈开始  */
-
-
+.user{
+  width:100%;height:auto;background:white;display:flex;flex-wrap:no-wrap;padding-left:7.5%;padding-top:40rpx;padding-bottom:20rpx;position:relative;
+}
+.v{
+  width:100rpx;height:100rpx;border-radius:50%;
+}
 
 .user_message{
-  width:100%;
-  height:12%;
-  /* background: purple; */
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
+  width:200rpx;height:100rpx;display:flex;justify-content:center;flex-wrap:wrap;align-items:center;margin-left:20rpx;
+}
+.user_message text{
+  text-overflow: ellipsis;white-space: nowrap;overflow: hidden;display:block;float:left;width:82%;font-size:30rpx;
 }
 .user_message image{
-  width:82rpx;
-  height:82rpx;
-  float:left;
-  margin-left:10px;
-  border-radius: 50%;
+  width:22rpx;height:22rpx;margin-left:10rpx;float:right;transform:translateY(50%);
 }
-
+.phone{
+  width:100%;height:auto;color:#808080;
+}
 .user_message .name{
   margin-left:10px;
   float: left;
 }
+.mymessage{
+  width:30rpx;height:30rpx;transform:translateY(10%);
+  }
 .content{
   width:100%;
   height:auto;
@@ -96,8 +102,35 @@ page{
 }
 /*资讯结束  */
 /*我的发起结束  */
+.mysend{
+  margin:10px auto;background:white;width:100%;height:200rpx;position:relative;
+}
 cover-view{
   position:absolute;background: red;
   z-index:15;
   
+}
+.item_box{
+  width:100%;height:100rpx;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #eee;
+}
+.item_box text{
+  margin-left:15rpx;
+}
+.ques{
+  width:100%;height:auto;background:white;position:relative;
+}
+.que_img{
+  width:30rpx;height:30rpx;transform:translateY(25%);
+}
+.kefu_img{
+  width:30rpx;height:30rpx;transform:translateY(15%);
+}
+.que_inline{
+  padding-left:7.5%;display:flex;justify-content:center;
+}
+.item_inline{
+  padding-left:7.5%;
+}
+.navInto{
+  width:17rpx;height:31rpx;padding-right:7.5%;
 }

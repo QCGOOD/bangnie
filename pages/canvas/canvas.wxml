@@ -4,15 +4,16 @@
 <view id="navgationBar" style='width:100%;height:{{height*0.092}}px;background:white;'>分享图</view> -->
 <!--标题设置结束  -->
 <!--canvas画板开始  -->
-<canvas canvas-id='sharehidden' class='canvas' style='width:{{width}}px;height:{{trueheight*0.8}}px;'>
+<canvas canvas-id='sharehidden' class='canvas' style='width:{{width}}px;height:{{trueheight*0.85}}px;'>
 </canvas>
 <!--底部内容开始  -->
-<view style='display:flex;justify-content:center;flex-wrap:wrap;'>
-  <image src='/images/QC.png' style='width:20rpx;display:block;transform:translateY(60%);' mode='widthFix'></image>
-  <view style='font-size:30rpx;color:#ccc;margin-left:10rpx;'>技术•企成科技</view>
+<view class='bottom_img'>
+  <image src='/images/QC.png'  mode='widthFix' class='icon'></image>
+  <view  class='bottom_text'>技术•企成科技</view>
 </view>
-<view class='save' style='background:#F56F4B;position:fixed;bottom:0;left:0;width:100%;height:92rpx;display:flex;justify-content:center;align-items:center;font-size:32rpx;color:white;' bindtap='save'>保存图片</view>
+<view class='save'  bindtap='save'>保存图片</view>
 <!--底部内容结束  -->
-<canvas canvas-id='share' class='canvas' style='width:{{width}}px;height:{{trueheight*0.8}}px;background:white;margin-top:100px;' hidden='{{canShow}}'>
+<canvas canvas-id='share' class='canvas' style='width:{{width}}px;height:{{trueheight*0.8}}px;' hidden='{{canShow}}'>
+<!-- <cover-image src='/images/'></cover-image> -->
 </canvas>
 <!--canvas画板结束  -->

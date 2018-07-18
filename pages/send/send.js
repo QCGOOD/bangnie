@@ -81,7 +81,7 @@ Page({
   getKind: function () {
     var t = this;
     wx.request({
-      url: app.http+'category/page',
+      url: `${app.http}/category/page`,
       method: "GET",
       header: {
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
@@ -174,7 +174,7 @@ Page({
       validateCodeByMember = '';
       }
     wx.request({
-      url: app.http+'app/information/save',
+      url: `${app.http}/app/information/save`,
       method: "POST",
       header: {
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
@@ -284,7 +284,7 @@ t.setData({
     var t=this;
     console.log(e);
     wx.request({
-      url: app.http+'app/information/validatePhone',
+      url: `${app.http}/app/information/validatePhone`,
       method: "GET",
       header: {
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
@@ -320,7 +320,7 @@ t.setData({
     // console.log(typeof t.data.phone);
     // console.log(typeof ''+t.data.phone);
     wx.request({
-      url: app.http+'app/validateCode',
+      url: `${app.http}/app/validateCode`,
       method: "POST",
       header: {
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
@@ -346,8 +346,8 @@ t.setData({
   },
   chehui:function(e){
     var t=this;
-console.log(e.currentTarget.dataset.index);
-console.log(t.data.temp);
+// console.log(e.currentTarget.dataset.index);
+// console.log(t.data.temp);
     t.data.temp.splice(e.currentTarget.dataset.index,1);
     t.setData({
       temp:t.data.temp

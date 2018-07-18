@@ -70,6 +70,6 @@ page{
 .others1{
   margin-right:20rpx;
   /* background: pink; */
-  width:160rpx;
+  width:130rpx;
 }
 /*资讯结束  */

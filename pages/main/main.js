@@ -19,25 +19,9 @@ Page({
     }], //广告数据
     swiperIndex: 0,
     newData: [],
-    newSearch: {
-      pageNum: 1,
-      pageSize: 2,
-      pageTotal: -1,
-      type: 1,
-      wego168SessionKey: wx.getStorageSync("key"),
-      areaId: wx.getStorageSync("id"),
-      categoryId: '',
-    },
+    
     hotData: [],
-    hotSearch: {
-      pageNum: 1,
-      pageSize: 20,
-      pageTotal: -1,
-      type: 2,
-      wego168SessionKey: wx.getStorageSync("key"),
-      areaId: wx.getStorageSync("id"),
-      categoryId: '',
-    },
+    
     imgHost: app.imgHost,
   },
   /**
@@ -49,17 +33,37 @@ Page({
     if (!wx.getStorageSync("city")) {
       that.choose();
     }
+    console.log(wx.getStorageSync("key"));
     that.setData({
       width: app.width,
       height: app.height,
       trueHeight: app.trueHeight,
       selectData: wx.getStorageSync("city"),
+      newSearch: {
+        pageNum: 1,
+        pageSize: 2,
+        pageTotal: -1,
+        type: 1,
+        wego168SessionKey: wx.getStorageSync("key"),
+        areaId: wx.getStorageSync("id"),
+        categoryId: '',
+      },
+      hotSearch: {
+        pageNum: 1,
+        pageSize: 20,
+        pageTotal: -1,
+        type: 2,
+        wego168SessionKey: wx.getStorageSync("key"),
+        areaId: wx.getStorageSync("id"),
+        categoryId: '',
+      },
     });
     that.getImg();
     that.getKind();
     this.setData({
       newData: [],
-      hotData: []
+      hotData: [],
+      swiperIndex: 0
     })
     this.data.newSearch.pageNum = 1
     that.getMessage(this.data.newSearch);
@@ -98,7 +102,7 @@ Page({
     }
     return false
   },
-  
+
   //切换最新最热
   changeTabbar: function(e) {
     let index = e.currentTarget.dataset.index
@@ -115,7 +119,7 @@ Page({
   blur: function() {
     if (this.data.inputValue) {
       this.setData({
-        flag: false,
+        flag: true,
         inputValue: ''
       });
       if (this.data.inputValue.indexOf(this.data.searchStr) != -1) {
@@ -142,7 +146,7 @@ Page({
   // 获取资讯列表
   getMessage: function(data) {
     var _this = this;
-    if (this.isNext(data)) {
+    // if (this.isNext(data)) {
       wx.request({
         url: `${app.http}/app/information/page`,
         method: "GET",
@@ -158,11 +162,16 @@ Page({
               url: '/pages/welcome/welcome',
             })
           }
-          res.data.data.list.map(res => {
-            if (res.imgUrl != '') {
-              return res.imgUrl = res.imgUrl.split(',')
+          try {
+            res.data.data.list.map(res => {
+              if (res.imgUrl != '') {
+                return res.imgUrl = res.imgUrl.split(',')
+              }
+            })}catch(e){console.log("有毒啊");
+            
+            console.log(wx.getStorageSync("key"));
             }
-          })
+          
           if (data.type == 1) {
             _this.setData({
               newData: [..._this.data.newData, ...res.data.data.list],
@@ -178,9 +187,9 @@ Page({
           }
         }
       })
-    } else {
-      console.log('没有数据了')
-    }
+    // } else {
+    //   console.log('没有数据了')
+    // }
   },
   //从后台获取栏目列表
   getKind: function() {
@@ -213,8 +222,10 @@ Page({
   //点赞开始
   onLike: function(e) {
     console.log(e.currentTarget.dataset.type)
-    let index = e.currentTarget.dataset.index, url = `${app.http}/app/praise/insert`, type = e.currentTarget.dataset.type;
-    
+    let index = e.currentTarget.dataset.index,
+      url = `${app.http}/app/praise/insert`,
+      type = e.currentTarget.dataset.type;
+
     if (this.data[type][index].isPraise) {
       // 取消点赞
       url = `${app.http}/app/praise/delete`
@@ -269,19 +280,19 @@ Page({
     })
   },
   //重新选择城市
-  jumpChoosePage: function () {
+  jumpChoosePage: function() {
     wx.redirectTo({
       url: '/pages/welcome/welcome?back=' + 1,
     })
   },
   //跳转测试
-  jumpNav: function (e) {
+  jumpNav: function(e) {
     wx.navigateTo({
       url: '/pages/move/move?serviceId=' + e.currentTarget.dataset.service_id,
     })
   },
   //进入说说的详情页面
-  jumpDetails: function (e) {
+  jumpDetails: function(e) {
     wx.navigateTo({
       url: '/pages/details/details?id=' + e.currentTarget.dataset.id + "&isPraise=" + e.currentTarget.dataset.ispraise
     })

@@ -3,19 +3,19 @@
 <!-- <image class='img' src='/images/back.png' style='width:36px;height:36px;' bindtap='back' />
 <view id="navgationBar" style='width:100%;height:{{height*0.092}}px;background:white;'>全部留言</view> -->
 <!--标题设置结束  -->
-<view style="margin-top:20rpx;width:i00%;height:auto;background:white;" wx:if="{{!blank}}">
-  <view wx:for="{{LYList}}" style='border-bottom:1px solid #eee;padding:10rpx 0 10rpx 0;'>
-    <view class='user_message'>
-      <image src="{{item.imgUrl}}" class='ima'></image>
-      <view class='name'>
-        <view style='padding:10rpx 0;font-size:28rpx'>{{item.name}}</view>
-        <view style='padding:10rpx 0;font-size:28rpx;color:#878787;'>{{item.timeStamp}}</view>
+<view wx:if="{{!blank}}">
+  <view class='comment-list' wx:for="{{LYList}}">
+    <view class='user-wrap'>
+      <image src="{{item.imgUrl}}"></image>
+      <view class='user__info'>
+        <view class='name'>{{item.name}}</view>
+        <view class='time'>{{item.timeStamp}}</view>
       </view>
     </view>
-    <view style='margin-top:20rpx;margin-left:120rpx;margin-bottom:20rpx;font-size:30rpx;'>{{item.content}}</view>
+    <view class="text">{{item.content}}</view>
   </view>
 </view>
-<view wx:else style='width:100%;height:{{height}}px;background:white;display:flex;align-items:center;justify-content:center;flex-direction:column;flex-wrap:wrap;'>
-<image src='/images/none.png' style='width:500rpx;transform:translateY(-30%);' mode='widthFix'></image>
-<view style='color:#797979;transform:translateY(-200%);font-size:28rpx;'>贫瘠之地，一毛不拔</view>
+<view wx:else style='width:100%;height:{{height}}px;' class='none'>
+  <image src='/images/none.png' mode='widthFix' class='none_img'></image>
+  <view class='none_text'>贫瘠之地，一毛不拔</view>
 </view>

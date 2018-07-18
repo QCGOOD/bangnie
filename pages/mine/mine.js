@@ -13,7 +13,7 @@ Page({
     concact: false,
     show:false,
     page: 1,
-    vip:false
+    vip:true
   },
 
   /**
@@ -41,7 +41,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function() {
-
+this.onLoad();
   },
 
   /**
@@ -84,7 +84,7 @@ Page({
     //  show:true,
      userData: [],
     });
-    this.getMessage(this.data.page);
+    // this.getMessage(this.data.page);
     wx.navigateTo({
       url: '/pages/mySend/mySend',
     })
@@ -106,15 +106,16 @@ Page({
   },
   //进入资料编辑页面、
   intoZiliao: function() {
+    var that=this;
     wx.navigateTo({
-      url: '/pages/ziliao/ziliao',
+      url: '/pages/ziliao/ziliao?vip='+that.data.vip,
     })
   },
   //编辑资料接口
   ziliao: function () {
     var t = this;
     wx.request({
-      url: app.http+'app/memberAuthenticate/get',
+      url: `${app.http}/app/memberAuthenticate/get`,
       method: "GET",
       header: {
         "Content-Type": "application/x-www-form-urlencoded;charset=utf-8"
@@ -142,7 +143,7 @@ Page({
         console.log(img, zw);
         if(res.data.data.bindStatus==1){
           console.log("ok");
-          var vip=true;
+          var vip=false;
         }
         t.data.userData = {
           // name:
@@ -175,7 +176,7 @@ Page({
     console.log(categoryId);
 
     wx.request({
-      url: app.http+'app/information/page',
+      url: `${app.http}/app/information/page`,
       method: "GET",
       header: {
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'

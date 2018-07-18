@@ -1,145 +1,111 @@
-<!--pages/details/details.wxml-->
+<!--标签开始  -->
+<view class='tag'>#{{detail.category}}#</view>
 
 <!--详情开始  -->
-<!--内容部分开始  -->
-<view class='container' bindtap='clickback'>
-  <view style='background:#f2f2f2;color:#797979;margin-top:14rpx;margin-bottom:14rpx;font-size:28rpx;padding-left:5%;'>#当地美食#</view>
-  <view style='width:100%;background:white;position:relative;'>
-    <view style='margin-top:20rpx;margin-bottom:20rpx;background:white;margin:0 5%;width:90%;'>
-
-      <view class='user_message' style='padding-top:20rpx;padding-bottom:20rpx;'>
-        <image src="{{userData.avatarUrl}}" class="img2"></image>
-        <view class='name'>
-          <view style='font-size:28rpx;'>{{userData.name}}</view>
-          <view style='color:#777777;font-size:28rpx;margin-top:12rpx;margin-left:-5rpx;'>{{userData.timeStamp}}</view>
-
-        </view>
-        <image src='/images/slideUp.png' id='img3' style='width:41rpx;transform:translateX(600%);' mode='widthFix'></image>
-      </view>
-      <view class="content">
-        <view class='content_text' style="padding-top:20rpx;padding-bottom:20rpx;font-size:30rpx;"> {{userData.text}}</view>
-        <view class='content_image' style='display:flex;justify-content:flex-start;flex-wrap:wrap;'>
-          <block wx:for="{{userData.content}}" wx:if="{{userData.content.lenth}}-1">
-            <image src='{{item}}' style='width:222rpx;margin:5px 2px;' mode='widthFix' bindtap='view' data-src="{{userData.content}}" data-index="{{index}}"></image>
-          </block>
-        </view>
-      </view>
-
-      <view class="address" style='display:flex;justify-content:space-between;padding-bottom:16rpx;'>
-        <view style='color:#717171;font-size:26rpx;flex:3 '>
-          <image src="/images/loc.png" style="width:18rpx;margin-right:10rpx;" mode='widthFix' />
-          <text style='transform:translateY(-5%);'>{{userData.address}}</text>
-        </view>
-        <view>
-          <!-- <image src="/images/liulan.png" style="width:32rpx;height:19rpx;margin-right:20rpx;transform:translateY(-50%);" /> -->
-          <text style='flex:1;font-size:26rpx;color:#717171;padding-left:10rpx;'>浏览量：{{userData.visitQuantity}}</text>
-        </view>
-
-      </view>
-
+<view class="menssage-item detail">
+  <view class="user-wrap">
+    <image src="{{detail.headImage}}"></image>
+    <view class='user__info'>
+      <view class='name'>{{detail.username}}</view>
+      <view class='time'>{{detail.createTime}}</view>
     </view>
   </view>
-  <!--留言部分开始  -->
-  <view style='width:100%;background:white;position:relative;'>
-    <view class='comments' style='width:90%;margin:20rpx 5%;height:auto;margin-top:20rpx;background:white;'>
-      <view style='width:100%;height:100rpx;display:flex;align-items:center;'>
-        <view style='flex:1;display:flex;justify-content:flex-start;font-size:30rpx;'>留言({{commentsData.length}})</view>
-        <view style='flex:1;display:flex;justify-content:flex-end;font-size:30rpx;' bindtap='getLYList'>全部留言
-          <image src='/images/inDetails.png' style='width:17rpx;height:31rpx;transform:translateY(20%);margin-left:10rpx;'></image>
-        </view>
-      </view>
-      <view class='box' wx:for="{{commentsData}}">
-        <view class='user_message'>
-          <image src="{{item.imgUrl}}" class='ima'></image>
-          <view class='name'>
-            <view style='font-size:28rpx;'>{{item.name}}</view>
-            <view style='color:#777777;font-size:28rpx;margin-top:12rpx;margin-left:-5rpx;'>{{item.timeStamp}}</view>
-          </view>
-        </view>
-        <view style='margin-top:20rpx;margin-left:100rpx;'>{{item.content}}</view>
-      </view>
+  <view class="content">
+    <view class='text'>
+      {{detail.content}}
+    </view>
+    <view class="images" wx:if="{{detail.imgUrl.length > 0}}">
+      <block wx:for="{{detail.imgUrl}}" wx:key="img" wx:for-detail="img">
+        <image class='{{detail.imgUrl.length > 1 ? "img_more" : "img_single"}}' mode='scaleToFill' src="{{imgHost}}{{img}}" data-index="{{index}}"></image>
+      </block>
     </view>
   </view>
-  <!--留言部分结束  -->
-  <!--广告位开始  -->
-  <view style='width:100%;background:white;'>
-    <view class='ad' style='margin-top:20rpx;margin-bottom:20rpx;background:white;margin:20rpx 5%;width:90%;'>
-      <text style='display:flex;align-items:center;height:70rpx;font-size:30rpx;'>欢乐过六一，赚取积分拿ipone8</text>
-      <image src='{{imgUrls[0].url}}' style='width:100%;' mode='widthFix'></image>
-      <view class='blank' style='width:100%;height:120rpx;'></view>
+  <view class="address" wx:if="{{detail.address}}">
+    <view>
+      <text class="icon i-didian"></text>
+      <text class="text">{{detail.address}}</text>
     </view>
-    <!--广告位结束 -->
+    <text>浏览量:{{detail.visitQuantity}}</text>
   </view>
+</view>
 
-  <!--内容部分结束  -->
-  <!--底部固定栏开始  -->
-  <view style='position:fixed;z-index:4;bottom:0;left:0;width:{{width}}px;height:122rpx;display:flex;flex-wrap:nowrap;background:white;'>
-    <view style='flex:3;display:flex;justify-content:center;align-items:center;' catchtap='share'>
-      <image src='/images/share2.png' style='width:34rpx;height:34rpx;margin-right:10rpx;font-size:28rpx;' />分享</view>
-    <view style='flex:3;display:flex;justify-content:center;align-items:center;' catchtap='liuyan'>
-      <image src='/images/comments2.png' style='width:38rpx;height:29rpx;margin-right:10rpx;font-size:28rpx;' />留言</view>
-    <!-- <view style='flex:3;display:flex;justify-content:center;align-items:center;' hidden="{{flag}}">
-      <image src="/images/dianzan.png" class="1" style="width:30rpx;margin-right:20rpx;" data-sourceId="{{sourceId}}" mode='widthFix' catchtap='dianzanT' >
-      </image>
-
-      点赞</view>  -->
-    <view style='flex:3;display:flex;justify-content:center;align-items:center;font-size:28rpx;' catchtap="{{flag=='true'?'dianzanF':'dianzanT'}}" data-sourceId="{{sourceId}}">
-      <image src="{{flag=='true'?'/images/succ.png':'/images/dianzan2.png'}}" class="2" style="width:35rpx;margin-right:10rpx;" data-sourceId="{{sourceId}}" catchtap="{{flag=='true'?'dianzanF':'dianzanT'}}" mode='widthFix'>
-      </image>
-
-      {{userData.praiseQuantity}}</view>
-
-
-    <view style='flex:4;background:#F56F4A;display:flex;justify-content:center;align-items:center;' bindtap='call'>
-      <image src='/images/phone.png' style='width:26rpx;height:26rpx;margin-right:10rpx;' />
-      <text style='color:white;'>{{userData.call}}</text>
+<!--留言部分开始  -->
+<view class='comment-column'>
+  <view>留言({{commentsData.length}})</view>
+  <view bindtap='getLYList'>
+    全部留言
+    <text class='icon i-you' style="font-size:12px"></text>
+  </view>
+</view>
+<view class='comment-list' wx:for="{{commentsData}}">
+  <view class='user-wrap'>
+    <image src="{{item.imgUrl}}"></image>
+    <view class='user__info'>
+      <view class='name'>{{item.name}}</view>
+      <view class='time'>{{item.timeStamp}}</view>
     </view>
   </view>
-  <!--底部固定栏结束  -->
-  <!--底部隐藏固定栏开始  -->
-  <view wx:if="{{show}}" style='position:fixed;z-index:5;bottom:0;left:0;width:{{width}}px;height:200rpx;display:flex;flex-wrap:nowrap;background:white;'>
-    <view style='flex:3;display:flex;justify-content:center;align-items:center;'>
-      <button style="display:flex;justify-content:center;flex-wrap:wrap;" class="buttonone" open-type='share'>
-        <view style='width:100%;display:flex;justify-content:center;'>
-          <image src='/images/sharetoF.png' style='width:78rpx;height:78rpx;transform:translateY(25%);' />
-        </view>
-        <view style='width:100%;margin-top:25rpx;display:flex;justify-content:center;font-size:30rpx;'>分享给朋友</view>
-      </button>
-    </view>
-    <view style='flex:3;display:flex;justify-content:center;align-items:center;'>
-      <view style="display:flex;justify-content:center;flex-wrap:wrap;" catchtap='drawImage'>
-        <view style='width:100%;display:flex;justify-content:center;'>
-          <image src='/images/makeS.png' style='width:78rpx;height:78rpx;transform:translateX(45%);' />
-          <text style='font-size:26rpx;color:#828282;transform:translateX(150%);' catchtap='clickback'>取消</text>
-        </view>
-        <view style='width:100%;margin-top:25rpx;display:flex;justify-content:center;font-size:30rpx;'>生成分享图</view>
-      </view>
-    </view>
+  <view class="text">{{item.content}}</view>
+</view>
 
+<!--广告位开始  -->
+<view style='width:100%;background:white;'>
+  <view class='ad' style='margin-top:20rpx;margin-bottom:20rpx;background:white;margin:20rpx 5%;width:90%;'>
+    <text style='display:flex;align-items:center;height:70rpx;font-size:30rpx;'>欢乐过六一，赚取积分拿ipone8</text>
+    <image src='{{imgUrls[0].url}}' style='width:100%;' mode='widthFix'></image>
+    <view class='blank' style='width:100%;height:120rpx;'></view>
   </view>
-  <view style='position:absolute;z-index:7;width:95%;height:60rpx;background:white;top:50%;left:;transform:translateY(-50%);margin-left:20rpx;margin-right:20rpx;' wx:if="{{liuyan}}">
-    <input placeholder='请输入！' auto-focus style="display:inline-block;width:80%;height:100%;" bindblur='value' maxlength='100'></input>
-    <button class='btn' bindtap='sendLY'>发送</button>
+</view>
+
+<!--底部固定栏开始  -->
+<view class='button-group'>
+  <view class='button' catchtap='share'>
+    <text class='icon i-fenxiang-da'></text> 分享
   </view>
+  <view class='button remark' catchtap='liuyan'>
+    <text class='icon i-pinglun'></text> 留言
+  </view>
+  <view class='button' catchtap="onLike" data-type='detail'>
+    <text class='icon i-dianzan {{detail.isPraise ? "i-color" : ""}}'></text> {{detail.praiseQuantity}}
+  </view>
+  <view class='button call' bindtap='call'>
+    <text class='icon i-dianhua'></text> {{detail.call}}
+  </view>
+</view>
+
+<!--底部隐藏固定栏开始  -->
+<view wx:if="{{show}}" class='share-wrap'>
+  <view class='item'>
+    <button open-type='share'>
+      <image src='/images/sharetoF.png' />
+      <text class="text">分享给朋友</text>
+    </button>
+  </view>
+  <view class='item'>
+    <view class='draw'>
+      <image src='/images/makeS.png' />
+      <text class='text'>生成分享图</text>
+    </view>
+  </view>
+  <view class='close' bindtap='clickback'>关闭</view>
+</view>
+
+<view class='remark-wrap' wx:if="{{liuyan}}">
+  <input placeholder='请输入！' auto-focus bindblur='value' maxlength='100' bindinput='in_value'></input>
+  <button class='btn' catchtap='sendLY'>发送</button>
 </view>
 <!--底部隐藏固定栏结束  -->
 
 <!--详情结束  -->
 <!--图片点击详情开始  -->
-<view style='position:fixed;z-index:7;width:{{width}}px;height:{{trueheight}}px;background:black;opacity:0.8;' wx:if="{{toggle}}"></view>
-<view style='position:fixed;z-index:8;width:{{width}}px;height:{{trueheight}}px;' wx:if="{{toggle}}">
-  <view style='position:absolute;z-index:1;width:{{width}}px;height:{{trueheight}}px;'>
-    <image class='img' src='/images/back.png' style='width:36px;height:36px;' bindtap='back' />
+<view style='width:{{width}}px;height:{{trueheight}}px;' class='pictures' wx:if="{{toggle}}"></view>
+<view style='width:{{width}}px;height:{{trueheight}}px;' wx:if="{{toggle}}" class='pic_child'>
+  <view style='width:{{width}}px;height:{{trueheight}}px;' class='pic_pos'>
+    <image class='img' src='/images/back.png' bindtap='back' />
     <view id="navgationBar" style='width:100%;height:{{height}}px' bindtap='toback'>详情</view>
-
     <view class='intro' style='color:white;'>第{{bigIndex+1}}/{{bigSrc.length}}张</view>
     <!--图片显示位置开始  -->
-
-
-    <image style='width:{{touch.baseWidth*touch.scale}}px;position:absolute;transform:translate(-50%,-50%);left:50%;top:50%;display:inline-block;' mode='widthFix' src='{{bigSrc[bigIndex]}}' bindtouchstart='touchStart' bindtouchmove='touchMove' bindtap='fan'
-      bindtouchend='touchEnd'></image>
-
-
+    <image style='width:{{touch.baseWidth*touch.scale}}px;' mode='widthFix' src='{{bigSrc[bigIndex]}}' bindtouchstart='touchStart' bindtouchmove='touchMove' bindtap='fan' bindtouchend='touchEnd' class='mainAction'></image>
     <!--图片显示位置结束  -->
   </view>
 

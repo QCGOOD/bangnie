@@ -5,7 +5,8 @@
     <text class="icon i-jiantouxia"></text>
   </view>
   <view class='search__input'>
-    <input name="search" placeholder='搜索当地华人服务' placeholder-style='padding-left:65rpx;font-size:28rpx;' class='searchInput' value="{{inputValue}}" bindinput='inputValue' bindblur='blur' bindfocus='focus'></input>
+    <icon class="weui-icon-search " type="search" size="14" style='transform: translate(100%,-30%);'></icon>
+    <input name="search" placeholder='搜索当地华人服务' placeholder-style='padding-left:100rpx padding-top:3rpx' class='searchInput' bindinput='inputValue' bindblur='blur' bindfocus='focus'></input>
   </view>
 </view>
 <!--搜索框结束  -->
@@ -46,21 +47,21 @@
 <view class="curcle {{flexd? 'flexd':''}}">
   <block>
     <view data-index="0" bindtap="changeTabbar" class='{{(swiperIndex == 0)?"on":"off"}}'>最新发布</view>
-    <view data-index="1" bindtap="changeTabbar" class='{{(swiperIndex == 1)?"on":"off"}}'>最热咨询</view>
+    <view data-index="1" bindtap="changeTabbar" class='{{(swiperIndex == 1)?"on":"off"}}'>最热资讯</view>
   </block>
 </view>
 <view style="height:1px" id="tabbar" />
 
 <view wx:for="{{newData}}" wx:key="{{newData.id}}" hidden='{{swiperIndex != 0}}'>
   <view class="menssage-item">
-    <view class="user">
+    <view class="user-wrap">
       <image src="{{item.headImage}}"></image>
       <view class='user__info'>
         <view class='name'>{{item.username}}</view>
         <view class='time'>{{item.createTime}}</view>
       </view>
     </view>
-    <view class="content" bindtap='jumpDetails' data-id="{{item.id}}">
+    <view class="content" bindtap='jumpDetails' data-id="{{item.id}}" data-ispraise="{{item.isPraise}}">
       <view class='text'>
         <text class="tag">#{{item.category}}#</text>{{item.content}}
       </view>
@@ -84,7 +85,7 @@
         <text class="num">{{item.commentQuantity}}</text>
       </view>
       <view class="list" bindtap='onLike' data-index="{{index}}" data-type="newData">
-        <text class='icon i-dianzan {{item.isPraise ? "i-color" : ""}}' data-isPraise="{{item.isPraise}}"></text>
+        <text class='icon i-dianzan {{item.isPraise ? "i-color" : ""}}'></text>
         <text class="num">{{item.praiseQuantity}}</text>
       </view>
       <view class="list">
@@ -96,20 +97,20 @@
 </view>
 <view hidden='{{swiperIndex != 1}}' wx:for="{{hotData}}" wx:key="{{item.id}}">
   <view class="menssage-item">
-    <view class="user">
+    <view class="user-wrap">
       <image src="{{item.headImage}}"></image>
       <view class='user__info'>
         <view class='name'>{{item.username}}</view>
         <view class='time'>{{item.createTime}}</view>
       </view>
     </view>
-    <view class="content" bindtap='jumpDetails' data-id="{{item.id}}">
+    <view class="content" bindtap='jumpDetails' data-id="{{item.id}}" data-ispraise="{{item.isPraise}}">
       <view class='text'>
         <text class="tag">#{{item.category}}#</text>{{item.content}}
       </view>
       <view class="images" wx:if="{{item.imgUrl}}">
         <block wx:for="{{item.imgUrl}}" wx:key="img" wx:for-item="img">
-          <image class='{{item.imgUrl.length > 1 ? "img_more" : "img_single"}}' mode='widthFix' src="{{imgHost}}{{img}}" data-index="{{index}}"></image>
+          <image class='{{item.imgUrl.length > 1 ? "img_more" : "img_single"}}' mode='scaleToFill' src="{{imgHost}}{{img}}" data-index="{{index}}"></image>
         </block>
       </view>
     </view>
@@ -127,7 +128,7 @@
         <text class="num">{{item.commentQuantity}}</text>
       </view>
       <view class="list" bindtap='onLike' data-index="{{index}}" data-type="hotData">
-        <text class='icon i-dianzan {{item.isPraise ? "i-color" : ""}}'></text>
+        <text class='icon i-dianzan {{item.isPraise ? "i-color" : ""}}' data-isPraise="{{item.isPraise}}"></text>
         <text class="num">{{item.praiseQuantity}}</text>
       </view>
       <view class="list">

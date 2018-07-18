@@ -15,10 +15,12 @@ Page({
    */
   onLoad: function (options) {
     var t = this;
+    console.log(options.vip);
     t.setData({
       width: app.width,
       height: app.height,
       trueheight: app.trueHeight,
+      vip: !options.vipvip
     });
     t.ziliao();
   },
@@ -84,7 +86,7 @@ Page({
   ziliao:function(){
     var t=this;
     wx.request({
-      url: app.http+'app/memberAuthenticate/get',
+      url: `${app.http}/app/memberAuthenticate/get`,
       method:"GET",
       header:{
         "Content-Type":"application/x-www-form-urlencoded;charset=utf-8"
@@ -132,7 +134,7 @@ Page({
       blur:true
     });
     wx.request({
-      url: app.http+'app/memberAuthenticate/isNeed',
+      url: `${app.http}/app/memberAuthenticate/isNeed`,
       method: "GET",
       header: {
         "Content-Type": "application/x-www-form-urlencoded;charset=utf-8"
@@ -164,7 +166,7 @@ Page({
     // let code;
     // if(t.data.getCode){code=e.detail.value.code}else{code=''}
     wx.request({
-      url: app.http+'app/memberAuthenticate/update',
+      url: `${app.http}/app/memberAuthenticate/update`,
       method: "POST",
       header: {
         "Content-Type": "application/x-www-form-urlencoded;charset=utf-8"
@@ -193,7 +195,7 @@ Page({
   yanZM:function(){
     var t=this;
     wx.request({
-      url: app.http+'app/validateCode',
+      url: `${app.http}/app/validateCode`,
       method: "POST",
       header: {
         "Content-Type": "x-www-form-urlcoded;charset=utf-8"

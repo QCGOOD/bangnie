@@ -88,7 +88,7 @@ Page({
     console.log(categoryId);
 
     wx.request({
-      url: app.http+'app/information/page',
+      url: `${app.http}/app/information/page`,
       method: "GET",
       header: {
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'

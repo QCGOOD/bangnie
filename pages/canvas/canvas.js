@@ -7,7 +7,8 @@ Page({
    */
   data: {
     canShow: false,
-    imgBox: []
+    imgBox: [],
+    erweima: ''
   },
 
   /**
@@ -15,14 +16,18 @@ Page({
    */
   onLoad: function(options) {
     var that = this;
+    console.log(options)
     console.log(options.sourceId);
     this.setData({
       width: app.width,
       height: app.height,
       trueheight: app.trueHeight,
+      erweima:options.path
     });
+    // that.erweima(options.sourceId);
     that.getDetails(options.sourceId);
-
+    
+    // that.erweima(options.sourceId);
 
 
   },
@@ -100,8 +105,8 @@ lineHeight:字行高，自己定义个值即可
       str = str.substring(0, 35);
       str += "...";
       console.log(str);
-    }else{
-      str=str;
+    } else {
+      str = str;
     }
 
     for (let i = 0; i < 37; i++) {
@@ -170,7 +175,7 @@ lineHeight:字行高，自己定义个值即可
     var t = this;
     console.log("id是：" + id);
     wx.request({
-      url: app.http+'app/information/get',
+      url: `${app.http}/app/information/get`,
 
 
       method: "GET",
@@ -199,7 +204,7 @@ lineHeight:字行高，自己定义个值即可
         if (res.data.data.imgUrl != '') {
           content = res.data.data.imgUrl.split(','); //记得修改
           for (let l = 0; l < content.length; l++) {
-            content[l] = 'http://helpyou-1255600302.cosgz.myqcloud.com' + content[l]
+            content[l] = 'https://helpyou-1255600302.cosgz.myqcloud.com' + content[l]
           }
         } else {
           content = [];
@@ -231,7 +236,7 @@ lineHeight:字行高，自己定义个值即可
           call: res.data.data.appellation,
           phone: res.data.data.phone,
           visitQuantity: res.data.data.visitQuantity,
-          category:res.data.data.category
+          category: res.data.data.category
         }
         console.log(t.data.userData);
         t.setData({
@@ -254,7 +259,7 @@ lineHeight:字行高，自己定义个值即可
       wx.downloadFile({
         url: t.data.userData.content[i],
         success: function(res) {
-          console.log("laile", res);
+          // console.log("laile", res);
           if (res.statusCode == 200) {
             t.data.imgBox.push(res.tempFilePath);
             t.setData({
@@ -262,8 +267,8 @@ lineHeight:字行高，自己定义个值即可
             });
             wx.downloadFile({
               url: t.data.userData.avatarUrl,
-              success: function (res) {
-                console.log("laile", res);
+              success: function(res) {
+                // console.log("laile", res);
                 if (res.statusCode == 200) {
 
                   t.setData({
@@ -277,7 +282,7 @@ lineHeight:字行高，自己定义个值即可
         }
       })
     };
-    
+
 
   },
   //已经画好的
@@ -291,10 +296,10 @@ lineHeight:字行高，自己定义个值即可
     console.log(str2);
     var width = this.data.width;
     var height = this.data.trueheight;
-    var w = width / 375 * 1.2*0.7;
-    var h = height / 667 * 1.5*0.8;
+    var w = width / 375 * 1.2 * 0.7;
+    var h = height / 667 * 1.5 * 0.8;
     var pi = app.pixelRatio;
-var va=29*height/667;
+    var va = 29 * height / 667;
 
     // 2path
     var ctx2 = wx.createCanvasContext("sharehidden");
@@ -302,94 +307,67 @@ var va=29*height/667;
     console.log(width * 0.16 * w - 40 * w, width * 0.15 * h - 40 * h, width, width * 0.12 * h + 100 * h + height * h * 0.26 - (width * 0.1 * h - 40 * h));
 
 
-    // ctx2.setFillStyle('white')
-    // ctx2.fillRect(width * 0.16 * w - 40 * w, width * 0.15 * h - 40 * h, width, width * 0.12 * h + 100 * h + height * h * 0.26 - (width * 0.1 * h - 40 * h))
     ctx2.drawImage("/images/bgli.png", 0, 0, width, height * 0.8);
-    ctx2.drawImage("/images/blank.png", width * 0.12 * w - 57 * w+va, width * 0.25 * h - 50 * h, (width + 20 * w)*0.8+va, (width * 0.12 * h + 100 * h + height * h * 0.22 - (width * 0.1 * h - 40 * h))); //来一张纯白色背景图
+    ctx2.drawImage("/images/blank.png", width * 0.12 * w - 57 * w + va, width * 0.25 * h - 50 * h, (width + 20 * w) * 0.8 + va, (width * 0.12 * h + 100 * h + height * h * 0.22 - (width * 0.1 * h - 40 * h))); //来一张纯白色背景图
     ctx2.setFontSize(18 * w);
     ctx2.setFillStyle("white");
     ctx.setTextAlign('center')
-    ctx2.fillText(that.data.userData.name + "发布了一条", width * 0.30 * w - 57 * w + va, width * 0.21 * h - 50 * h,);
+    ctx2.fillText(that.data.userData.name + "发布了一条", width * 0.48 * w - 57 * w + va, width * 0.21 * h - 50 * h, );
     ctx2.setFontSize(22 * w);
-    ctx2.fillText('#' + that.data.userData.category + "#", width * 0.48 * w - 57 * w + va, width * 0.265 * h - 50 * h,);
+    ctx2.fillText('#' + that.data.userData.category + "#", width * 0.48 * w - 57 * w + va, width * 0.265 * h - 50 * h, );
     ctx2.save()
 
     ctx2.beginPath();
 
-    ctx2.arc(width * 0.137 * w+va, width * 0.26 * h, 30 * w, 0, 2 * Math.PI);
+    ctx2.arc(width * 0.137 * w + va, width * 0.26 * h, 30 * w, 0, 2 * Math.PI);
     ctx2.clip();
 
 
-    ctx2.drawImage(that.data.headimg, width * 0.137 * w - 40 * w+va, width * 0.29 * h - 40 * h, 80 * w, 80 * h);
+    ctx2.drawImage(that.data.headimg, width * 0.137 * w - 40 * w + va, width * 0.29 * h - 40 * h, 80 * w, 80 * h);
     ctx2.setTransform(0.1 * w, 0, 0, 0.1 * h, 0, 0);
 
     ctx2.restore()
 
     ctx2.setFontSize(16 * w);
     ctx2.setFillStyle("black");
-    ctx2.fillText(that.data.userData.name, width * 0.137 * w + 60 * w+va, width * 0.25 * h);
+    ctx2.fillText(that.data.userData.name, width * 0.137 * w + 60 * w + va, width * 0.25 * h);
     ctx2.setFillStyle("#ccc");
-    ctx2.fillText(that.data.userData.timeStamp, width * 0.137 * w + 50 * w+va, width * 0.31 * h);
+    ctx2.fillText(that.data.userData.timeStamp, width * 0.137 * w + 50 * w + va, width * 0.31 * h);
     ctx2.setFillStyle("black");
 
-    that.canvasTextAutoLine(str2, ctx2, width * 0.137 * w - 40 * w+va, width * 0.23* h + 60 * h, 25 * h, w);
+    that.canvasTextAutoLine(that.data.userData.text, ctx2, width * 0.160 * w - 40 * w + va, width * 0.23 * h + 60 * h, 25 * h, w);
 
 
     // if (pi > 2) {
-    if(that.data.imgBox.length==1){
+    if (that.data.imgBox.length == 1) {
       ctx2.save();
-      ctx2.drawImage(that.data.imgBox[0], width * 0.137 * w + va - 40 * w , width * 0.24 * h + 80 * h, width * 0.34 * w, height * h * 0.16);
+      ctx2.drawImage(that.data.imgBox[0], width * 0.160 * w + va - 40 * w, width * 0.23 * h + 80 * h, width * 0.34 * w, height * h * 0.16);
       ctx2.restore();
-    }else{
+    } else {
       for (let i = 0; i < that.data.imgBox.length; i++) {
         ctx2.save();
-        ctx2.drawImage(that.data.imgBox[i], width * 0.137 * w + va - 40 * w + i * width * 0.25, width * 0.24* h + 80 * h, width * 0.24 * w, height * h * 0.14);
+        ctx2.drawImage(that.data.imgBox[i], width * 0.160 * w + va - 40 * w + i * width * 0.25, width * 0.23 * h + 80 * h, width * 0.23 * w, height * h * 0.14);
         ctx2.restore();
       }
     }
-    
-    
+
+
     ctx2.setFontSize(14 * w);
     ctx2.setFillStyle("#ccc");
-    ctx2.fillText("地址:"+that.data.userData.address, width * 0.137 * w +va- 40 * w, width * 0.20 * h + 60 * h + height * h * 0.24);
-    for (let i = 0; i < that.data.userData.others.length; i++){
-      ctx2.drawImage(that.data.userData.others[i].key, width * 0.135 * w + va - 40 * w+100*w*i-20*i, width * 0.18 * h+ 60 * h + height * h * 0.27,18*w,12*h);
-      ctx2.fillText(that.data.userData.others[i].value, width * 0.135 * w + va - 40 * w + 100 * w * i-20 * i+20, width * 0.180 * h + 70 * h + height * h * 0.27);
+    ctx2.fillText("地址:" + that.data.userData.address, width * 0.160 * w + va - 40 * w, width * 0.20 * h + 60 * h + height * h * 0.24);
+    for (let i = 0; i < that.data.userData.others.length; i++) {
+      ctx2.drawImage(that.data.userData.others[i].key, width * 0.158 * w + va - 40 * w + 100 * w * i - 20 * i, width * 0.18 * h + 60 * h + height * h * 0.27, 18 * w, 12 * h);
+      ctx2.fillText(that.data.userData.others[i].value, width * 0.158 * w + va - 40 * w + 100 * w * i - 20 * i + 20, width * 0.180 * h + 70 * h + height * h * 0.27);
     }
-    
+    ctx2.drawImage(that.data.erweima, width-80*h, height * 0.85-80*h,60*h,60*h);
 
-    // } 
     ctx2.draw(false, function() {
-      // console.log("wozhixingle");
-      // wx.canvasToTempFilePath({
-      //   canvasId: 'sharehidden',
-      //   success: function(res) {
-      //     var tempFilePath = res.tempFilePath;
-      //     console.log(tempFilePath);
-      //     that.setData({
-      //       imagePath: tempFilePath,
 
-      //     });
-      //     console.log(that.data.imagePath);
-      //     var ctx = wx.createCanvasContext("share");
-      //     // ctx.setFillStyle("#ccc");
-      //     // ctx.fillText("3分钟之前", width * 0.23 * w, width * 0.39 * h);
+      that.setData({
+        canShow: true
+      });
 
-      //     // ctx.draw()
-      //     ctx.drawImage("/images/bgli.png", 0, 0, width, height * 0.8);
-
-      //     ctx.drawImage(that.data.imagePath, 34, 96, 276 * w, 235 * h)
-      //     ctx.draw(false, function() {
-            that.setData({
-              canShow: true
-            });
-      //     });
-
-      //   },
-      //   fail: function(res) {
-      //     console.log(res);
-      //   }
-      // })
     });
-  }
+  },
+ 
 })
