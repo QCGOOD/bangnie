@@ -79,12 +79,17 @@
     <view  catchtap='liuyan' class='bottom_title'>
       <image src='/images/comments2.png'  class='bottom_liuyan' />留言</view>
     
-    <view  catchtap="{{flag=='true'?'dianzanF':'dianzanT'}}" data-sourceId="{{sourceId}}" class='bottom_title'>
+    <!-- <view  catchtap="{{flag=='true'?'dianzanF':'dianzanT'}}" data-sourceId="{{sourceId}}" class='bottom_title'>
       <image src="{{flag=='true'?'/images/succ.png':'/images/dianzan2.png'}}" class="bottom_dianzan"  data-sourceId="{{sourceId}}" catchtap="{{flag=='true'?'dianzanF':'dianzanT'}}" mode='widthFix'>
       </image>
 
-      {{userData.praiseQuantity}}</view>
+      {{userData.praiseQuantity}}</view> -->
 
+<view  catchtap="onLike" data-sourceId="{{sourceId}}" class='bottom_title' data-type="userData">
+      <image src="{{userData.isPraise?'/images/succ.png':'/images/dianzan2.png'}}" class="bottom_dianzan"  data-sourceId="{{sourceId}}"  mode='widthFix' data-isPraise="{{item.isPraise}}">
+      </image>
+
+      {{userData.praiseQuantity}}</view>
 
     <view  class="bottom_call" bindtap='call'>
       <image src='/images/phone.png'  />
@@ -113,9 +118,10 @@
     </view>
 
   </view>
-  <view  wx:if="{{liuyan}}" class='liuyanbox'>
-    <input placeholder='请输入！' auto-focus  bindblur='value' maxlength='100'></input>
-    <button class='btn' bindtap='sendLY'>发送</button>
+  <view wx:if="{{liuyan}}"  class='liuyanbox'>
+  
+    <input placeholder='请输入！' placeholder-style='padding-left:30rpx;' auto-focus  bindblur='value' maxlength='100' bindinput='in_value'></input>
+    <button class='btn' catchtap='sendLY'>发送</button>
   </view>
 </view>
 <!--底部隐藏固定栏结束  -->

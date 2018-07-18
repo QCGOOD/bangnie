@@ -78,7 +78,7 @@ button::after{
   display:flex;justify-content:flex-start;flex-wrap:wrap;
 }
 .mainimg{
-  width:222rpx;margin:5px 2px;
+  width:215rpx;margin:5px 2px;
 }
 .address{
  
@@ -178,7 +178,8 @@ button::after{
 }
 /*大图介绍结束*/
 .bottom{
-  position:fixed;z-index:4;bottom:0;left:0;display:flex;flex-wrap:nowrap;background:white;
+  position:fixed;z-index:4;bottom:0;left:0;display:flex;flex-wrap:nowrap;background:white;border-top:1px solid #E1E1E1;
+
 }
 .bottom_title{
   flex:3;display:flex;justify-content:center;align-items:center;font-size:28rpx;
@@ -210,13 +211,13 @@ width:26rpx;height:26rpx;margin-right:10rpx;
 }
 /*发布留言开始  */
 button{
-
+border-radius:none;
 }
 .btn{
   float:right;
   /* margin-right:20rpx; */
   width:20%;
-  height:100%;background:orange;
+  height:100%;background:#F56F4A;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -259,12 +260,14 @@ width:78rpx;height:78rpx;transform:translateX(45%);
 }
 /*发送留言框  */
 .liuyanbox{
-  position:absolute;z-index:7;width:95%;height:60rpx;background:white;top:50%;left:;transform:translateY(-50%);margin-left:20rpx;margin-right:20rpx;
+  position:fixed;z-index:7;width:100%;height:60rpx;bottom:92rpx;left:0%;transform:translateY(-50%);
 }
 .liuyanbox input{
-  display:inline-block;width:80%;height:100%;
+  display:inline-block;width:80%;height:100%;background:white;
 }
-
+.liuyanbox button{
+  border:none;
+}
 
 .pictures{
   background:black;opacity:0.8;position:fixed;z-index:7;

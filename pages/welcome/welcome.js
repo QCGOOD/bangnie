@@ -34,6 +34,7 @@ Page({
       if (!options.back) {
         this.checkLogin();
         this.login();
+        
         this.getCityList();
         wx.request({
           url: `${app.http}/app/recentlyArea`,
@@ -66,9 +67,13 @@ Page({
               }
             } catch (er) {
               console.log("未知错误！");
+              // that.setData({
+              //   login: true
+              // });
+              // that.getCityList();
             }
 
-
+            
 
           }
         })
@@ -446,7 +451,9 @@ Page({
               key: 'key',
               data: r.data.data.wego168SessionKey,
               success: function(res) {
-
+t.setData({
+  login_flag:true
+});
               }
             })
             t.getCityList();

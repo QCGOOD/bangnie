@@ -15,10 +15,12 @@ Page({
    */
   onLoad: function (options) {
     var t = this;
+    console.log(options.vip);
     t.setData({
       width: app.width,
       height: app.height,
       trueheight: app.trueHeight,
+      vip: !options.vipvip
     });
     t.ziliao();
   },

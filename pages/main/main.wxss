@@ -34,6 +34,7 @@ page {
 
 .search__input {
   flex: 1;
+  /* display: inline-block; */
   padding: 10rpx 0;
   background: #f0f0f0;
   border-radius: 25px;
@@ -41,10 +42,18 @@ page {
 }
 
 .search__input input {
-  width: 90%;
+  width: 80%;
   margin: 0 auto;
   background: #f0f0f0;
+  display: inline-block;
+  margin-left:40rpx;
 }
+.sear{
+   transform: translate(80%,35%); 
+  position:absolute;
+z-index:2;
+
+  }
 
 /*轮播图开始  */
 
@@ -71,19 +80,19 @@ page {
 }
 
 .service_item {
-  width: 20%;
+  width: 18%;
   height: 50%;
   display: flex;
   align-content: center;
   justify-content: center;
   flex-wrap: wrap;
   /* background: red; */
-  margin: 20rpx 0;
+  margin: 20rpx 4rpx;
 }
 
 .service_item image {
-  width: 82rpx;
-  height: 82rpx;
+  width: 90rpx;
+  height: 90rpx;
   margin-bottom: 10rpx;
 }
 
@@ -217,15 +226,15 @@ page {
 }
 
 .menssage-item .content .images .img_single {
-  width: 222rpx;
+  width: 333rpx;
   margin: 5px 2px;
-  height: 222rpx;
+  height: 333rpx;
 }
 
 .menssage-item .content .images .img_more {
-  width: 300rpx;
-  margin: 5px 2px;
-  height: 300rpx;
+  width: 222rpx;
+  margin: 3px;
+  height: 222rpx;
 }
 
 .menssage-item .address {

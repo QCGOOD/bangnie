@@ -41,7 +41,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function() {
-
+this.onLoad();
   },
 
   /**
@@ -84,7 +84,7 @@ Page({
     //  show:true,
      userData: [],
     });
-    this.getMessage(this.data.page);
+    // this.getMessage(this.data.page);
     wx.navigateTo({
       url: '/pages/mySend/mySend',
     })
@@ -106,8 +106,9 @@ Page({
   },
   //进入资料编辑页面、
   intoZiliao: function() {
+    var that=this;
     wx.navigateTo({
-      url: '/pages/ziliao/ziliao',
+      url: '/pages/ziliao/ziliao?vip='+that.data.vip,
     })
   },
   //编辑资料接口

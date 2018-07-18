@@ -9,6 +9,7 @@
   <view style='width:100%;height:240rpx;background:white;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;'>
     <view style='width:100%;height:auto;background:white;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;'>
       <image src='{{userData.img}}' style='border-radius:50%;width:160rpx;height:160rpx;'></image>
+      <image src='/images/vip.png' style='width:28rpx;height:28rpx;transform:translate(-100%,200%);display:{{!vip?"none":"inline-block"}}' ></image>
     </view>
     <view style='width:100%;height:auto;background:white;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;'>
       <text style='margin-top:10rpx;'>{{userData.name}}</text>

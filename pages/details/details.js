@@ -268,9 +268,13 @@ Page({
   // 进入canvas画图界面
  drawImage:function(){
    var t=this;
-    wx.navigateTo({
-      url: '/pages/canvas/canvas?sourceId='+t.data.sourceId,
-    })
+   t.erweima(t.data.sourceId);
+   wx.showToast({
+     title: '正在绘制中~~~',
+     icon: 'loading',
+     duration: 3000
+   })
+    
  },
 //  获取详情的资讯
 getDetails:function(id){
@@ -332,7 +336,8 @@ getDetails:function(id){
           message_id: res.data.data.id,
           call:res.data.data.appellation,
           phone:res.data.data.phone,
-          visitQuantity:res.data.data.visitQuantity
+          visitQuantity:res.data.data.visitQuantity,
+          isPraise: res.data.data.isPraise,
          }
          console.log(t.data.userData);
          t.setData({
@@ -348,11 +353,18 @@ liuyan:function(){
     liuyan:true
   })
 },
-// 获取用户留言输入
+//用户输入内容
+in_value:function(e){
+console.log(e.detail.value);
+this.setData({
+  neirong:e.detail.value
+});
+},
+// 失去焦点获取用户留言输入
 value:function(e){
   console.log(e.detail.value);
   this.setData({
-    neirong:e.detail.value,
+    neirong_flag:true,
     liuyan:false
   });
 },
@@ -360,34 +372,37 @@ value:function(e){
 sendLY:function(){
   var t=this;
   console.log(wx.getStorageSync("key"), this.data.sourceId, this.data.neirong);
-  wx.request({
-    url: `${app.http}/app/comment/insert`,
+  if(this.data.neirong_flag){
+    wx.request({
+      url: `${app.http}/app/comment/insert`,
 
 
-    method: "POST",
-    header: {
-      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-    },
-    data: {
-      wego168SessionKey: wx.getStorageSync("key"),
-      sourceId: this.data.sourceId,
-      content:this.data.neirong
-    },
+      method: "POST",
+      header: {
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+      },
+      data: {
+        wego168SessionKey: wx.getStorageSync("key"),
+        sourceId: this.data.sourceId,
+        content: this.data.neirong
+      },
 
-    success: function (res) {
-      console.log(res);
-      t.setData({
-        createTime: res.data.data.createTime,
-        updateTime:res.data.data.updateTime,
-        liuyan:false
-      })
-      wx.showToast({
-        title: '留言发布成功~',
-        icon:'success'
-      })
-    }
+      success: function (res) {
+        console.log(res);
+        t.setData({
+          createTime: res.data.data.createTime,
+          updateTime: res.data.data.updateTime,
+          liuyan: false
+        })
+        wx.showToast({
+          title: '留言发布成功~',
+          icon: 'success'
+        })
+      }
 
-  })
+    })
+  }
+  
 },
 //获取留言列表
 getLYList:function(){
@@ -510,6 +525,39 @@ userData:t.data.userData
     }
   });
 },
+//点赞开始
+onLike: function (e) {
+  console.log(e.currentTarget.dataset.type)
+  let url = `${app.http}/app/praise/insert`, type = e.currentTarget.dataset.type;
+
+  if (this.data[type].isPraise) {
+    // 取消点赞
+    url = `${app.http}/app/praise/delete`
+    this.data[type].isPraise = false
+    this.data[type].praiseQuantity -= 1
+  } else {
+    // 点赞
+    this.data[type].isPraise = true
+    this.data[type].praiseQuantity += 1
+  }
+  this.setData({
+    [type]: this.data[type]
+  })
+  wx.request({
+    url: url,
+    method: "POST",
+    header: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    data: {
+      wego168SessionKey: wx.getStorageSync("key"),
+      sourceId: this.data[type].id
+    },
+    success: function (res) {
+      console.log('点赞功能 请求到数据了');
+    }
+  });
+},
 toback:function(){
   this.setData({
     toggle:false
@@ -548,5 +596,50 @@ getImg: function () {
 
     }
   });
+},
+erweima: function (id) {
+  var that = this;
+  
+  wx.request({
+    url: `${app.http}/app/qrcode/get`,
+
+
+    method: "GET",
+
+    data: {
+      wego168SessionKey: wx.getStorageSync("key"),
+      id: id
+    },
+
+    success: function (res) {
+      console.log(res);
+      if (res.data.message == "用户未登录或登录已失效") {
+        wx.showToast({
+          title: '用户未登录或登录已失效',
+          icon: 'loading',
+          duration: 1000
+        });
+        wx.navigateTo({
+          url: '/pages/welcome/welcome',
+        })
+      }
+      wx.downloadFile({
+        url: 'https://helpyou-1255600302.cosgz.myqcloud.com' + res.data.message,
+        success: function (response) {
+          console.log(response);
+          if (response.statusCode == 200) {
+            // that.data.erweima = response.tempFilePath;
+            // that.setData({
+            //   erweima: that.data.erweima
+            // });
+            wx.navigateTo({
+              url: '/pages/canvas/canvas?path=' + response.tempFilePath+"&sourceId="+id,
+            })
+          }
+        }
+      })
+    }
+
+  })
 },
 })
