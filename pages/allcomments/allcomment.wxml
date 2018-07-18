@@ -11,6 +11,7 @@
         <view  class='name_name'>{{item.name}}</view>
         <view  class='stamp'>{{item.timeStamp}}</view>
       </view>
+      <view style='font-size:28rpx;color:#F57F5F;width:290rpx;display:flex;justify-content:flex-end;' catchtap='delete' data-id="{{item.id}}">删除</view>
     </view>
     <view  class='content'>{{item.content}}</view>
   </view>

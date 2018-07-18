@@ -4,35 +4,35 @@
 <!--内容部分开始  -->
 <view class='container' bindtap='clickback'>
   <view class='service_id'>#当地美食#</view>
-  <view  class='userBox'>
+  <view class='userBox'>
     <view style='margin-top:20rpx;margin-bottom:20rpx;background:white;margin:0 5%;width:90%;'>
 
-      <view class='user_message' >
+      <view class='user_message'>
         <image src="{{userData.avatarUrl}}" class="img2"></image>
         <view class='name'>
           <view style='font-size:28rpx;'>{{userData.name}}</view>
-          <view  class='userBox_timeStamp'>{{userData.timeStamp}}</view>
+          <view class='userBox_timeStamp'>{{userData.timeStamp}}</view>
 
         </view>
-        <image src='/images/slideUp.png' id='img3'  mode='widthFix'></image>
+        <image src='/images/slideUp.png' id='img3' mode='widthFix'></image>
       </view>
       <view class="content">
-        <view class='content_text' > {{userData.text}}</view>
-        <view class='content_image' >
+        <view class='content_text'> {{userData.text}}</view>
+        <view class='content_image'>
           <block wx:for="{{userData.content}}" wx:if="{{userData.content.lenth}}-1">
-            <image src='{{item}}'  mode='widthFix' bindtap='view' data-src="{{userData.content}}" data-index="{{index}}" class="mainimg"></image>
+            <image src='{{item}}' mode='widthFix' bindtap='view' data-src="{{userData.content}}" data-index="{{index}}" class="mainimg"></image>
           </block>
         </view>
       </view>
 
-      <view class="address" >
-        <view  class='address_detail'>
+      <view class="address">
+        <view class='address_detail'>
           <image src="/images/loc.png" style="width:18rpx;margin-right:10rpx;" mode='widthFix' />
           <text style='transform:translateY(-5%);'>{{userData.address}}</text>
         </view>
         <view>
           <!-- <image src="/images/liulan.png" style="width:32rpx;height:19rpx;margin-right:20rpx;transform:translateY(-50%);" /> -->
-          <text  class='address_liulan'>浏览量：{{userData.visitQuantity}}</text>
+          <text class='address_liulan'>浏览量：{{userData.visitQuantity}}</text>
         </view>
 
       </view>
@@ -40,12 +40,12 @@
     </view>
   </view>
   <!--留言部分开始  -->
-  <view  class="liuyan_hd">
-    <view class='comments' >
-      <view  class='liuyan_nav'>
-        <view  class='liuyan_nav1'>留言({{commentsData.length}})</view>
+  <view class="liuyan_hd">
+    <view class='comments'>
+      <view class='liuyan_nav'>
+        <view class='liuyan_nav1'>留言({{commentsData.length}})</view>
         <view class="liuyan_nav2" bindtap='getLYList'>全部留言
-          <image src='/images/inDetails.png'  class='allcom'></image>
+          <image src='/images/inDetails.png' class='allcom'></image>
         </view>
       </view>
       <view class='box' wx:for="{{commentsData}}">
@@ -53,98 +53,90 @@
           <image src="{{item.imgUrl}}" class='ima'></image>
           <view class='name'>
             <view style='font-size:28rpx;'>{{item.name}}</view>
-            <view  class='liuyan_time'>{{item.timeStamp}}</view>
+            <view class='liuyan_time'>{{item.timeStamp}}</view>
           </view>
         </view>
-        <view  class="liuyan_content">{{item.content}}</view>
+        <view class="liuyan_content">{{item.content}}</view>
       </view>
     </view>
   </view>
   <!--留言部分结束  -->
   <!--广告位开始  -->
-  <view  class='adBox'>
-    <view class='ad' >
-      <text  class='adBox_text'>欢乐过六一，赚取积分拿ipone8</text>
+  <view class='adBox'>
+    <view class='ad'>
+      <text class='adBox_text'>欢乐过六一，赚取积分拿ipone8</text>
       <image src='{{imgUrls[0].url}}' style='width:100%;' mode='widthFix'></image>
       <view class='blank' style='width:100%;height:120rpx;'></view>
     </view>
-    <!--广告位结束 -->
   </view>
+  <!--广告位结束 -->
 
   <!--内容部分结束  -->
   <!--底部固定栏开始  -->
   <view style='width:{{width}}px;height:122rpx;' class='bottom'>
-    <view  catchtap='share' class='bottom_title'>
-      <image src='/images/share2.png'  class='bottom_share' />分享</view>
-    <view  catchtap='liuyan' class='bottom_title'>
-      <image src='/images/comments2.png'  class='bottom_liuyan' />留言</view>
-    
+    <view catchtap='share' class='bottom_title'>
+      <image src='/images/share2.png' class='bottom_share' />分享</view>
+    <view catchtap='liuyan' class='bottom_title'>
+      <image src='/images/comments2.png' class='bottom_liuyan' />留言</view>
+
     <!-- <view  catchtap="{{flag=='true'?'dianzanF':'dianzanT'}}" data-sourceId="{{sourceId}}" class='bottom_title'>
       <image src="{{flag=='true'?'/images/succ.png':'/images/dianzan2.png'}}" class="bottom_dianzan"  data-sourceId="{{sourceId}}" catchtap="{{flag=='true'?'dianzanF':'dianzanT'}}" mode='widthFix'>
       </image>
 
       {{userData.praiseQuantity}}</view> -->
 
-<view  catchtap="onLike" data-sourceId="{{sourceId}}" class='bottom_title' data-type="userData">
-      <image src="{{userData.isPraise?'/images/succ.png':'/images/dianzan2.png'}}" class="bottom_dianzan"  data-sourceId="{{sourceId}}"  mode='widthFix' data-isPraise="{{item.isPraise}}">
+    <view catchtap="onLike" data-sourceId="{{sourceId}}" class='bottom_title' data-type="userData">
+      <image src="{{userData.isPraise?'/images/succ.png':'/images/dianzan2.png'}}" class="bottom_dianzan" data-sourceId="{{sourceId}}" mode='widthFix' data-isPraise="{{item.isPraise}}">
       </image>
 
       {{userData.praiseQuantity}}</view>
 
-    <view  class="bottom_call" bindtap='call'>
-      <image src='/images/phone.png'  />
+    <view class="bottom_call" bindtap='call'>
+      <image src='/images/phone.png' />
       <text style='color:white;'>{{userData.call}}</text>
     </view>
   </view>
   <!--底部固定栏结束  -->
+
   <!--底部隐藏固定栏开始  -->
-  <view wx:if="{{show}}"  class='hiddenPage' style='width:{{width}}px;height:200rpx;'>
-    <view  class='item'>
-      <button  class="buttonone" open-type='share'>
-        <view  class='share_img'>
-          <image src='/images/sharetoF.png'  />
+  <view wx:if="{{show}}" class='hiddenPage' style='width:{{width}}px;height:200rpx;'>
+    <view class='item'>
+      <button class="buttonone" open-type='share'>
+        <view class='share_img'>
+          <image src='/images/sharetoF.png' />
         </view>
-        <view  class="tofriends">分享给朋友</view>
+        <view class="tofriends">分享给朋友</view>
       </button>
     </view>
-    <view  class='item'>
-      <view  catchtap='drawImage' class='draw'>
-        <view  class='draw_img'>
+    <view class='item'>
+      <view catchtap='drawImage' class='draw'>
+        <view class='draw_img'>
           <image src='/images/makeS.png' />
-          <text  catchtap='clickback'>取消</text>
+          <text catchtap='clickback'>取消</text>
         </view>
-        <view  class='make_share' >生成分享图</view>
+        <view class='make_share'>生成分享图</view>
       </view>
     </view>
 
   </view>
-  <view wx:if="{{liuyan}}"  class='liuyanbox'>
-  
-    <input placeholder='请输入！' placeholder-style='padding-left:30rpx;' auto-focus  bindblur='value' maxlength='100' bindinput='in_value'></input>
+  <view wx:if="{{liuyan}}" class='liuyanbox'>
+    <input placeholder='请输入！' placeholder-style='padding-left:30rpx;' auto-focus bindblur='value' maxlength='100' bindinput='in_value'></input>
     <button class='btn' catchtap='sendLY'>发送</button>
   </view>
+  <!--底部隐藏固定栏结束  -->
 </view>
-<!--底部隐藏固定栏结束  -->
-
 <!--详情结束  -->
 <!--图片点击详情开始  -->
 <view style='width:{{width}}px;height:{{trueheight}}px;' class='pictures' wx:if="{{toggle}}"></view>
 <view style='width:{{width}}px;height:{{trueheight}}px;' wx:if="{{toggle}}" class='pic_child'>
   <view style='width:{{width}}px;height:{{trueheight}}px;' class='pic_pos'>
-    <image class='img' src='/images/back.png'  bindtap='back' />
+    <image class='img' src='/images/back.png' bindtap='back' />
     <view id="navgationBar" style='width:100%;height:{{height}}px' bindtap='toback'>详情</view>
 
     <view class='intro' style='color:white;'>第{{bigIndex+1}}/{{bigSrc.length}}张</view>
     <!--图片显示位置开始  -->
-
-
-    <image style='width:{{touch.baseWidth*touch.scale}}px;' mode='widthFix' src='{{bigSrc[bigIndex]}}' bindtouchstart='touchStart' bindtouchmove='touchMove' bindtap='fan'
-      bindtouchend='touchEnd' class='mainAction'></image>
-
-
+    <image style='width:{{touch.baseWidth*touch.scale}}px;' mode='widthFix' src='{{bigSrc[bigIndex]}}' bindtouchstart='touchStart' bindtouchmove='touchMove' bindtap='fan' bindtouchend='touchEnd' class='mainAction'></image>
     <!--图片显示位置结束  -->
   </view>
-
 </view>
-
 <!--图片点击详情结束 -->
