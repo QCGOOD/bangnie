@@ -81,7 +81,7 @@
       <text class="text">分享给朋友</text>
     </button>
   </view>
-  <view class='item'>
+  <view class='item' catchtap='drawImage'>
     <view class='draw'>
       <image src='/images/makeS.png' />
       <text class='text'>生成分享图</text>
@@ -94,8 +94,6 @@
   <input placeholder='请输入！' auto-focus bindblur='value' maxlength='100' bindinput='in_value'></input>
   <button class='btn' catchtap='sendLY'>发送</button>
 </view>
-<!--底部隐藏固定栏结束  -->
-
 <!--详情结束  -->
 <!--图片点击详情开始  -->
 <view style='width:{{width}}px;height:{{trueheight}}px;' class='pictures' wx:if="{{toggle}}"></view>
@@ -108,7 +106,5 @@
     <image style='width:{{touch.baseWidth*touch.scale}}px;' mode='widthFix' src='{{bigSrc[bigIndex]}}' bindtouchstart='touchStart' bindtouchmove='touchMove' bindtap='fan' bindtouchend='touchEnd' class='mainAction'></image>
     <!--图片显示位置结束  -->
   </view>
-
 </view>
-
 <!--图片点击详情结束 -->

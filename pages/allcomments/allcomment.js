@@ -19,6 +19,7 @@ Page({
       width: app.width,
       height: app.height,
       trueheight: app.trueHeight,
+      sourceId:options.sourceId
     });
     //获取留言列表
     wx.request({
@@ -59,7 +60,8 @@ Page({
             imgUrl: res.data.data.list[i].memberHeadImage,
             name: res.data.data.list[i].memberName,
             timeStamp: res.data.data.list[i].createTime,
-            content: res.data.data.list[i].content
+            content: res.data.data.list[i].content,
+            id: res.data.data.list[i].id
           });
         }
         console.log(t.data.LYList);
@@ -125,6 +127,38 @@ Page({
   back: function() {
     wx.navigateBack({
       delta: 1
+    })
+  },
+  // delete删除留言
+  delete:function(e){
+    let _this=this;
+    console.log(e.currentTarget.dataset.id);
+    console.log("删除留言");
+    wx.request({
+      url: `${app.http}/app/comment/delete`,
+      method: "POST",
+      header: {
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+      },
+      data: {
+        wego168SessionKey: wx.getStorageSync("key"),
+        id: e.currentTarget.dataset.id,
+        sourceId:_this.data.sourceId
+      },
+      success: function (res) {
+        console.log(res);
+        if (res.data.message == "用户未登录或登录已失效") {
+          wx.showToast({
+            title: '用户未登录或登录已失效',
+            icon: 'loading',
+            duration: 1000
+          });
+          wx.navigateTo({
+            url: '/pages/welcome/welcome',
+          })
+        }
+
+      }
     })
   },
 })

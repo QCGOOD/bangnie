@@ -35,7 +35,7 @@ Page({
     console.log("当前时间",time.formatTime(new Date()));
     console.log(options);
     let id=options.id;
-    let flag=options.isPraise;
+    let flag=options.isPraise||false;
     // console.log(typeof flag);
     console.log(flag);
     this.setData({
@@ -225,11 +225,8 @@ Page({
   // 进入canvas画图界面
  drawImage:function(){
    var t=this;
-   t.erweima(t.data.sourceId);
-   wx.showToast({
-     title: '正在绘制中~~~',
-     icon: 'loading',
-     duration: 3000
+   wx.navigateTo({
+     url: '/pages/canvas/canvas?sourceId=' + t.data.sourceId,
    })
     
  },
@@ -513,49 +510,5 @@ getImg: function () {
     }
   });
 },
-erweima: function (id) {
-  var that = this;
-  
-  wx.request({
-    url: `${app.http}/app/qrcode/get`,
 
-
-    method: "GET",
-
-    data: {
-      wego168SessionKey: wx.getStorageSync("key"),
-      id: id
-    },
-
-    success: function (res) {
-      console.log(res);
-      if (res.data.message == "用户未登录或登录已失效") {
-        wx.showToast({
-          title: '用户未登录或登录已失效',
-          icon: 'loading',
-          duration: 1000
-        });
-        wx.navigateTo({
-          url: '/pages/welcome/welcome',
-        })
-      }
-      wx.downloadFile({
-        url: 'https://helpyou-1255600302.cosgz.myqcloud.com' + res.data.message,
-        success: function (response) {
-          console.log(response);
-          if (response.statusCode == 200) {
-            // that.data.erweima = response.tempFilePath;
-            // that.setData({
-            //   erweima: that.data.erweima
-            // });
-            wx.navigateTo({
-              url: '/pages/canvas/canvas?path=' + response.tempFilePath+"&sourceId="+id,
-            })
-          }
-        }
-      })
-    }
-
-  })
-},
 })

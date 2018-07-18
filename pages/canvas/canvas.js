@@ -8,7 +8,7 @@ Page({
   data: {
     canShow: false,
     imgBox: [],
-    erweima: ''
+    // erweima: ''
   },
 
   /**
@@ -22,13 +22,17 @@ Page({
       width: app.width,
       height: app.height,
       trueheight: app.trueHeight,
-      erweima:options.path
-    });
-    // that.erweima(options.sourceId);
-    that.getDetails(options.sourceId);
-    
-    // that.erweima(options.sourceId);
+      sourceId: options.sourceId
 
+    });
+    // that.getDetails(that.data.sourceId);
+
+    that.erweima();
+
+    wx.showLoading({
+      title: '加载中',
+      icon:'loading'
+    })
 
   },
 
@@ -84,42 +88,37 @@ Page({
   // makeBg:function(){
 
   // },
-
-  // canvas自动换行
   /*
-str:要绘制的字符串
-canvas:canvas对象
-initX:绘制字符串起始x坐标
-initY:绘制字符串起始y坐标
-lineHeight:字行高，自己定义个值即可
-*/
-  canvasTextAutoLine: function(str, canvas, initX, initY, lineHeight, w) {
-
+  str:要绘制的字符串
+  canvas:canvas对象
+  initX:绘制字符串起始x坐标
+  initY:绘制字符串起始y坐标
+  lineHeight:字行高，自己定义个值即可
+  */
+  canvasTextAutoLine: function(str,ctx, initX, initY, lineHeight) {
+    var that=this;
+    let line=1;
     var lineWidth = 0;
-    var canvasWidth = 285 * w;
+    var canvasWidth = 300;
     var lastSubStrIndex = 0;
-    canvas.setFontSize(16 * w);
-    console.log(str.length);
-    if (str.length >= 35) {
-
-      str = str.substring(0, 35);
-      str += "...";
-      console.log(str);
-    } else {
-      str = str;
+    if (str.length>33){
+      str = str.substring(0, 33)+'...';
     }
-
-    for (let i = 0; i < 37; i++) {
-      lineWidth += canvas.measureText(str[i]).width;
-      // console.log("第" + i + "个字符:" + canvas.measureText(str[i]).width)
+    for (let i = 0; i < str.length; i++) {
+      lineWidth += ctx.measureText(str[i]).width;
       if (lineWidth > canvasWidth - initX) { //减去initX,防止边界出现的问题
-        canvas.fillText(str.substring(lastSubStrIndex, i), initX, initY);
+        ctx.fillText(str.substring(lastSubStrIndex, i), initX, initY);
         initY += lineHeight;
         lineWidth = 0;
+        line++;
         lastSubStrIndex = i;
       }
-      if (i == 37) {
-        canvas.fillText(str.substring(lastSubStrIndex, i + 1), initX, initY);
+      console.log(line);
+      that.setData({
+        line:line
+      });
+      if (i == str.length - 1) {
+        ctx.fillText(str.substring(lastSubStrIndex, i + 1), initX, initY);
       }
     }
   },
@@ -296,70 +295,71 @@ lineHeight:字行高，自己定义个值即可
     console.log(str2);
     var width = this.data.width;
     var height = this.data.trueheight;
-    var w = width / 375 * 1.2 * 0.7;
-    var h = height / 667 * 1.5 * 0.8;
-    var pi = app.pixelRatio;
-    var va = 29 * height / 667;
+
+
+
 
     // 2path
     var ctx2 = wx.createCanvasContext("sharehidden");
 
-    console.log(width * 0.16 * w - 40 * w, width * 0.15 * h - 40 * h, width, width * 0.12 * h + 100 * h + height * h * 0.26 - (width * 0.1 * h - 40 * h));
+
 
 
     ctx2.drawImage("/images/bgli.png", 0, 0, width, height * 0.8);
-    ctx2.drawImage("/images/blank.png", width * 0.12 * w - 57 * w + va, width * 0.25 * h - 50 * h, (width + 20 * w) * 0.8 + va, (width * 0.12 * h + 100 * h + height * h * 0.22 - (width * 0.1 * h - 40 * h))); //来一张纯白色背景图
-    ctx2.setFontSize(18 * w);
+    ctx2.drawImage("/images/blank.png", width * 0.15 - 50, height * 0.18 - 50, 350, height * 0.18 + 3 * 16 + 40 + width * 0.23 + 43 - height * 0.18 + 55); //来一张纯白色背景图
+    ctx2.setFontSize(16);
     ctx2.setFillStyle("white");
     ctx.setTextAlign('center')
-    ctx2.fillText(that.data.userData.name + "发布了一条", width * 0.48 * w - 57 * w + va, width * 0.21 * h - 50 * h, );
-    ctx2.setFontSize(22 * w);
-    ctx2.fillText('#' + that.data.userData.category + "#", width * 0.48 * w - 57 * w + va, width * 0.265 * h - 50 * h, );
+    ctx2.fillText(that.data.userData.name + "发布了一条", 0.30 * width, height * 0.05, );
+    ctx2.setFontSize(20);
+    ctx2.fillText('#' + that.data.userData.category + "#", width * 0.36, height * 0.09, );
     ctx2.save()
 
     ctx2.beginPath();
 
-    ctx2.arc(width * 0.137 * w + va, width * 0.26 * h, 30 * w, 0, 2 * Math.PI);
+    ctx2.arc(width * 0.15, height * 0.18, 20, 0, 2 * Math.PI);
     ctx2.clip();
 
 
-    ctx2.drawImage(that.data.headimg, width * 0.137 * w - 40 * w + va, width * 0.29 * h - 40 * h, 80 * w, 80 * h);
-    ctx2.setTransform(0.1 * w, 0, 0, 0.1 * h, 0, 0);
+    ctx2.drawImage(that.data.headimg, width * 0.15 - 20, height * 0.18 - 20, 40, 40);
+    ctx2.setTransform(0.1, 0, 0, 0.1, 0, 0);
 
     ctx2.restore()
 
-    ctx2.setFontSize(16 * w);
+    ctx2.setFontSize(16);
     ctx2.setFillStyle("black");
-    ctx2.fillText(that.data.userData.name, width * 0.137 * w + 60 * w + va, width * 0.25 * h);
+    ctx2.fillText(that.data.userData.name, width * 0.15 + 35, height * 0.18 - 5);
     ctx2.setFillStyle("#ccc");
-    ctx2.fillText(that.data.userData.timeStamp, width * 0.137 * w + 50 * w + va, width * 0.31 * h);
+    ctx2.fillText(that.data.userData.timeStamp, width * 0.15 + 35, height * 0.18 + 15);
     ctx2.setFillStyle("black");
+    ctx2.setFontSize(14);
+    that.canvasTextAutoLine(str2, ctx2, width * 0.15 - 20, height * 0.18 + 45, 16);
 
-    that.canvasTextAutoLine(that.data.userData.text, ctx2, width * 0.160 * w - 40 * w + va, width * 0.23 * h + 60 * h, 25 * h, w);
 
 
-    // if (pi > 2) {
     if (that.data.imgBox.length == 1) {
       ctx2.save();
-      ctx2.drawImage(that.data.imgBox[0], width * 0.160 * w + va - 40 * w, width * 0.23 * h + 80 * h, width * 0.34 * w, height * h * 0.16);
+      ctx2.drawImage(that.data.imgBox[0], width * 0.15 - 20, height * 0.18 + that.data.line *16+40, width * 0.3, width * 0.3);
       ctx2.restore();
-    } else {
+    }
+     else {
       for (let i = 0; i < that.data.imgBox.length; i++) {
         ctx2.save();
-        ctx2.drawImage(that.data.imgBox[i], width * 0.160 * w + va - 40 * w + i * width * 0.25, width * 0.23 * h + 80 * h, width * 0.23 * w, height * h * 0.14);
+        ctx2.drawImage(that.data.imgBox[i], width * 0.15 - 20 + i *(10 + width * 0.23), height * 0.18 + that.data.line * 16 + 40, width * 0.23, width * 0.23);
         ctx2.restore();
       }
     }
 
 
-    ctx2.setFontSize(14 * w);
+    ctx2.setFontSize(14);
     ctx2.setFillStyle("#ccc");
-    ctx2.fillText("地址:" + that.data.userData.address, width * 0.160 * w + va - 40 * w, width * 0.20 * h + 60 * h + height * h * 0.24);
+    ctx2.fillText("地址:" + that.data.userData.address, width * 0.15 - 20, height * 0.18 + that.data.line * 16 + 40 + width * 0.23+20);
     for (let i = 0; i < that.data.userData.others.length; i++) {
-      ctx2.drawImage(that.data.userData.others[i].key, width * 0.158 * w + va - 40 * w + 100 * w * i - 20 * i, width * 0.18 * h + 60 * h + height * h * 0.27, 18 * w, 12 * h);
-      ctx2.fillText(that.data.userData.others[i].value, width * 0.158 * w + va - 40 * w + 100 * w * i - 20 * i + 20, width * 0.180 * h + 70 * h + height * h * 0.27);
+      ctx2.drawImage(that.data.userData.others[i].key, width * 0.15 - 20+i*(60+width*0.025), height * 0.18 + that.data.line * 16 + 40 + width * 0.23 + 30,width*0.025,height*0.025);
+      ctx2.fillText(that.data.userData.others[i].value, width * 0.15 - 20 + i * (60 + width * 0.03) + width * 0.031+5, height * 0.18 + that.data.line * 16 + 40 + width * 0.23 + 43, width * 0.03, height * 0.03);
     }
-    ctx2.drawImage(that.data.erweima, width-80*h, height * 0.85-80*h,60*h,60*h);
+    // console.log(that.data.erweima);
+    ctx2.drawImage(that.data.erweima, width-80, height * 0.85-80,60,60);
 
     ctx2.draw(false, function() {
 
@@ -369,5 +369,52 @@ lineHeight:字行高，自己定义个值即可
 
     });
   },
- 
+  erweima: function() {
+    var that = this;
+
+    wx.request({
+      url: `${app.http}/app/qrcode/get`,
+
+
+      method: "GET",
+
+      data: {
+        wego168SessionKey: wx.getStorageSync("key"),
+        id: that.data.sourceId
+      },
+
+      success: function(res) {
+        console.log(res);
+        if (res.data.message == "用户未登录或登录已失效") {
+          wx.showToast({
+            title: '用户未登录或登录已失效',
+            icon: 'loading',
+            duration: 1000
+          });
+          wx.navigateTo({
+            url: '/pages/welcome/welcome',
+          })
+        }
+        wx.downloadFile({
+          url: 'https://helpyou-1255600302.cosgz.myqcloud.com' + res.data.message,
+          success: function(response) {
+            console.log(response);
+            if (response.statusCode == 200) {
+              that.data.erweima = response.tempFilePath;
+              that.setData({
+                erweima: that.data.erweima
+              });
+              wx.hideLoading();
+              // wx.navigateTo({
+              //   url: '/pages/canvas/canvas?path=' + response.tempFilePath + "&sourceId=" + that.data.sourceId,
+              // })
+              that.getDetails(that.data.sourceId);
+            }
+          }
+        })
+      }
+
+    })
+  },
+
 })
