@@ -1,14 +1,7 @@
-// pages/welcome/welcome.js
-//导入腾讯地图的sdk,注意对引用文件合法域名的检测
 var QQMapWX = require("../../libs/qqmap-wx-jssdk.min.js");
 var qqMapWX;
 var app = getApp().globalData;
-// var rq = require("../../utils/util.js");
-// var page;
-// let key="";
-// console.log(app.key);
 Page({
-
   /**
    * 页面的初始数据
    */
@@ -33,9 +26,9 @@ Page({
     this.checkLogin();
     try {
       if (!options.back) {
-        
+
         this.login();
-        
+
         this.getCityList();
         wx.request({
           url: `${app.http}/app/recentlyArea`,
@@ -73,9 +66,6 @@ Page({
               // });
               // that.getCityList();
             }
-
-            
-
           }
         })
       } else {
@@ -91,9 +81,6 @@ Page({
       that.getCityList();
       // that.getMessage(page);
     }
-
-    // console.log(rq);
-
     //实例化腾讯地图德核心类
     qqMapWX = new QQMapWX({
       key: "BH5BZ-6NCWW-2HQR4-O7E7Y-Z6IZZ-OKBMQ"
@@ -110,60 +97,6 @@ Page({
       width: app.width,
       height: app.height
     });
-
-
-
-
-  },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function() {
-    // console.log(this.data.key);
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function() {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function() {
-    this.onLoad();
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function() {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function() {
-
   },
 
   //获取当前的城市
@@ -211,9 +144,6 @@ Page({
   //获取城市列表
   getCityList: function() {
     var t = this;
-
-    
-
     // 正确代码
     // console.log(wx.getStorageSync("key"));
     // if (wx.getStorageSync("key")==undefined){
@@ -241,24 +171,18 @@ Page({
               //     // console.log(res.data.data.list[n].childList[c].id);
               //     let name = res.data.data.list[n].childList[c].name;
               //     let id = res.data.data.list[n].childList[c].id;
-
               t.data.searchStr[res.data.data.list[n].childList[c].name] = res.data.data.list[n].childList[c].id;
-
             }
           }
-
           // console.log(t.data.searchStr);
           t.setData({
             searchStr: t.data.searchStr
           });
           try {
-
             t.data.cityData = res.data.data.list;
             t.setData({
               cityData: t.data.cityData,
-
             });
-
           } catch (err) {
             console.log("登录失效");
             t.setData({
@@ -269,36 +193,12 @@ Page({
           }
         } catch (e) {
           console.log("trycatch已经执行了");
-          // wx.showToast({
-          //   title: '请稍候~',
-          // })
           t.login();
-          // t.login(); t.getCityList();
-          // if(t.data.net_flag<=4){
-          //   t.login();t.getCityList();
           t.setData({
             net_flag: t.data.net_flag + 1
           });
-
-          // }else{
-          // let l=setTimeout(function(){
-          //   // wx.showToast({
-          //   //   title: '请稍候再试~',
-          //   // })
-          //   t.onUnload();
-          // },10000);
-
         }
-
       },
-
-
-
-
-
-
-
-
       fail: function() {
         console.log("登录失效");
         t.setData({
@@ -309,10 +209,7 @@ Page({
   },
   //输入框的聚焦事件
   focus: function() {
-    // str=
-    // t.data.li[str] = value;
-    var t = this;
-    t.setData({
+    this.setData({
       flag: false
     })
   },
@@ -327,7 +224,6 @@ Page({
         flag: true
       })
     }
-    console.log("blur:", e.detail.value);
     for (let i in t.data.searchStr) {
       console.log(i);
       if (e.detail.value == i) {
@@ -337,7 +233,7 @@ Page({
     }
     wx.showToast({
       title: '当前城市未开放',
-      icon: "loading",
+      icon: "none",
       duration: 1000
     });
   },
@@ -391,13 +287,11 @@ Page({
       headImage: e.detail.userInfo.avatarUrl,
       sex: e.detail.userInfo.gender
     };
-    
     wx.request({
       url: `${app.http}/app/member/save`,
       method: "POST",
       header: {
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-        // 'Content-type': 'application/X-WWW-FORM-URLENCODED; charset=UTF-8'
       },
       data: data,
       success: function(res) {
@@ -405,7 +299,6 @@ Page({
         t.getCityList();
         t.judgePhone();
       }
-
     })
   },
   login: function() {
@@ -455,19 +348,16 @@ Page({
               key: 'key',
               data: r.data.data.wego168SessionKey,
               success: function(res) {
-t.setData({
-  login_flag:true
-});
+                t.setData({
+                  login_flag: true
+                });
               }
             })
             t.getCityList();
-
-
           },
           fail: function(err) {
             console.log("失败了", err);
           }
-
         })
       }
     })
@@ -590,7 +480,6 @@ t.setData({
               phone_flag: false
             });
           }
-
         }
       });
     } else {
@@ -598,8 +487,5 @@ t.setData({
         phone_flag: false
       });
     }
-
   },
-
-
 })

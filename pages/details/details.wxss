@@ -38,6 +38,21 @@ page {
   color: #808080;
 }
 
+.ad-wrap {
+  width: 100%;
+  padding: 0 30rpx;
+  margin: 20rpx 0;
+  background: white;
+  box-sizing: border-box;
+}
+
+.ad-wrap .ad-text {
+  display: flex;
+  align-items: center;
+  height: 70rpx;
+  font-size: 30rpx;
+}
+
 .button-group {
   position: fixed;
   z-index: 1;
@@ -63,6 +78,7 @@ page {
 }
 
 .button-group .button.call {
+  padding: 0 15px;
   background: #f8794d;
   color: #fff;
 }
@@ -83,7 +99,6 @@ page {
   color: #000;
   background: #fff;
   align-items: center;
-  box-shadow: 0 -2px 100px #eee;
 }
 
 .share-wrap button {
@@ -110,7 +125,11 @@ page {
   position: fixed;
   right: 30rpx;
   bottom: 245rpx;
+  height: 25px;
+  width: 40px;
   font-size: 24rpx;
+  line-height: 25px;
+  text-align: center;
 }
 
 .remark-wrap {
@@ -123,6 +142,7 @@ page {
   background: #fff;
   padding: 15rpx 30rpx;
   box-sizing: border-box;
+  border-top: 1px solid #eee;
 }
 
 .remark-wrap button {
@@ -141,4 +161,12 @@ page {
   background: #eee;
   margin-right: 30rpx;
   border-radius: 3px;
+}
+
+.mask {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.5);
 }

@@ -22,8 +22,7 @@
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "帮你哦",
-    "navigationBarTextStyle": "black",
-    "enablePullDownRefresh": true
+    "navigationBarTextStyle": "black"
   },
   "tabBar": {
     "selectedColor": "#F84A13",

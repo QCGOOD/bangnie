@@ -15,8 +15,9 @@
       {{detail.content}}
     </view>
     <view class="images" wx:if="{{detail.imgUrl.length > 0}}">
-      <block wx:for="{{detail.imgUrl}}" wx:key="img" wx:for-detail="img">
-        <image class='{{detail.imgUrl.length > 1 ? "img_more" : "img_single"}}' mode='scaleToFill' src="{{imgHost}}{{img}}" data-index="{{index}}"></image>
+      <block wx:for="{{detail.imgUrl}}" wx:key="img" wx:for-item="img">
+        <image bindtap='onPreviewImage' wx:if="{{detail.imgUrl.length > 1}}" class='img_more' mode='aspectFit' src="{{img}}" data-index="{{index}}"></image>
+        <image bindtap='onPreviewImage' wx:else class='img_single' mode="widthFix" src="{{img}}" data-index="{{index}}"></image>
       </block>
     </view>
   </view>
@@ -28,7 +29,6 @@
     <text>浏览量:{{detail.visitQuantity}}</text>
   </view>
 </view>
-
 <!--留言部分开始  -->
 <view class='comment-column'>
   <view>留言({{commentsData.length}})</view>
@@ -37,26 +37,23 @@
     <text class='icon i-you' style="font-size:12px"></text>
   </view>
 </view>
-<view class='comment-list' wx:for="{{commentsData}}">
+<view class='comment-list' wx:for="{{commentsData}}" wx:key="{{item.id}}">
   <view class='user-wrap'>
-    <image src="{{item.imgUrl}}"></image>
+    <image src="{{item.memberHeadImage}}"></image>
     <view class='user__info'>
-      <view class='name'>{{item.name}}</view>
-      <view class='time'>{{item.timeStamp}}</view>
+      <view class='name'>{{item.memberName}}</view>
+      <view class='time'>{{item.createTime}}</view>
     </view>
   </view>
   <view class="text">{{item.content}}</view>
 </view>
 
 <!--广告位开始  -->
-<view style='width:100%;background:white;'>
-  <view class='ad' style='margin-top:20rpx;margin-bottom:20rpx;background:white;margin:20rpx 5%;width:90%;'>
-    <text style='display:flex;align-items:center;height:70rpx;font-size:30rpx;'>欢乐过六一，赚取积分拿ipone8</text>
-    <image src='{{imgUrls[0].url}}' style='width:100%;' mode='widthFix'></image>
-    <view class='blank' style='width:100%;height:120rpx;'></view>
-  </view>
+<view class='ad-wrap'>
+  <text class="ad-text">{{adImg.name}}</text>
+  <image src='{{imgHost}}{{adImg.url}}' style='width:100%;' mode='widthFix'></image>
 </view>
-
+<view style='height:124rpx'></view>
 <!--底部固定栏开始  -->
 <view class='button-group'>
   <view class='button' catchtap='share'>
@@ -69,11 +66,12 @@
     <text class='icon i-dianzan {{detail.isPraise ? "i-color" : ""}}'></text> {{detail.praiseQuantity}}
   </view>
   <view class='button call' bindtap='call'>
-    <text class='icon i-dianhua'></text> {{detail.call}}
+    <text class='icon i-dianhua'></text> {{detail.username}}
   </view>
 </view>
 
 <!--底部隐藏固定栏开始  -->
+<view class='mask' wx:if="{{show}}"></view>
 <view wx:if="{{show}}" class='share-wrap'>
   <view class='item'>
     <button open-type='share'>
@@ -91,20 +89,6 @@
 </view>
 
 <view class='remark-wrap' wx:if="{{liuyan}}">
-  <input placeholder='请输入！' auto-focus bindblur='value' maxlength='100' bindinput='in_value'></input>
-  <button class='btn' catchtap='sendLY'>发送</button>
+  <input placeholder='请输入' auto-focus confirm-type="send" bindblur='onInputBlur' maxlength='100' bindconfirm="sendLY" bindinput='onNeirongChange'></input>
+  <button class='btn' catchtap='sendLY' disabled='{{lockRemark}}'>发送</button>
 </view>
-<!--详情结束  -->
-<!--图片点击详情开始  -->
-<view style='width:{{width}}px;height:{{trueheight}}px;' class='pictures' wx:if="{{toggle}}"></view>
-<view style='width:{{width}}px;height:{{trueheight}}px;' wx:if="{{toggle}}" class='pic_child'>
-  <view style='width:{{width}}px;height:{{trueheight}}px;' class='pic_pos'>
-    <image class='img' src='/images/back.png' bindtap='back' />
-    <view id="navgationBar" style='width:100%;height:{{height}}px' bindtap='toback'>详情</view>
-    <view class='intro' style='color:white;'>第{{bigIndex+1}}/{{bigSrc.length}}张</view>
-    <!--图片显示位置开始  -->
-    <image style='width:{{touch.baseWidth*touch.scale}}px;' mode='widthFix' src='{{bigSrc[bigIndex]}}' bindtouchstart='touchStart' bindtouchmove='touchMove' bindtap='fan' bindtouchend='touchEnd' class='mainAction'></image>
-    <!--图片显示位置结束  -->
-  </view>
-</view>
-<!--图片点击详情结束 -->
