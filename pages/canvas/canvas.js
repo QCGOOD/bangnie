@@ -29,57 +29,6 @@ Page({
     wx.showLoading()
     // that.getDetails(that.data.sourceId);
     that.erweima();
-<<<<<<< HEAD
-
-    wx.showLoading({
-      title: '加载中',
-      icon: 'loading'
-    })
-
-  },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function() {
-    // console.log(this.data.imagePath);
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function() {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function() {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function() {
-
-=======
->>>>>>> a60d42a7f190f4f3e51a04de058c32457c2d2ddd
   },
 
   //生成背景图
@@ -263,7 +212,6 @@ Page({
       len = 3;
     }
     // console.log
-<<<<<<< HEAD
     wx.downloadFile({
       url: t.data.userData.avatarUrl,
       success: function(res) {
@@ -287,27 +235,6 @@ Page({
                     });
                     t.readyDraw();
                   }
-=======
-    for (let i = 0; i < len; i++) {
-      wx.downloadFile({
-        url: t.data.userData.content[i],
-        success: function(res) {
-          // console.log("laile", res);
-          if (res.statusCode == 200) {
-            t.data.imgBox.push(res.tempFilePath);
-            t.setData({
-              imgBox: t.data.imgBox
-            });
-            wx.downloadFile({
-              url: t.data.userData.avatarUrl,
-              success: function(res) {
-                // console.log("laile", res);
-                if (res.statusCode == 200) {
-                  t.setData({
-                    headimg: res.tempFilePath
-                  });
-                  t.readyDraw();
->>>>>>> a60d42a7f190f4f3e51a04de058c32457c2d2ddd
                 }
               })
             };
@@ -318,18 +245,9 @@ Page({
         }
       }
     })
-
-
-
-
-
-
-
-
-
   },
   //onlydraw
-  onlyDraw:function(){
+  onlyDraw: function() {
     var that = this;
     // console.log("临时路径", that.data.imgBox);
     console.log(that.data.userData.text);
@@ -339,18 +257,10 @@ Page({
     console.log(str2);
     var width = this.data.width;
     var height = this.data.trueheight;
-
-
-
-
     // 2path
     var ctx2 = wx.createCanvasContext("sharehidden");
-
-
-
-
     ctx2.drawImage("/images/bgli.png", 0, 0, width, height * 0.8);
-    ctx2.drawImage("/images/blank.png", width * 0.15 - 50, height * 0.28 - 50, 350, height * 0.18 + 3 * 16 + 40 + 43 - height * 0.18 + 45); 
+    ctx2.drawImage("/images/blank.png", width * 0.15 - 50, height * 0.28 - 50, 350, height * 0.18 + 3 * 16 + 40 + 43 - height * 0.18 + 45);
     ctx2.save()
     ctx2.setFontSize(16);
     ctx2.setFillStyle("white");
@@ -360,21 +270,14 @@ Page({
     ctx2.fillText('#' + that.data.userData.category + "#", width * 0.5, height * 0.09, );
     ctx2.restore()
     ctx2.save()
-
     ctx2.beginPath();
-
     ctx2.arc(width * 0.15, height * 0.28, 20, 0, 2 * Math.PI);
     ctx2.clip();
-
-
     ctx2.drawImage(that.data.headimg, width * 0.15 - 20, height * 0.28 - 20, 40, 40);
     ctx2.setTransform(0.1, 0, 0, 0.1, 0, 0);
-
     ctx2.restore()
-
     ctx2.setFontSize(16);
     ctx2.setFillStyle("black");
-    
     ctx2.fillText(that.data.userData.name, width * 0.15 + 30, height * 0.28 - 5);
     ctx2.setFillStyle("#ccc");
     ctx2.fillText(that.data.userData.timeStamp, width * 0.15 + 35, height * 0.28 + 15);
@@ -383,16 +286,13 @@ Page({
     that.canvasTextAutoLine(str2, ctx2, width * 0.15 - 20, height * 0.28 + 45, 16);
     ctx2.setFontSize(14);
     ctx2.setFillStyle("#ccc");
-
     ctx2.fillText("地址:" + that.data.userData.address, width * 0.15 - 20, height * 0.28 + that.data.line * 16 + 40 + 20);
     for (let i = 0; i < that.data.userData.others.length; i++) {
       ctx2.drawImage(that.data.userData.others[i].key, width * 0.15 - 20 + i * (60 + width * 0.025), height * 0.28 + that.data.line * 16 + 40 + 30, width * 0.025, height * 0.025);
       ctx2.fillText(that.data.userData.others[i].value, width * 0.15 - 20 + i * (60 + width * 0.03) + width * 0.031 + 5, height * 0.28 + that.data.line * 16 + 40 + 43, width * 0.03, height * 0.03);
     }
     ctx2.drawImage(that.data.erweima, width - 80, height * 0.85 - 80, 60, 60);
-
-    ctx2.draw(false, function () {
-
+    ctx2.draw(false, function() {
       that.setData({
         canShow: true
       });
@@ -401,7 +301,9 @@ Page({
   },
   //已经画好的
   readyDraw: function() {
-    wx.showToast({title: '我执行了画图'})
+    wx.showToast({
+      title: '我执行了画图'
+    })
     var that = this;
     // console.log("临时路径", that.data.imgBox);
     console.log(that.data.userData.text);
@@ -411,16 +313,13 @@ Page({
     console.log(str2);
     var width = this.data.width;
     var height = this.data.trueheight;
-
     // 2path
     var ctx2 = wx.createCanvasContext("sharehidden");
-
-
     ctx2.drawImage("/images/bgli.png", 0, 0, width, height * 0.8);
     if (that.data.imgBox.length == 0) {
-      ctx2.drawImage("/images/blank.png", width * 0.15 - 50, height * 0.18 - 50, 350, height * 0.18 + 3 * 16 + 40 + 43 - height * 0.18 + 45 ); //来一张纯白色背景图
+      ctx2.drawImage("/images/blank.png", width * 0.15 - 50, height * 0.18 - 50, 350, height * 0.18 + 3 * 16 + 40 + 43 - height * 0.18 + 45); //来一张纯白色背景图
     } else if (that.data.imgBox.length == 1) {
-      ctx2.drawImage("/images/blank.png", width * 0.15 - 50, height * 0.18 - 50, 350, height * 0.18 + 3 * 16+width * 0.3+ 40 + 43 - height * 0.18 + 40); //来一张纯白色背景图
+      ctx2.drawImage("/images/blank.png", width * 0.15 - 50, height * 0.18 - 50, 350, height * 0.18 + 3 * 16 + width * 0.3 + 40 + 43 - height * 0.18 + 40); //来一张纯白色背景图
     } else {
       ctx2.drawImage("/images/blank.png", width * 0.15 - 50, height * 0.18 - 50, 350, height * 0.18 + 3 * 16 + 40 + width * 0.23 + 43 - height * 0.18 + 45); //来一张纯白色背景图
     }
@@ -433,18 +332,12 @@ Page({
     ctx2.fillText('#' + that.data.userData.category + "#", width * 0.5, height * 0.09, );
     ctx2.restore()
     ctx2.save()
-
     ctx2.beginPath();
-
     ctx2.arc(width * 0.15, height * 0.18, 20, 0, 2 * Math.PI);
     ctx2.clip();
-
-
     ctx2.drawImage(that.data.headimg, width * 0.15 - 20, height * 0.18 - 20, 40, 40);
     ctx2.setTransform(0.1, 0, 0, 0.1, 0, 0);
-
     ctx2.restore()
-
     ctx2.setFontSize(16);
     ctx2.setFillStyle("black");
     // if (that.data.userData.name.length>4){
@@ -459,24 +352,18 @@ Page({
     ctx2.setFillStyle("black");
     ctx2.setFontSize(14);
     that.canvasTextAutoLine(str2, ctx2, width * 0.15 - 20, height * 0.18 + 45, 16);
-
-
     //不能存在文件没加载完成就画，也不有空文件
     if (that.data.imgBox.length == 0) {
-
       ctx2.setFontSize(14);
       ctx2.setFillStyle("#ccc");
-
       ctx2.fillText("地址:" + that.data.userData.address, width * 0.15 - 20, height * 0.18 + that.data.line * 16 + 40 + 20);
       for (let i = 0; i < that.data.userData.others.length; i++) {
         ctx2.drawImage(that.data.userData.others[i].key, width * 0.15 - 20 + i * (60 + width * 0.025), height * 0.18 + that.data.line * 16 + 40 + 30, width * 0.025, height * 0.025);
         ctx2.fillText(that.data.userData.others[i].value, width * 0.15 - 20 + i * (60 + width * 0.03) + width * 0.031 + 5, height * 0.18 + that.data.line * 16 + 40 + 43, width * 0.03, height * 0.03);
       }
-
       // return;
     } else
     if (that.data.imgBox.length == 1) {
-
       ctx2.save();
       ctx2.drawImage(that.data.imgBox[0], width * 0.15 - 20, height * 0.18 + that.data.line * 16 + 40, width * 0.3, width * 0.3);
       ctx2.restore();
