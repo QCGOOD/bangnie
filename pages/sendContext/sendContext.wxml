@@ -19,13 +19,20 @@
           </block>
           <image src='/images/add.png' style='width:118rpx; height:118rpx;display:inline-block;border:2rpx solid #ccc;margin-right:10rpx;'
             bindtap="chooseImage" wx:if="{{isAdd}}"></image> -->
-          <block wx:for="{{tempFilePaths}}" wx:key="item">
+          <!-- <block wx:for="{{tempFilePaths}}" wx:key="item">
             <view class="choose-img-item">
               <image src='{{item}}' mode='widthFix'></image>
               <image src="/images/shanchu.png" class='icon icon-shanchu' catchtap='chehui' data-index="{{index}}" mode='widthFix'></image>
             </view>
+          </block> -->
+          <block wx:for="{{imageUrl}}" wx:key="item">
+            <view class="choose-img-item">
+              <image wx:if="{{item}}" src="{{imgHost}}{{item}}" mode='widthFix'></image>
+              <image src="/images/shanchu.png" class='icon icon-shanchu' catchtap='chehui' data-index="{{index}}" mode='widthFix'></image>
+            </view>
           </block>
-          <view class="choose-img-item" wx:if="{{tempFilePaths.length < 9}}">
+ 
+          <view class="choose-img-item" wx:if="{{imageUrl.length < 9}}">
             <image src='/images/add.png' bindtap="chooseImage" mode='widthFix'></image>
           </view>
           
@@ -45,11 +52,11 @@
           </view>
           <view class='form-item'>
             <label class="form-item__label" for="name">称呼</label>
-            <input class="form-item__input" placeholder='请输入称呼（何先生/何小姐）' name="name" id='name' value="{{mode.phone}}" bindinput="nameInput"></input>
+            <input class="form-item__input" placeholder='请输入称呼（何先生/何小姐）' name="name" id='name' value="{{model.appellation}}" bindinput="nameInput"></input>
           </view>
           <view class='form-item'>
             <label class="form-item__label" for="phone">手机</label>
-            <input class="form-item__input" type="number" placeholder='请输入手机号码' name="phone" id='phone' bindinput='phoneInput' value="{{value3}}"></input>
+            <input class="form-item__input" type="number" placeholder='请输入手机号码' name="phone" id='phone' bindinput='phoneInput' value="{{model.phone}}"></input>
           </view>
           <view style='width:100%;height:20rpx;background:#F2F2F2;'></view>
           <!-- <view class='form-item' style='border:none;'>
