@@ -4,7 +4,7 @@
 
   <view  class='user'>
     <view>
-      <image src='{{userData.headImage}}'  class="v" style="background-color: #f2f2f2;"></image>
+      <image wx:if="userData.headImage" src='{{userData.headImage}}'  class="v" style="background-color: #f2f2f2;"></image>
       <image src='/images/vip.png' style='width:28rpx;height:28rpx;transform:translateX(-100%);display:{{!vip?"none":"inline-block"}}' ></image>
     </view>
 
