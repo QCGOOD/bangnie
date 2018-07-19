@@ -1,12 +1,13 @@
 // pages/ziliao/ziliao.js
 var app=getApp().globalData;
+const appJs = getApp();
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    userData:[],//存储用户已经有的信息
+    userData: {},//存储用户已经有的信息
     getCode: "false"
   },
 
@@ -25,54 +26,6 @@ Page({
     t.ziliao();
   },
 
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-  
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-  
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-  
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-  
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-  
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-  
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-  
-  },
   // 回退到首页
   back: function () {
     this.setData({
@@ -84,6 +37,7 @@ Page({
   },
   //编辑资料接口
   ziliao:function(){
+    wx.showLoading()
     var t=this;
     wx.request({
       url: `${app.http}/app/memberAuthenticate/get`,
@@ -95,33 +49,15 @@ Page({
         wego168SessionKey:wx.getStorageSync("key")
       },
       success:function(res){
-        console.log(res);
+        wx.hideLoading()
         if (res.data.message == "用户未登录或登录已失效") {
-          wx.showToast({
-            title: '用户未登录或登录已失效',
-            icon: 'loading',
-            duration: 1000
-          });
+          appJs.toast('用户未登录或登录已失效')
           wx.navigateTo({
             url: '/pages/welcome/welcome',
           })
         }
-        let img = res.data.data.headImage || "/images/content1.png";
-        let name = res.data.data.name || "未设置";
-        let phone = res.data.data.phoneNumber || "";
-        let gs = res.data.data.gs || "";
-        let zw=res.data.data.zw||"";
-        console.log(img,zw);
-        t.data.userData={
-          // name:
-          img:img,
-          name:name,
-          phone:phone,
-          gs:gs,
-          zw:zw
-        };
         t.setData({
-          userData:t.data.userData
+          userData: res.data.data
         });
       }
     })
@@ -146,10 +82,7 @@ Page({
       success: function (res) {
         console.log(res);
         if (res.data.data) {
-          // wx.showToast({
-          //   title: '请输入验证码',
-          //   duration: 1000
-          // });
+
         }
         t.setData({
           getCode:"false",
@@ -163,8 +96,7 @@ Page({
   formsubmit:function(e){
     var t=this;
     console.log(e);
-    // let code;
-    // if(t.data.getCode){code=e.detail.value.code}else{code=''}
+
     wx.request({
       url: `${app.http}/app/memberAuthenticate/update`,
       method: "POST",
@@ -181,13 +113,16 @@ Page({
       },
       success: function (res) {
         console.log(res);
-        // if(res.data.data){
-        //   wx.showToast({
-        //     title: '请输入验证码',
-        //     duration:1000
-        //   });
-        // }
-        
+        if(res.data.code == 20000) {
+          appJs.toast(res.data.message)
+          setTimeout(() => {
+            wx.navigateBack({
+              delta: 1, 
+            })
+          }, 500)
+        }else{
+          appJs.toast(res.data.message)
+        }
       }
     })
   },

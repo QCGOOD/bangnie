@@ -59,6 +59,13 @@ App({
       }
     })
   },
+  toast(text, icon) {
+    wx.showToast({
+      title: text,
+      icon: icon || 'none',
+      duration:1000
+    });
+  },
   globalData: {
     userInfo: null,
     width: systemData.getSystem().screenWidth,

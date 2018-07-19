@@ -19,7 +19,7 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function(options) {
+  onLoad: function (options) {
     var that = this;
     // console.log(options.back)
     //  page = 1;
@@ -39,7 +39,7 @@ Page({
           data: {
             wego168SessionKey: wx.getStorageSync("key")
           },
-          success: function(res) {
+          success: function (res) {
             console.log(res);
             try {
               let id = "undefined" || res.data.data.id;
@@ -88,7 +88,7 @@ Page({
     //获取经纬度
     wx.getLocation({
       type: 'gcj02', //返回可以用于wx.openLocation的经纬度,使用德时候注意查看官方文档注意兼容问题
-      success: function(res) {
+      success: function (res) {
         console.log(res);
         that.getCity(res.longitude, res.latitude);
       },
@@ -100,14 +100,14 @@ Page({
   },
 
   //获取当前的城市
-  getCity: function(longitude, latitude) {
+  getCity: function (longitude, latitude) {
     var that = this;
     qqMapWX.reverseGeocoder({
       location: {
         latitude: '' + latitude,
         longitude: '' + longitude,
       }, //location的格式是传入一个字符对象
-      success: function(res) {
+      success: function (res) {
         console.log(res.result.address);
         wx.setStorage({
           key: "LCDetails",
@@ -124,11 +124,11 @@ Page({
           icon: 'loading'
         })
       },
-      fail: function(info) {}
+      fail: function (info) { }
     });
   },
   //得到输入城市的值
-  inputValue: function(e) {
+  inputValue: function (e) {
     console.log("输入的是：", e.detail.value)
     if (e.detail.value.length > 0) {
       this.setData({
@@ -142,7 +142,7 @@ Page({
     }
   },
   //获取城市列表
-  getCityList: function() {
+  getCityList: function () {
     var t = this;
     // 正确代码
     // console.log(wx.getStorageSync("key"));
@@ -160,7 +160,7 @@ Page({
       data: {
         wego168SessionKey: wx.getStorageSync("key")
       },
-      success: function(res) {
+      success: function (res) {
         console.log(res);
         // console.log(res.data.data.list);
         // console.log(res.data.data.list[1].childList)
@@ -199,7 +199,7 @@ Page({
           });
         }
       },
-      fail: function() {
+      fail: function () {
         console.log("登录失效");
         t.setData({
           login: false
@@ -208,24 +208,31 @@ Page({
     })
   },
   //输入框的聚焦事件
-  focus: function() {
+  focus: function () {
     this.setData({
       flag: false
     })
   },
   //输入框失焦事件
-  blur: function(e) {
+  blur: function (e) {
     var t = this;
     if (this.data.inputValue) {
-      flag: false
+      this.setData({
+        flag: false
+      })
     }
     else {
-      this.setData({
-        flag: true
+      // this.setData({
+      //   flag: true
+      // })
+      wx.showToast({
+        title: '不能输入为空哦~',
+        icon: "fail",
+        duration: 1000
       })
     }
     for (let i in t.data.searchStr) {
-      console.log(i);
+      // console.log(i);
       if (e.detail.value == i) {
         t.click(null, i, t.data.searchStr[i]);
         return;
@@ -238,10 +245,10 @@ Page({
     });
   },
   //检测用户的授权状态
-  checkLogin: function() {
+  checkLogin: function () {
     var t = this;
     wx.getSetting({
-      success: function(res) {
+      success: function (res) {
         console.log(res);
         if (!res.authSetting["scope.userInfo"]) {
           console.log("没有授权");
@@ -263,49 +270,69 @@ Page({
           //   url: '/pages/main/main',
           // })
         }
-      }
+      },
+      fail: function () {
+        t.setData({
+          login: false
+        });
+      },
     })
   },
   //用户授权登录事件，向后台传数据
-  getUserInfo: function(e) {
+  getUserInfo: function (e) {
     var t = this;
 
     console.log(e);
+    if (e.detail.userInfo) {
+      this.setData({
+        login: true
+      });
+      console.log("key值：", t.data.key);
+      wx.showToast({
+        title: '登录中...',
+        icon: "loading",
+        duration: 500
+      })
+      let data = {
+        wego168SessionKey: t.data.key,
+        name: e.detail.userInfo.nickName,
+        headImage: e.detail.userInfo.avatarUrl,
+        sex: e.detail.userInfo.gender
+      };
 
-    this.setData({
-      login: true
-    });
-    console.log("key值：", t.data.key);
-    wx.showToast({
-      title: '登录中...',
-      icon: "loading",
-      duration: 500
-    })
-    let data = {
-      wego168SessionKey: t.data.key,
-      name: e.detail.userInfo.nickName,
-      headImage: e.detail.userInfo.avatarUrl,
-      sex: e.detail.userInfo.gender
-    };
-    wx.request({
-      url: `${app.http}/app/member/save`,
-      method: "POST",
-      header: {
-        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-      },
-      data: data,
-      success: function(res) {
-        console.log(res);
-        t.getCityList();
-        t.judgePhone();
-      }
-    })
+      wx.request({
+        url: `${app.http}/app/member/save`,
+        method: "POST",
+        header: {
+          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+          // 'Content-type': 'application/X-WWW-FORM-URLENCODED; charset=UTF-8'
+        },
+        data: data,
+        success: function (res) {
+          console.log(res);
+          t.getCityList();
+          t.judgePhone();
+        }
+
+      })
+    } else {
+      wx.showModal({
+        title: '注意',
+        showCancel: false,
+        confirmText: '好去授权',
+        content: '为了您更好的体验,请先同意授权',
+        success: function (res) {
+
+        }
+      })
+    }
+
   },
-  login: function() {
+  login: function () {
     var t = this;
     //登录前监察网络状态
     wx.getNetworkType({
-      success: function(res) {
+      success: function (res) {
         // 返回网络类型, 有效值：
         // wifi/2g/3g/4g/unknown(Android下不常见的网络类型)/none(无网络)
         // console.log(res);
@@ -334,7 +361,7 @@ Page({
           data: {
             code: "" + res.code
           },
-          success: function(r) {
+          success: function (r) {
             console.log(r);
             console.log("成功登录");
             // console.log(r.data.data.wego168SessionKey);
@@ -347,7 +374,7 @@ Page({
             wx.setStorage({
               key: 'key',
               data: r.data.data.wego168SessionKey,
-              success: function(res) {
+              success: function (res) {
                 t.setData({
                   login_flag: true
                 });
@@ -355,7 +382,7 @@ Page({
             })
             t.getCityList();
           },
-          fail: function(err) {
+          fail: function (err) {
             console.log("失败了", err);
           }
         })
@@ -363,7 +390,7 @@ Page({
     })
   },
   // 点击选取城市
-  click: function(e, cityName, searchId) {
+  click: function (e, cityName, searchId) {
     // console.log(e.currentTarget.dataset);
     if (!e) {
       wx.setStorage({
@@ -400,7 +427,7 @@ Page({
         wego168SessionKey: wx.getStorageSync("key"),
         id: wx.getStorageSync("id")
       },
-      success: function(res) {
+      success: function (res) {
         console.log(res);
 
       }
@@ -408,7 +435,7 @@ Page({
     // this.getMessage(page);
   },
   //对定位城市的服务判断
-  click2: function(e) {
+  click2: function (e) {
     var t = this;
     // console.log(e);
     let flag = false;
@@ -431,7 +458,7 @@ Page({
     }
   },
   //判断是否需要获取手机号
-  judgePhone: function() {
+  judgePhone: function () {
     var t = this;
     wx.request({
       url: `${app.http}/app/isNeed`,
@@ -442,7 +469,7 @@ Page({
       data: {
         wego168SessionKey: wx.getStorageSync("key")
       },
-      success: function(res) {
+      success: function (res) {
         console.log(res);
         t.setData({
           phone_flag: res.data.data
@@ -451,7 +478,7 @@ Page({
     });
   },
   // 获取用户的绑定手机号
-  getPhoneNumber: function(e) {
+  getPhoneNumber: function (e) {
     var t = this;
     console.log(e);
     t.setData({
@@ -470,7 +497,7 @@ Page({
           encryptedData: e.detail.encryptedData,
           iv: e.detail.iv
         },
-        success: function(res) {
+        success: function (res) {
           console.log(res);
           t.setData({
             phone_flag: false

@@ -1,5 +1,6 @@
 
 var app = getApp().globalData;
+var appJs = getApp();
 Page({
 
   /**
@@ -11,9 +12,6 @@ Page({
     show:false
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
   onLoad: function (options) {
     var t = this;
     this.setData({
@@ -24,68 +22,18 @@ Page({
     t.getMessage(t.data.page);
   },
 
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
-  },
   // 回退到首页
   back: function () {
-
     wx.navigateBack({
       delta: 1
     })
   },
   // 获取资讯列表
   getMessage: function (page) {
+    wx.showLoading()
     var t = this;
     console.log("获取资讯列表执行了" + wx.getStorageSync("id") + page);
     var categoryId = wx.getStorageSync("categoryId") || "";
-    // console.log(categoryId);
-    console.log(categoryId);
 
     wx.request({
       url: `${app.http}/app/information/page`,
@@ -102,13 +50,9 @@ Page({
         listType: 2
       },
       success: function (res) {
-        console.log(res);
+        wx.hideLoading()
         if (res.data.message == "用户未登录或登录已失效") {
-          wx.showToast({
-            title: '用户未登录或登录已失效',
-            icon: 'loading',
-            duration: 1000
-          });
+          appJs.toast('用户未登录或登录已失效')
           wx.navigateTo({
             url: '/pages/welcome/welcome',
           })
@@ -117,8 +61,6 @@ Page({
         for (let i = 0; i < res.data.data.list.length; i++) {
           let content = [];
           let len;
-          // console.log("当前userData位置:", t.data.userData.length + 1);
-          // console.log(res.data.data.list[i].imgUrl.split(","));
           if (res.data.data.list[i].imgUrl != '') {
             content[i] = res.data.data.list[i].imgUrl.split(','); //记得修改
             for (let l = 0; l < content[i].length; l++) {
@@ -127,7 +69,6 @@ Page({
           } else {
             content[i] = [];
           }
-
 
           tempArr[i] = {
             name: res.data.data.list[i].username,

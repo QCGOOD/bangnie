@@ -22,8 +22,8 @@
     <button open-type="getPhoneNumber" style="width:90%;margin:0 5%;" bindgetphonenumber="getPhoneNumber">获取手机号</button>
   </view>
 </view>
- <view class='login' style='position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:400rpx;height:600rpx;background:red;' wx:if="{{!login}}">
- <view>请授权登录</view>
+ <view class='login' style='position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:590rpx;height:600rpx;background:#ccc;' wx:if="{{!login}}">
+ <view style='width:590rpx;height:100rpx;display:flex;justify-content:center;align-items:center;margin-top:10rpx;color:white;'>请授权登录</view>
   <button open-type='getUserInfo' bindgetuserinfo='getUserInfo' class='btn'>登录</button>
 </view> 
 
