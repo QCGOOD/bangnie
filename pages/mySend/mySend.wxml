@@ -16,7 +16,7 @@
           <view class="user_message_choose">
             <view class="select-wrap">
               <view class="select {{item.showSelect?'select-show':''}}">
-                <navigator class="select-btn" url="../sendContext/sendContext?id={{item.id}}&name={{item.category}}">修改</navigator>
+                <navigator class="select-btn" url="../sendContext/sendContext?id={{item.id}}&name={{item.category}}&categoryId={{item.categoryId}}">修改</navigator>
                 <text class="select-btn" data-id="{{item.id}}" catchtap="delete">删除</text>
               </view>
             </view>
