@@ -71,10 +71,18 @@ page {
   flex: 1;
   text-align: center;
   line-height: 112rpx;
+  
+}
+.button-group .icon {
+  display: inline-block;
+  transition: .3s;
 }
 
 .button-group .button .i-color {
   color: #f8794d;
+}
+.button-group .button .like-active {
+  transform: scale(1.2);
 }
 
 .button-group .button.call {

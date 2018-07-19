@@ -16,6 +16,7 @@ Page({
     tempFilePaths: [],
     imageUrl: [],
     name: '',
+    id: '',
   },
   onLoad (options) {
     console.log(options)
@@ -32,6 +33,10 @@ Page({
       phone: '',
       appellation: '',
       formId: ''
+    }
+    if(options.id){
+      this.setData({id: options.id})
+      // 详情
     }
     this.setData({
       model: this.data.model,
@@ -201,6 +206,30 @@ Page({
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
       },
       data: this.data.model,
+      success: (res) => {
+        wx.hideLoading();
+        console.log(res.data);
+        let data = res.data
+        if (data.code === 20000) {
+          this.showToast('发布成功', 'success')
+          wx.redirectTo({
+            url: '/pages/sendSuccess/sendSuccess'
+          })
+        } else {
+          console.log(data.message)
+          this.showToast(data.message)
+        }
+      }
+    })
+  },
+  detail() {
+    wx.request({
+      url: `${app.http}/app/information/get`,
+      method: "GET",
+      header: {
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+      },
+      data: {id: this.data.id},
       success: (res) => {
         wx.hideLoading();
         console.log(res.data);

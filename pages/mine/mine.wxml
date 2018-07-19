@@ -4,7 +4,7 @@
 
   <view  class='user'>
     <view>
-      <image src='{{userData.headImage}}'  class="v" style="background-color: #f2f2f2;"></image>
+      <image wx:if="userData.headImage" src='{{userData.headImage}}'  class="v" style="background-color: #f2f2f2;"></image>
       <image src='/images/vip.png' style='width:28rpx;height:28rpx;transform:translateX(-100%);display:{{!vip?"none":"inline-block"}}' ></image>
     </view>
 
@@ -24,13 +24,13 @@
       </view>
       <image src='/images/inDetails.png'   class="navInto"></image>
     </view>
-    <view  class='item_box' data-path="/pages/myMessage/myMessage" bindtap='jumpPage'>
+    <!-- <view  class='item_box' data-path="/pages/myMessage/myMessage" bindtap='jumpPage'>
       <view  class='item_inline'>
         <image src='/images/mess.png'  class='mymessage'></image>
         <text >我的消息</text>
       </view>
       <image src='/images/inDetails.png'  class="navInto"></image>
-    </view>
+    </view> -->
   </view>
   <!-- <view  class='ques' data-path="/pages/que/que" bindtap='jumpPage'>
     <view  class='item_box' >
