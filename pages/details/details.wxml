@@ -63,7 +63,7 @@
     <text class='icon i-pinglun'></text> 留言
   </view>
   <view class='button' catchtap="onLike" data-type='detail'>
-    <text class='icon i-dianzan {{detail.isPraise ? "i-color" : ""}}'></text> {{detail.praiseQuantity}}
+    <text class='icon i-dianzan {{detail.isPraise ? "i-color like-active" : ""}}'></text> {{detail.praiseQuantity}}
   </view>
   <view class='button call' bindtap='call'>
     <text class='icon i-dianhua'></text> {{detail.username}}

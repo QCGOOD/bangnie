@@ -86,7 +86,7 @@
           <text class="num">{{item.commentQuantity}}</text>
         </view>
         <view class="list" catchtap='onLike' data-index="{{index}}" data-type="newData">
-          <text class='icon i-dianzan {{item.isPraise ? "i-color" : ""}}'></text>
+          <text class='icon i-dianzan {{item.isPraise ? "i-color like-active" : ""}}'></text>
           <text class="num">{{item.praiseQuantity}}</text>
         </view>
         <view class="list">

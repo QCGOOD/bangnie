@@ -98,11 +98,16 @@ page {
 }
 
 .menssage-item .others .list .icon {
+  display: inline-block;
   font-size: 24rpx;
+  transition: .3s;
 }
 
 .menssage-item .others .list .i-color {
   color: #f84a12;
+}
+.menssage-item .others .list .like-active {
+  transform: scale(1.2);
 }
 
 .i-liulanliang, .i-pinglun {

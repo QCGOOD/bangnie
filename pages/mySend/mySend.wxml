@@ -58,7 +58,6 @@
             <i class="icon i-fenxiang"></i>
             <text>{{item.shareQuantity}}</text>
           </view>
-          
         </view>
       </view>
     </block>
