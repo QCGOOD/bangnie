@@ -17,22 +17,41 @@ Page({
     imageUrl: [],
     name: '',
     id: '',
+    imgHost: app.imgHost,
+    count: 0,
   },
   onLoad (options) {
     console.log(options)
     // console.log(this.data.model)
     console.log('onLoad == ', this.data)
     this.data.name = options.name
-    this.data.model = {
-      wego168SessionKey: wx.getStorageSync("key"),
-      areaId: wx.getStorageSync("id"),
-      categoryId: options.id,
-      address: wx.getStorageSync("LCDetails"),
-      content: '',
-      imgUrl: '',
-      phone: '',
-      appellation: '',
-      formId: ''
+    if (options.id) {
+      this.setData({
+        id: options.id
+      })
+      this.detail(options.id)
+      // this.data.model = {
+      //   wego168SessionKey: wx.getStorageSync("key"),
+      //   id: options.id,
+      //   address: wx.getStorageSync("LCDetails"),
+      //   content: '',
+      //   imgUrl: '',
+      //   phone: '',
+      //   appellation: '',
+      //   formId: ''
+      // }
+    } else {
+      this.data.model = {
+        wego168SessionKey: wx.getStorageSync("key"),
+        areaId: wx.getStorageSync("id"),
+        categoryId: options.categoryId,
+        address: wx.getStorageSync("LCDetails"),
+        content: '',
+        imgUrl: '',
+        phone: '',
+        appellation: '',
+        formId: ''
+      }
     }
     if(options.id){
       this.setData({id: options.id})
@@ -64,18 +83,22 @@ Page({
   },
   chooseImage() {
     wx.chooseImage({
-      count: 9 - this.data.tempFilePaths.length, // 默认9
-      sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+      count: 9 - this.data.imageUrl.length, // 默认9
+      // sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+      sizeType: ['compressed'], // 可以指定是原图还是压缩图，默认二者都有
       sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
       success: (res) => {
         // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
         var tempFilePaths = res.tempFilePaths
-        tempFilePaths.map(item => {
-          this.data.tempFilePaths.push(item)
-        })
+        
+        // tempFilePaths.map(item => {
+        //   this.data.tempFilePaths.push(item)
+        // })
         this.setData({
-          tempFilePaths: this.data.tempFilePaths
+          tempFilePaths: tempFilePaths,
+          count: 0
         })
+        this.loopImg(this.data.tempFilePaths)
         // this.uploadFile(tempFilePaths[0])
       }
     })
@@ -83,9 +106,9 @@ Page({
   chehui(e) {
     let index = e.currentTarget.dataset.index
     console.log(index)
-    this.data.tempFilePaths.splice(index, 1)
+    this.data.imageUrl.splice(index, 1)
     this.setData({
-      tempFilePaths: this.data.tempFilePaths
+      imageUrl: this.data.imageUrl
     })
   },
   uploadFile(path) {
@@ -135,30 +158,43 @@ Page({
   },
   loopImg() {
     let tempFilePaths = this.data.tempFilePaths
-    let imageUrl = this.data.imageUrl
+    if (this.data.count < tempFilePaths.length) {
+      this.uploadImg(tempFilePaths[this.data.count])
+      this.setData({
+        count: this.data.count + 1
+      })
+    } else {
+      wx.hideLoading()
+      console.log(this.data.imageUrl)
+    }
+    return
+    // let tempFilePaths = this.data.tempFilePaths
+    // let imageUrl = this.data.imageUrl
     if (imageUrl.length < tempFilePaths.length) {
       let path = tempFilePaths[tempFilePaths.length - (tempFilePaths.length - imageUrl.length)]
       console.log('path === ', path)
       this.uploadImg(path)
     } else {
-      if (imageUrl.length !== tempFilePaths.length) {
-        this.setData({
-          imageUrl: []
-        })
-        this.loopImg()
-      } else {
-        let imageUrl = ''
-        this.data.imageUrl.map(item => {
-          imageUrl += item + ','
-        })
-        imageUrl = imageUrl.substring(0, imageUrl.length - 1)
-        this.data.model.imgUrl = imageUrl
-        this.setData({
-          model: this.data.model
-        })
-        wx.hideLoading()
-        this.save();
-      }
+      wx.hideLoading()
+      console.log(this.data.imageUrl)
+      // if (imageUrl.length !== tempFilePaths.length) {
+      //   this.setData({
+      //     imageUrl: []
+      //   })
+      //   this.loopImg()
+      // } else {
+      //   let imageUrl = ''
+      //   this.data.imageUrl.map(item => {
+      //     imageUrl += item + ','
+      //   })
+      //   imageUrl = imageUrl.substring(0, imageUrl.length - 1)
+      //   this.data.model.imgUrl = imageUrl
+      //   this.setData({
+      //     model: this.data.model
+      //   })
+      //   wx.hideLoading()
+      //   this.save();
+      // }
     }
   },
   showToast(title, icon) {
@@ -172,8 +208,6 @@ Page({
     this.setData({
       model: this.data.model
     })
-    console.log(this.data.model)
-    // return
     let model = this.data.model
     if (model.content === "") {
       this.showToast('请输入内容')
@@ -187,8 +221,21 @@ Page({
       this.showToast('请输入手机号码')
       return
     }
-    if (this.data.tempFilePaths.length > 0) {
-      this.loopImg()
+    if (this.data.imageUrl.length > 0) {
+      let imageUrl = ''
+      this.data.imageUrl.map(item => {
+        imageUrl += item + ','
+      })
+      imageUrl = imageUrl.substring(0, imageUrl.length - 1)
+      this.data.model.imgUrl = imageUrl
+      this.setData({
+        model: this.data.model
+      })
+    }
+    console.log(this.data.model)
+    // return
+    if (this.data.id) {
+      this.update()
     } else {
       this.save()
     }
@@ -211,10 +258,12 @@ Page({
         console.log(res.data);
         let data = res.data
         if (data.code === 20000) {
-          this.showToast('发布成功', 'success')
-          wx.redirectTo({
-            url: '/pages/sendSuccess/sendSuccess'
-          })
+          this.showToast(data.message, 'success')
+          setTimeout(() => {
+            wx.redirectTo({
+              url: '/pages/sendSuccess/sendSuccess'
+            })
+          }, 2000)
         } else {
           console.log(data.message)
           this.showToast(data.message)
@@ -222,25 +271,81 @@ Page({
       }
     })
   },
-  detail() {
+  update() {
+    // return
+    wx.showLoading({
+      title: '正在发布'
+    })
+    console.log(this.data.model)
+    wx.request({
+      url: `${app.http}/app/information/update`,
+      method: "POST",
+      header: {
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+      },
+      data: this.data.model,
+      success: (res) => {
+        wx.hideLoading();
+        console.log(res.data);
+        let data = res.data
+        if (data.code === 20000) {
+          this.showToast(data.message, 'success')
+          setTimeout(() => {
+            wx.redirectTo({
+              url: '/pages/sendSuccess/sendSuccess'
+            })
+          }, 2000)
+        } else {
+          console.log(data.message)
+          this.showToast(data.message)
+        }
+      }
+    })
+  },
+  detail(id) {
+    wx.showLoading({
+      title: '加载中'
+    })
     wx.request({
       url: `${app.http}/app/information/get`,
       method: "GET",
       header: {
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
       },
-      data: {id: this.data.id},
+      data: {
+        id: id,
+        wego168SessionKey: wx.getStorageSync("key"),
+      },
       success: (res) => {
         wx.hideLoading();
         console.log(res.data);
-        let data = res.data
-        if (data.code === 20000) {
-          this.showToast('发布成功', 'success')
-          wx.redirectTo({
-            url: '/pages/sendSuccess/sendSuccess'
+        if (res.data.code === 20000) {
+          let data = res.data.data
+          let model = {}
+          model.wego168SessionKey = wx.getStorageSync("key")
+          model.content = data.content
+          model.id = data.id
+          model.phone = data.phone
+          model.appellation = data.appellation
+          model.address = data.address
+          console.log(data.imgUrl)
+          if (data.imgUrl) {
+            if (new RegExp(",").test(data.imgUrl)) {
+              console.log(12313)
+              this.data.imageUrl = data.imgUrl.split(',')
+            } else {
+              console.log('fsdfsfdsfsd')
+              this.data.imageUrl[0] = data.imgUrl
+            }
+          }
+          this.setData({
+            model: model,
+            imageUrl: this.data.imageUrl
           })
+          console.log(this.data.model)
+          console.log(this.data.imageUrl)
+          console.log(data)
         } else {
-          console.log(data.message)
           this.showToast(data.message)
         }
       }
