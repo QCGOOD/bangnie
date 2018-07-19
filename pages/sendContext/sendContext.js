@@ -258,7 +258,7 @@ Page({
         console.log(res.data);
         let data = res.data
         if (data.code === 20000) {
-          this.showToast(data.message, 'success')
+          this.showToast('发布成功，等待审核')
           setTimeout(() => {
             wx.redirectTo({
               url: '/pages/sendSuccess/sendSuccess'
@@ -289,7 +289,7 @@ Page({
         console.log(res.data);
         let data = res.data
         if (data.code === 20000) {
-          this.showToast(data.message, 'success')
+          this.showToast('发布成功，等待审核')
           setTimeout(() => {
             wx.redirectTo({
               url: '/pages/sendSuccess/sendSuccess'
