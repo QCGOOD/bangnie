@@ -7,9 +7,11 @@ Page({
    * 页面的初始数据
    */
   data: {
-  page:1,
-  userData:[],
-  
+    imgHost: app.imgHost,
+    height: app.height - 10,
+    showSelect: false,
+    page:1,
+    userData:[],
   },
 
   /**
@@ -18,8 +20,6 @@ Page({
   onLoad: function (options) {
     var t = this;
     this.setData({
-      width: app.width,
-      height: app.height,
       trueheight: app.trueHeight,
     });
     t.getMessage(t.data.page);
@@ -30,6 +30,18 @@ Page({
 
     wx.navigateBack({
       delta: 1
+    })
+  },
+  // 显示选择框
+  showSelect() {
+    this.setData({ showSelect: !this.data.showSelect })
+  },
+  // 跳转
+  jumpPage(e){
+    console.log(e)
+    let _id = e.currentTarget.dataset.id;
+    wx.navigateTo({
+      url: '../send/send?id='+_id,
     })
   },
   // 获取资讯列表
@@ -62,57 +74,18 @@ Page({
           })
         }
         let tempArr = [];
-        for (let i = 0; i < res.data.data.list.length; i++) {
-          let content = [];
-          let len;
-          // console.log("当前userData位置:", t.data.userData.length + 1);
-          // console.log(res.data.data.list[i].imgUrl.split(","));
-          if (res.data.data.list[i].imgUrl != '') {
-            content[i] = res.data.data.list[i].imgUrl.split(','); //记得修改
-            for (let l = 0; l < content[i].length; l++) {
-              content[i][l] = 'http://helpyou-1255600302.cosgz.myqcloud.com' + content[i][l]
-            }
-          } else {
-            content[i] = [];
+        res.data.data.list.map((item, i) => {
+          if(item.imgUrl != "") {
+            item.imgUrl = item.imgUrl.split(',')
+          }else{
+            item.imgUrl = []
           }
+        })
 
-         
-          tempArr[i] = {
-            name: res.data.data.list[i].username,
-            timeStamp: res.data.data.list[i].createTime,
-            avatarUrl: res.data.data.list[i].headImage,
-            text: res.data.data.list[i].content,
-            content: content[i],
-            address: res.data.data.list[i].address,
-            category: res.data.data.list[i].category,
-            others: [{
-              key: "/images/liulan.png",
-              value: res.data.data.list[i].visitQuantity
-
-            }, {
-              key: "/images/comments.png",
-              value: res.data.data.list[i].commentQuantity
-            }, {
-              key: "/images/succ.png",
-              value: res.data.data.list[i].praiseQuantity,
-              flag: res.data.data.list[i].isPraise
-
-            }, {
-              key: "/images/share.png",
-              value: res.data.data.list[i].visitQuantity
-            },],
-            message_id: res.data.data.list[i].id,
-            len: content[i].length,
-            error: false,
-            
-            isPraise: res.data.data.list[i].isPraise
-          };
-        };
-        t.data.userData = t.data.userData.concat(tempArr);
+        console.log(res.data.data.list)
         t.setData({
-          userData: t.data.userData,
-          page:t.data.page+1
-        });
+          userData: res.data.data.list
+        })
       }
     })
   },
@@ -188,21 +161,23 @@ Page({
     },
     //点赞开始
     onLike: function (e) {
-      console.log(e.currentTarget.dataset.type)
-      let index = e.currentTarget.dataset.type, url = `${app.http}/app/praise/insert`, type ='userData';
+      let index = e.currentTarget.dataset.index;
+      let id = e.currentTarget.dataset.id;
+      let url = `${app.http}/app/praise/insert`;
+      let type =`userData[${index}]`;
 
-      if (this.data[type][index].others[2].flag) {
+      if (this.data.userData[index].isPraise) {
         // 取消点赞
         url = `${app.http}/app/praise/delete`
-        this.data[type][index].others[2].flag = false
-        this.data[type][index].others[2].value -= 1
+        this.data.userData[index].isPraise = false;
+        this.data.userData[index].praiseQuantity -= 1;
       } else {
         // 点赞
-        this.data[type][index].others[2].flag = true
-        this.data[type][index].others[2].value += 1
+        this.data.userData[index].isPraise = true;
+        this.data.userData[index].praiseQuantity += 1;
       }
       this.setData({
-        [type]: this.data[type]
+        [type]: this.data.userData[index]
       })
       wx.request({
         url: url,
@@ -212,7 +187,7 @@ Page({
         },
         data: {
           wego168SessionKey: wx.getStorageSync("key"),
-          sourceId: this.data[type][index].id
+          sourceId: id
         },
         success: function (res) {
           console.log('点赞功能 请求到数据了');
@@ -221,8 +196,7 @@ Page({
     },
     //删除资讯
     delete:function(e){
-      console.log(e.currentTarget.dataset.id);
-      console.log("删除资讯");
+      let t = this;
       wx.request({
         url: `${app.http}/app/information/delete`,
         method: "POST",
@@ -235,11 +209,18 @@ Page({
         },
         success: function (res) {
           console.log(res);
-          if (res.data.message == "用户未登录或登录已失效") {
+          if (res.data.code == 40000) {
             appJs.toast('用户未登录或登录已失效')
             wx.navigateTo({
               url: '/pages/welcome/welcome',
             })
+          }else if(res.data.code == 20000) {
+            appJs.toast('删除成功')
+            setTimeout(() => {
+              t.getMessage(t.data.page);
+            }, 500);
+          }else{
+            appJs.toast(res.data.message)
           }
           
         }

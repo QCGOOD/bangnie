@@ -1,5 +1,6 @@
 // pages/mine/mine.js
 var app = getApp().globalData;
+var appJs = getApp();
 Page({
 
   /**
@@ -30,78 +31,11 @@ Page({
     this.ziliao();
   },
 
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function() {
-    this.onLoad();
-      },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function() {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function() {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function() {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function() {
-
-  },
   // 点击事件
-  putfor: function() {
-    this.setData({
-    //  show:true,
-     userData: [],
-    });
-    // this.getMessage(this.data.page);
+  jumpPage: function(e) {
+    let path = e.currentTarget.dataset.path;
     wx.navigateTo({
-      url: '/pages/mySend/mySend',
-    })
-  },
-  mes: function() {
-    wx.navigateTo({
-      url: '/pages/myMessage/myMessage',
-    })
-  },
-  ques: function() {
-    wx.navigateTo({
-      url: '/pages/que/que',
-    })
-  },
-  contact: function() {
-    wx.navigateTo({
-      url: '/pages/kefu/kefu',
+      url: path,
     })
   },
   //进入资料编辑页面、
@@ -125,44 +59,20 @@ Page({
       },
       success: function (res) {
         console.log(res);
-        if (res.data.message == "用户未登录或登录已失效") {
-          wx.showToast({
-            title: '用户未登录或登录已失效',
-            icon: 'loading',
-            duration: 1000
-          });
+        if (res.data.code == 40000) {
+          appJs.toast('用户未登录或登录已失效')
           wx.navigateTo({
             url: '/pages/welcome/welcome',
           })
         }
-        let img = res.data.data.headImage || "/images/content1.png";
-        let name = res.data.data.name || "未设置";
-        let phone = res.data.data.phoneNumber || "";
-        let gs = res.data.data.gs || "";
-        let zw = res.data.data.zw || "";
-        console.log(img, zw);
-        if(res.data.data.bindStatus==1){
-          console.log("ok");
-          var vip=false;
-        }
-        t.data.userData = {
-          // name:
-          img: img,
-          name: name,
-          phone: phone,
-          gs: gs,
-          zw: zw,
-          vip:vip
-        };
         t.setData({
-          userData: t.data.userData
+          userData: res.data.data
         });
       }
     })
   },
   // 回退到首页
   back: function () {
-
     wx.navigateBack({
       delta: 1
     })
