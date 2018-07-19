@@ -1,11 +1,7 @@
 /* pages/main/main.wxss */
 
 page {
-  font-size: 30rpx;
-  font-family: "冬青黑体", Noto, Arial, Helvetica, sans-serif;
-  color: #0e0e0e;
   background: #f0f0f0;
-  letter-spacing: 2rpx;
 }
 
 /*容器开始  */
@@ -34,11 +30,13 @@ page {
 
 .search__input {
   flex: 1;
-  /* display: inline-block; */
   padding: 10rpx 0;
   background: #f0f0f0;
   border-radius: 25px;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  padding-left: 15px;
 }
 
 .search__input input {
@@ -46,14 +44,14 @@ page {
   margin: 0 auto;
   background: #f0f0f0;
   display: inline-block;
-  margin-left:40rpx;
+  margin-left: 15px;
 }
-.sear{
-   transform: translate(80%,35%); 
-  position:absolute;
-z-index:2;
 
-  }
+.sear {
+  transform: translate(80%, 35%);
+  position: absolute;
+  z-index: 2;
+}
 
 /*轮播图开始  */
 
@@ -86,7 +84,6 @@ z-index:2;
   align-content: center;
   justify-content: center;
   flex-wrap: wrap;
-  /* background: red; */
   margin: 20rpx 4rpx;
 }
 
@@ -167,4 +164,9 @@ z-index:2;
 
 /*朋友圈结束  */
 
-
+.loading {
+  padding: 40rpx 0;
+  text-align: center;
+  font-size: 28rpx;
+  color: #666;
+}

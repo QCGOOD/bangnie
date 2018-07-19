@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "发布成功",
+  "usingComponents": {
+    "authorize": "/components/authorize/authorize"
+  }
+}

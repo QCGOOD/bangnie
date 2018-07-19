@@ -20,27 +20,28 @@ page{
  
 /*标题lan结束  */
 /*  */
-.container{
-  /* width:89.4%; */
-  /* margin:0 40rpx; */
 
-}
 /*  */
 /*栏目开始  */
 .service{
-  
-  margin-top:35%;
+  position: fixed;
+  bottom: 40rpx;
+  left: 0;
+  right: 0;
   display: flex;
   justify-content: flex-start;
   flex-wrap: wrap;
 }
 .service_item{
-  width:20%;
-  height:50%;
-  display: flex;
-  align-content: center;
+  width:25%;
+  height:200rpx;
+  text-align: center;
+  display: inline-flex;
+  align-items: center;
   justify-content: center;
-  flex-wrap: wrap;
+  flex-flow: column;
+  /* margin-bottom: 50rpx; */
+  /* flex-wrap: wrap; */
   /* background: red; */
 }
 .service_item .img{

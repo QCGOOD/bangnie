@@ -4,17 +4,6 @@ page {
   letter-spacing: 2rpx;
 }
 
-.none_img {
-  width: 500rpx;
-  transform: translateY(-30%);
-}
-
-.none_text {
-  color: #797979;
-  transform: translateY(-200%);
-  font-size: 28rpx;
-}
-
 .comment-list {
   padding: 30rpx;
   border-top: 1px solid #eee;
@@ -23,6 +12,15 @@ page {
 
 .comment-list .text {
   margin: 20rpx 0 0 102rpx;
+  font-size: 28rpx;
+  color: #808080;
+}
+.none {
+  padding-top: 40px;
+}
+.none_text {
+  margin-top: 40rpx;
+  text-align: center;
   font-size: 28rpx;
   color: #808080;
 }

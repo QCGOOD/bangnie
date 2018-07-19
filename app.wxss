@@ -2,13 +2,19 @@
 @import 'iconfont.wxss';
 
 /* 信息流 */
-
+page {
+  height: 100%;
+}
 .menssage-item {
   width: 100%;
   margin-bottom: 20rpx;
   background: white;
   padding: 40rpx 20rpx 0;
   box-sizing: border-box;
+}
+
+.menssage-item:last-child {
+  margin: 0;
 }
 
 .user-wrap {
@@ -60,15 +66,14 @@
 }
 
 .menssage-item .content .images .img_single {
-  width: 222rpx;
-  margin: 5px 2px;
-  height: 222rpx;
+  width: 300rpx;
+  margin: 5px 0;
 }
 
 .menssage-item .content .images .img_more {
-  width: 300rpx;
-  margin: 5px 2px;
-  height: 300rpx;
+  flex: 31% 0;
+  margin: 8rpx;
+  height: 220rpx;
 }
 
 .menssage-item .address {
@@ -87,7 +92,8 @@
 }
 
 .menssage-item .others .list {
-  margin-right: 80rpx;
+  margin-right: 40rpx;
+  width: 100rpx;
   color: #808080;
 }
 

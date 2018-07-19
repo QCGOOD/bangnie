@@ -19,10 +19,10 @@ Page({
     }], //广告数据
     swiperIndex: 0,
     newData: [],
-    
     hotData: [],
-    
     imgHost: app.imgHost,
+    newType: false,
+    hotType: false
   },
   /**
    * 生命周期函数--监听页面加载
@@ -41,12 +41,13 @@ Page({
       selectData: wx.getStorageSync("city"),
       newSearch: {
         pageNum: 1,
-        pageSize: 2,
+        pageSize: 20,
         pageTotal: -1,
         type: 1,
         wego168SessionKey: wx.getStorageSync("key"),
         areaId: wx.getStorageSync("id"),
         categoryId: '',
+        mytype: 'newData'
       },
       hotSearch: {
         pageNum: 1,
@@ -56,6 +57,7 @@ Page({
         wego168SessionKey: wx.getStorageSync("key"),
         areaId: wx.getStorageSync("id"),
         categoryId: '',
+        mytype: 'hotData'
       },
     });
     that.getImg();
@@ -63,6 +65,8 @@ Page({
     this.setData({
       newData: [],
       hotData: [],
+      newType: false,
+      hotType: false,
       swiperIndex: 0
     })
     this.data.newSearch.pageNum = 1
@@ -91,7 +95,11 @@ Page({
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function() {
-    this.getMessage(this.data.newSearch)
+    if (this.data.swiperIndex == 0) {
+      this.getMessage(this.data.newSearch)
+    } else {
+      this.getMessage(this.data.hotSearch)
+    }
   },
   /**
    * 是否存在下一页
@@ -146,7 +154,7 @@ Page({
   // 获取资讯列表
   getMessage: function(data) {
     var _this = this;
-    // if (this.isNext(data)) {
+    if (this.isNext(data)) {
       wx.request({
         url: `${app.http}/app/information/page`,
         method: "GET",
@@ -167,11 +175,10 @@ Page({
               if (res.imgUrl != '') {
                 return res.imgUrl = res.imgUrl.split(',')
               }
-            })}catch(e){console.log("有毒啊");
-            
+            })
+          } catch (e) {
             console.log(wx.getStorageSync("key"));
-            }
-          
+          }
           if (data.type == 1) {
             _this.setData({
               newData: [..._this.data.newData, ...res.data.data.list],
@@ -185,11 +192,18 @@ Page({
             _this.data.hotSearch.pageNum++;
             _this.data.hotSearch.pageTotal = res.data.data.total
           }
+          wx.stopPullDownRefresh();
         }
       })
-    // } else {
-    //   console.log('没有数据了')
-    // }
+    } else if (data.type == 1) {
+      this.setData({
+        newType: true
+      })
+    } else {
+      this.setData({
+        hotType: true
+      })
+    }
   },
   //从后台获取栏目列表
   getKind: function() {
