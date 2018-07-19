@@ -1,0 +1,7 @@
+<!--components/authorize/authorize.wxml-->
+<view class="authorize" wx:if="{{isAuthorize}}">
+  <view class="box">
+    <view class="text">需要授权才能使用该小程序，请点击授权</view>
+    <button open-type="getUserInfo" size="mini" bindgetuserinfo="onGotUserInfo" type="primary">授权</button>
+  </view>
+</view>

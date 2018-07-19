@@ -11,13 +11,14 @@ Page({
     nochange:true,//是否切换界面
     serviceData: [],
     temp:[],
-  fixed:true
+    fixed:true,
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    console.log('onLoad == ', this.data)
     var t=this;
     t.setData({
       width: app.width,
@@ -29,56 +30,11 @@ Page({
     
   },
 
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-  
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-  
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-  
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-  
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-  
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-  
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-  
-  },
   //从后台获取栏目列表
   getKind: function () {
+    wx.showLoading({
+      title: '加载中'
+    })
     var t = this;
     wx.request({
       url: `${app.http}/category/page`,
@@ -88,7 +44,6 @@ Page({
       },
       data: {
         wego168SessionKey: wx.getStorageSync("key"),
-
         pageNum: 1,
         pageSize: 10
       },
@@ -104,29 +59,45 @@ Page({
             url: '/pages/welcome/welcome',
           })
         }
+        let serviceData = []
+        let serviceData2 = []
         for (let i = 0; i < res.data.data.list.length; i++) {
-          t.data.serviceData.push({
+          serviceData.push({
+            url: 'http://helpyou-1255600302.cosgz.myqcloud.com' + res.data.data.list[i].iconUrl,
+            text: res.data.data.list[i].name,
+            service_id: res.data.data.list[i].id
+          });
+          serviceData2.push({
             url: 'http://helpyou-1255600302.cosgz.myqcloud.com' + res.data.data.list[i].iconUrl,
             text: res.data.data.list[i].name,
             service_id: res.data.data.list[i].id
           });
         }
-        console.log(t.data.serviceData);
+        // serviceData = serviceData.concat(serviceData)
+        // serviceData = serviceData.concat(serviceData)
+        console.log(serviceData);
         t.setData({
-          serviceData: t.data.serviceData
+          serviceData: serviceData
         });
-
+        
+      },
+      complete: () => {
+        wx.hideLoading()
       }
     })
   },
   //进入发布页
   nav:function(e){
+    let dataset = e.currentTarget.dataset
     console.log(e.currentTarget.dataset.id);
-    this.setData({
-      nochange:false,
-      categoryId: e.currentTarget.dataset.id,
-      name:e.currentTarget.dataset.name
-    });
+    wx.navigateTo({
+      url: `../sendContext/sendContext?id=${dataset.id}&name=${dataset.name}`
+    })
+    // this.setData({
+    //   nochange:false,
+    //   categoryId: e.currentTarget.dataset.id,
+    //   name:e.currentTarget.dataset.name
+    // });
   },
   //获取textarea
   blur:function(e){
