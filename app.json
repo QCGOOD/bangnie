@@ -1,6 +1,9 @@
 {
   "pages": [
     "pages/welcome/welcome",
+    "pages/send/send",
+    "pages/sendSuccess/sendSuccess",
+    "pages/sendContext/sendContext",
     "pages/details/details",
     "pages/ziliao/ziliao",
     "pages/que/que",
@@ -8,7 +11,6 @@
     "pages/myMessage/myMessage",
     "pages/main/main",
     "pages/mySend/mySend",
-    "pages/send/send",
     "pages/canvas/canvas",
     "pages/index/index",
     "pages/move/move",

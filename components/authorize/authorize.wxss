@@ -1,0 +1,25 @@
+/* components/authorize/authorize.wxss */
+.authorize {
+  z-index: 10;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.authorize .box {
+  background: #fff;
+  width: 600rpx;
+  border-radius: 10rpx;
+  text-align: center;
+  padding: 30rpx;
+  
+}
+.authorize .box .text {
+  padding: 30rpx 20rpx;
+  font-size: 30rpx;
+}

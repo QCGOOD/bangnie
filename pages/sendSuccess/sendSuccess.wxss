@@ -1,0 +1,26 @@
+/* pages/sendSuccess.wxss */
+.success {
+  padding-top: 150rpx;
+}
+.img {
+  width: 150rpx;
+  margin: 0 auto;
+}
+.img image {
+  width: 100%;
+}
+.text {
+  text-align: center;
+  margin-top: 20rpx;
+}
+.btn {
+  padding: 150rpx 150rpx;
+  background: #fff;
+}
+.btn button {
+  background: #f8794d;
+  height: 100rpx;
+  border-radius: 87rpx;
+  color: white;
+  border: 0;
+}
