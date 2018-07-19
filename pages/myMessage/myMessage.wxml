@@ -1,6 +1,6 @@
 <!--pages/myMessage/myMessage.wxml-->
 <view class='conteiner' style='width:100%;height:{{height*0.908-10}}px;margin-top:10px;background:white;' wx:if="{{show}}">
-  <scroll-view style='width:90%;height:{{height*0.908-10}}px;margin:0 5%;' scroll-y="true">
+  <scroll-view style='width:90%;height:{{height*0.908-10}}px;margin:0 5%;' scroll-y>
     <block wx:for="{{userData}}">
       <view class='inBox' style='width:100%;height:auto;margin-bottom:20rpx;background:white;padding-left:20rpx;padding-top:40rpx;'>
         <view class='user_message'>
@@ -14,7 +14,7 @@
           <view class='content_text'>
             <text style='color:#7399D8;font-size:30rpx;margin-top:20rpx;margin-bottom:10rpx;'>#{{item.category}}#</text>{{item.text}}</view>
           <view class='content_image' style='display:flex;justify-content:flex-start;flex-wrap:wrap;' wx:if="{{item.len}}">
-            <block wx:for="{{item.content}}" wx:for-item="child_item">
+            <block wx:for="{{item.content}}" wx:for-item="child_item" wx:for-key="child_index" wx:key="{{child_index}}">
               <image src='{{child_item}}' style='width:222rpx;margin:5px 2px;height:222rpx;' binderror='error' data-index="{{index}}" data-totalIndex="{{totalIndex}}" wx:if="{{item.len}}"></image>
             </block>
           </view>

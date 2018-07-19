@@ -52,8 +52,6 @@ Page({
     //获取留言列表
     wx.request({
       url: `${app.http}/app/comment/page`,
-
-
       method: "GET",
       header: {
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'

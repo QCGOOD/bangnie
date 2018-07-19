@@ -26,9 +26,10 @@ Page({
       sourceId: options.sourceId
 
     });
+    wx.showLoading()
     // that.getDetails(that.data.sourceId);
-
     that.erweima();
+<<<<<<< HEAD
 
     wx.showLoading({
       title: '加载中',
@@ -77,14 +78,10 @@ Page({
    */
   onReachBottom: function() {
 
+=======
+>>>>>>> a60d42a7f190f4f3e51a04de058c32457c2d2ddd
   },
 
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function() {
-
-  },
   //生成背景图
   // makeBg:function(){
 
@@ -176,8 +173,6 @@ Page({
     console.log("id是：" + id);
     wx.request({
       url: `${app.http}/app/information/get`,
-
-
       method: "GET",
       header: {
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
@@ -186,7 +181,6 @@ Page({
         wego168SessionKey: wx.getStorageSync("key"),
         id: id
       },
-
       success: function(res) {
         console.log(res);
         if (res.data.message == "用户未登录或登录已失效") {
@@ -269,6 +263,7 @@ Page({
       len = 3;
     }
     // console.log
+<<<<<<< HEAD
     wx.downloadFile({
       url: t.data.userData.avatarUrl,
       success: function(res) {
@@ -292,6 +287,27 @@ Page({
                     });
                     t.readyDraw();
                   }
+=======
+    for (let i = 0; i < len; i++) {
+      wx.downloadFile({
+        url: t.data.userData.content[i],
+        success: function(res) {
+          // console.log("laile", res);
+          if (res.statusCode == 200) {
+            t.data.imgBox.push(res.tempFilePath);
+            t.setData({
+              imgBox: t.data.imgBox
+            });
+            wx.downloadFile({
+              url: t.data.userData.avatarUrl,
+              success: function(res) {
+                // console.log("laile", res);
+                if (res.statusCode == 200) {
+                  t.setData({
+                    headimg: res.tempFilePath
+                  });
+                  t.readyDraw();
+>>>>>>> a60d42a7f190f4f3e51a04de058c32457c2d2ddd
                 }
               })
             };
@@ -385,6 +401,7 @@ Page({
   },
   //已经画好的
   readyDraw: function() {
+    wx.showToast({title: '我执行了画图'})
     var that = this;
     // console.log("临时路径", that.data.imgBox);
     console.log(that.data.userData.text);
@@ -395,13 +412,8 @@ Page({
     var width = this.data.width;
     var height = this.data.trueheight;
 
-
-
-
     // 2path
     var ctx2 = wx.createCanvasContext("sharehidden");
-
-
 
 
     ctx2.drawImage("/images/bgli.png", 0, 0, width, height * 0.8);
@@ -509,9 +521,7 @@ Page({
     wx.request({
       url: `${app.http}/app/qrcode/get`,
 
-
       method: "GET",
-
       data: {
         wego168SessionKey: wx.getStorageSync("key"),
         id: that.data.sourceId

@@ -320,26 +320,29 @@ Page({
   blur: function(e) {
     var t = this;
     if (this.data.inputValue) {
-      flag: false
+      this.setData({
+        flag: false
+      })
     }
     else {
-      this.setData({
-        flag: true
+      // this.setData({
+      //   flag: true
+      // })
+      wx.showToast({
+        title: '不能输入为空哦~',
+        icon: "fail",
+        duration: 1000
       })
     }
     console.log("blur:", e.detail.value);
     for (let i in t.data.searchStr) {
-      console.log(i);
+      // console.log(i);
       if (e.detail.value == i) {
         t.click(null, i, t.data.searchStr[i]);
         return;
       }
     }
-    wx.showToast({
-      title: '当前城市未开放',
-      icon: "loading",
-      duration: 1000
-    });
+    
   },
   //检测用户的授权状态
   checkLogin: function() {
@@ -367,7 +370,12 @@ Page({
           //   url: '/pages/main/main',
           // })
         }
-      }
+      },
+      fail:function(){
+        t.setData({
+          login: false
+        });
+      },
     })
   },
   //用户授权登录事件，向后台传数据
@@ -375,38 +383,50 @@ Page({
     var t = this;
 
     console.log(e);
+    if (e.detail.userInfo){
+      this.setData({
+        login: true
+      });
+      console.log("key值：", t.data.key);
+      wx.showToast({
+        title: '登录中...',
+        icon: "loading",
+        duration: 500
+      })
+      let data = {
+        wego168SessionKey: t.data.key,
+        name: e.detail.userInfo.nickName,
+        headImage: e.detail.userInfo.avatarUrl,
+        sex: e.detail.userInfo.gender
+      };
 
-    this.setData({
-      login: true
-    });
-    console.log("key值：", t.data.key);
-    wx.showToast({
-      title: '登录中...',
-      icon: "loading",
-      duration: 500
-    })
-    let data = {
-      wego168SessionKey: t.data.key,
-      name: e.detail.userInfo.nickName,
-      headImage: e.detail.userInfo.avatarUrl,
-      sex: e.detail.userInfo.gender
-    };
+      wx.request({
+        url: `${app.http}/app/member/save`,
+        method: "POST",
+        header: {
+          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+          // 'Content-type': 'application/X-WWW-FORM-URLENCODED; charset=UTF-8'
+        },
+        data: data,
+        success: function (res) {
+          console.log(res);
+          t.getCityList();
+          t.judgePhone();
+        }
+
+      })
+    }else{
+      wx.showModal({
+        title: '注意',
+        showCancel: false,
+        confirmText: '好去授权',
+        content: '为了您更好的体验,请先同意授权',
+        success: function (res) {
+          
+        }
+      })
+    }
     
-    wx.request({
-      url: `${app.http}/app/member/save`,
-      method: "POST",
-      header: {
-        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-        // 'Content-type': 'application/X-WWW-FORM-URLENCODED; charset=UTF-8'
-      },
-      data: data,
-      success: function(res) {
-        console.log(res);
-        t.getCityList();
-        t.judgePhone();
-      }
-
-    })
   },
   login: function() {
     var t = this;
