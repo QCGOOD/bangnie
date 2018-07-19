@@ -9,7 +9,6 @@ Page({
   data: {
     imgHost: app.imgHost,
     height: app.height - 10,
-    showSelect: false,
     page:1,
     userData:[],
   },
@@ -33,8 +32,10 @@ Page({
     })
   },
   // 显示选择框
-  showSelect() {
-    this.setData({ showSelect: !this.data.showSelect })
+  showSelect(e) {
+    let index = e.currentTarget.dataset.index;
+    let showSelect =`userData[${index}].showSelect`;
+    this.setData({ [showSelect]: !this.data.userData[index].showSelect })
   },
   // 跳转
   jumpPage(e){
@@ -75,6 +76,7 @@ Page({
         }
         let tempArr = [];
         res.data.data.list.map((item, i) => {
+          item.showSelect = false;
           if(item.imgUrl != "") {
             item.imgUrl = item.imgUrl.split(',')
           }else{
