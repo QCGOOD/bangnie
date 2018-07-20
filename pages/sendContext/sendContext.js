@@ -15,8 +15,11 @@ Page({
     },
     tempFilePaths: [],
     imageUrl: [
-      '/attachments/member/508a5be1e4a44cb6a0b79fb258a4444b.png',
-      '/attachments/member/508a5be1e4a44cb6a0b79fb258a4444b.png',
+      // '/attachments/member/508a5be1e4a44cb6a0b79fb258a4444b.png',
+      // '/attachments/member/508a5be1e4a44cb6a0b79fb258a4444b.png',
+      // '/attachments/member/508a5be1e4a44cb6a0b79fb258a4444b.png',
+      // '/attachments/member/508a5be1e4a44cb6a0b79fb258a4444b.png',
+      // '/attachments/member/508a5be1e4a44cb6a0b79fb258a4444b.png',
     ],
     name: '',
     id: '',

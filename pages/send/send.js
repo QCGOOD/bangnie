@@ -18,7 +18,6 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad (options) {
-    console.log('onLoad == ', this.data)
     var t=this;
     t.setData({
       width: app.width,
@@ -92,7 +91,6 @@ Page({
   //进入发布页
   nav:function(e){
     let dataset = e.currentTarget.dataset
-    console.log(e.currentTarget.dataset.id);
     wx.navigateTo({
       url: `../sendContext/sendContext?categoryId=${dataset.id}&name=${dataset.name}`
     })

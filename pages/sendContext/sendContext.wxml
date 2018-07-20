@@ -7,7 +7,7 @@
       <view style='margin:0 50rpx;'>
         <view style='color:#7E9BCF;background:white;font-size:32rpx;padding-top:20rpx;'>#{{name}}#</view>
         <view>
-          <textarea placeholder='一直做梦，晚上一直睡不好，心情抑郁烦躁，咋么回事？' placeholder-style='padding-top:20rpx;' style='background:white;margin-top:20rpx;height:200rpx; font-size: 30rpx; width: 100%;' bindinput='contentInput' auto-focus value="{{model.content}}"></textarea>
+          <textarea placeholder='请输入要发布的资讯内容' placeholder-style='padding-top:20rpx;' style='background:white;margin-top:20rpx;height:200rpx; font-size: 30rpx; width: 100%;' bindinput='contentInput' auto-focus value="{{model.content}}"></textarea>
         </view>
         <view class="choose-img">
           <block wx:for="{{imageUrl}}" wx:key="item">
@@ -22,15 +22,21 @@
         </view>
       </view>
     </view>
-
+    <view class="address">
+      <image src='/images/loc.png' style='width:22rpx;margin-right: 20rpx;' mode='widthFix'></image>
+      <view style='width:100%;font-size:28rpx;'>{{model.address}}</view>
+    </view>
     <view style='width:100%;height:40rpx; background:#f2f2f2;'></view>
     <view style='width:100%;background:#f2f2f2;'>
       <form class='form' report-submit="true" bindsubmit="submit">
         <view style='background:white;'>
-          <view class='form-item'>
-            <image src='/images/loc.png' style='width:26rpx; margin-right: 10rpx;' mode='widthFix'></image>
-            <view style='width:100%;margin-left:10rpx;font-size:28rpx;'>{{model.address}}</view>
-          </view>
+          <!-- <view class='form-item'>
+            <label class="form-item__label" for="name">
+              <image src='/images/loc.png' style='width:22rpx;' mode='widthFix'></image>
+            </label>
+            
+            <view style='width:100%;font-size:28rpx;'>{{model.address}}</view>
+          </view> -->
           <view class='form-item'>
             <label class="form-item__label" for="name">称呼</label>
             <input class="form-item__input" placeholder='请输入称呼' name="name" id='name' value="{{model.appellation}}" bindinput="nameInput"></input>
