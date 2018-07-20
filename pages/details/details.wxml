@@ -92,6 +92,6 @@
 </view>
 
 <view class='remark-wrap' wx:if="{{liuyan}}">
-  <input placeholder='请输入' auto-focus confirm-type="send" bindblur='onInputBlur' maxlength='100' bindconfirm="sendLY" bindinput='onNeirongChange'></input>
+  <input placeholder='请输入' cursor-spacing='15' auto-focus confirm-type="send" bindblur='onInputBlur' maxlength='100' bindconfirm="sendLY" bindinput='onNeirongChange'></input>
   <button class='btn' catchtap='sendLY' disabled='{{lockRemark}}'>发送</button>
 </view>
