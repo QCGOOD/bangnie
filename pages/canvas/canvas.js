@@ -287,7 +287,7 @@ Page({
     ctx2.fillText("地址:" + that.data.userData.address, width * 0.15 - 20, height * 0.28 + that.data.line * 16 + 40 + 20);
     for (let i = 0; i < that.data.userData.others.length; i++) {
       console.log('======>', that.data.userData.others[i].key)
-      ctx2.drawImage(that.data.userData.others[i].key, width * 0.15 - 20 + i * (60 + width * 0.025), height * 0.28 + that.data.line * 16 + 40 + 30, 15, 15);
+      ctx2.drawImage(that.data.userData.others[i].key, width * 0.15 - 20 + i * (60 + width * 0.025), height * 0.28 + that.data.line * 16 + 40 + 30, 15, 5);
       ctx2.fillText(that.data.userData.others[i].value, width * 0.15 - 20 + i * (60 + width * 0.03) + width * 0.031 + 5, height * 0.28 + that.data.line * 16 + 40 + 43, width * 0.03, height * 0.03);
     }
     ctx2.drawImage(that.data.erweima, width - 80, height * 0.85 - 80, 60, 60);

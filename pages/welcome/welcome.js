@@ -20,16 +20,17 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
+  onLoad: function(options) {
+    this.data.back = options.back;
     this.login();
   },
 
   // 登录--换取code
-  login: function () {
+  login: function() {
     var t = this;
     //登录前监察网络状态
     wx.getNetworkType({
-      success: function (res) {
+      success: function(res) {
         // 返回网络类型, 有效值：
         // wifi/2g/3g/4g/unknown(Android下不常见的网络类型)/none(无网络)
         var networkType = res.networkType
@@ -55,10 +56,10 @@ Page({
           data: {
             code: "" + res.code
           },
-          success: function (r) {
+          success: function(r) {
             console.log("执行用户登录login");
             console.log('换取sessionKey======', r);
-            if(r.data.code == 20000) {
+            if (r.data.code == 20000) {
               t.setData({
                 key: r.data.data.wego168SessionKey
               });
@@ -66,13 +67,13 @@ Page({
               t.checkAuth();
               console.log('qqMsap开始2')
               t.qqMap();
-            }else{
+            } else {
               wx.showModal({
                 title: '提示',
                 showCancel: false,
                 confirmText: '知道了',
                 content: r.data.message,
-                success: function (res) {
+                success: function(res) {
                   if (res.confirm) {
                     console.log('用户点击确定')
                   } else if (res.cancel) {
@@ -88,7 +89,7 @@ Page({
   },
 
   //检测用户的授权状态
-  checkAuth () {
+  checkAuth() {
     let t = this;
     wx.getSetting({
       success: res => {
@@ -96,8 +97,8 @@ Page({
         if (res.authSetting["scope.userInfo"]) {
           wx.getUserInfo({
             success: (res) => {
-              console.log('用户信息=======',res)
-              if(res.errMsg == 'getUserInfo:ok') {
+              console.log('用户信息=======', res)
+              if (res.errMsg == 'getUserInfo:ok') {
                 console.log(res.userInfo)
                 let data = {
                   wego168SessionKey: this.data.key,
@@ -113,6 +114,7 @@ Page({
             isAuthorize: false
           })
           t.nearCity()
+          t.getCityList();
         } else {
           this.setData({
             isAuthorize: true
@@ -140,7 +142,7 @@ Page({
     //获取经纬度
     wx.getLocation({
       type: 'gcj02', //返回可以用于wx.openLocation的经纬度,使用德时候注意查看官方文档注意兼容问题
-      success: function (res) {
+      success: function(res) {
         console.log(res);
         that.getCity(res.longitude, res.latitude);
       },
@@ -152,35 +154,35 @@ Page({
   },
 
   //获取当前的城市
-  getCity: function (longitude, latitude) {
+  getCity: function(longitude, latitude) {
+    if (wx.getStorageSync('city')) {
+      this.setData({
+        city: wx.getStorageSync('city'),
+      });
+      return
+    }
     var that = this;
     qqMapWX.reverseGeocoder({
       location: {
         latitude: '' + latitude,
         longitude: '' + longitude,
       }, //location的格式是传入一个字符对象
-      success: function (res) {
+      success: function(res) {
         wx.setStorage({
           key: "LCDetails",
           data: res.result.address,
         })
-        console.log('当前位置====', res);
         var len = res.result.address_component.city.length;
         that.setData({
           nation: res.result.address_component.nation,
           province: res.result.address_component.province,
           city: res.result.address_component.city,
         });
-        console.log('当前城市====', res.result.address_component.city);
-        // wx.showToast({
-        //   title: '请稍候~',
-        //   icon: 'loading'
-        // })
       }
     });
   },
   //得到输入城市的值
-  inputValue: function (e) {
+  inputValue: function(e) {
     console.log("输入的是：", e.detail.value)
     if (e.detail.value.length > 0) {
       this.setData({
@@ -194,7 +196,7 @@ Page({
     }
   },
   //获取城市列表
-  getCityList: function () {
+  getCityList: function() {
     var t = this;
     // 正确代码
     // console.log(wx.getStorageSync("key"));
@@ -212,7 +214,7 @@ Page({
       data: {
         wego168SessionKey: wx.getStorageSync("key")
       },
-      success: function (res) {
+      success: function(res) {
         console.log(res);
         // console.log(res.data.data.list);
         // console.log(res.data.data.list[1].childList)
@@ -251,7 +253,7 @@ Page({
           });
         }
       },
-      fail: function () {
+      fail: function() {
         console.log("登录失效");
         t.setData({
           login: false
@@ -260,20 +262,19 @@ Page({
     })
   },
   //输入框的聚焦事件
-  focus: function () {
+  focus: function() {
     this.setData({
       flag: false
     })
   },
   //输入框失焦事件
-  blur: function (e) {
+  blur: function(e) {
     var t = this;
     if (this.data.inputValue) {
       this.setData({
         flag: false
       })
-    }
-    else {
+    } else {
       // this.setData({
       //   flag: true
       // })
@@ -296,8 +297,8 @@ Page({
       duration: 1000
     });
   },
-    // 用户同意授权-----保存用户基本信息
-  getUserInfo (e) {
+  // 用户同意授权-----保存用户基本信息
+  getUserInfo(e) {
     var t = this;
     console.log(e);
     t.closeAuthorize()
@@ -323,11 +324,12 @@ Page({
       success: (res) => {
         console.log('保存用户信息====', res)
         this.nearCity()
+        this.getCityList();
       }
     })
   },
   // 最近城市
-  nearCity(){
+  nearCity() {
     let t = this;
     wx.request({
       url: `${app.http}/app/recentlyArea`,
@@ -338,24 +340,24 @@ Page({
       data: {
         wego168SessionKey: wx.getStorageSync("key")
       },
-      success: function (res) {
+      success: function(res) {
         console.log('最近城市====', res);
         if (res.data.code == 20000) {
           wx.setStorageSync('city', res.data.data.name);
           wx.setStorageSync('id', res.data.data.id);
           // 有最近城市 直接去首页
+          if (t.data.back == 1) {
+            return
+          }
           wx.switchTab({
             url: '/pages/main/main',
           })
-        }else{
-          
-          t.getCityList();
         }
       }
     })
   },
   // 点击选取城市
-  click: function (e, cityName, searchId) {
+  click: function(e, cityName, searchId) {
     // console.log(e.currentTarget.dataset);
     if (!e) {
       wx.setStorage({
@@ -391,7 +393,7 @@ Page({
         wego168SessionKey: wx.getStorageSync("key"),
         id: wx.getStorageSync("id")
       },
-      success: function (res) {
+      success: function(res) {
         console.log(res);
 
       }
@@ -399,7 +401,7 @@ Page({
     // this.getMessage(page);
   },
   //对定位城市的服务判断
-  click2: function (e) {
+  click2: function(e) {
     var t = this;
     // console.log(e);
     let flag = false;
@@ -421,4 +423,12 @@ Page({
       })
     }
   },
+  clear() {
+    wx.removeStorage({
+      key: 'city',
+      success: (res) => {
+        this.qqMap();
+      },
+    })
+  }
 })

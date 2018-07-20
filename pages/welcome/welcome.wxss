@@ -33,12 +33,14 @@
   margin-top: 20rpx;
   margin-bottom: 62rpx;
 }
-
+.locationAuto .list {
+  display: inline-block;
+  vertical-align: top;
+}
 .loca {
   display: flex;
   justify-content: center;
   align-items: center;
-  /* transform: translate(6%,100%); *//* background:red; *//* font-size:16px; */
   width: 208rpx;
   height: 85rpx;
   font-size: 16px;
@@ -69,14 +71,13 @@
 }
 
 .item {
-  display: flex;
-  justify-content: center;
-  align-items: center;
   width: 178rpx;
-  height: 79rpx;
+  height: 80rpx;
+  line-height: 80rpx;
   font-size: 30rpx;
-  background: #f9f9f9;
+  text-align: center;
   margin: 12rpx 35rpx;
+  background: #f9f9f9;
   border-radius: 20rpx;
 }
 
