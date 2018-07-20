@@ -1,7 +1,7 @@
 <!--真正的发布页  -->
 
 
-<view style="padding-top: 20rpx 0 50rpx 0; background: rgb(242, 242, 242);">
+<view class="send-context" style="height: {{height}}px;">
   <view class='container'>
     <view style='width:100%;background:white;'>
       <view style='margin:0 50rpx;'>
@@ -9,56 +9,38 @@
         <view>
           <textarea placeholder='一直做梦，晚上一直睡不好，心情抑郁烦躁，咋么回事？' placeholder-style='padding-top:20rpx;' style='background:white;margin-top:20rpx;height:200rpx; font-size: 30rpx; width: 100%;' bindinput='contentInput' auto-focus value="{{model.content}}"></textarea>
         </view>
-
         <view class="choose-img">
-          
-          <!-- <block wx:for="{{tempFilePaths}}" wx:key="item">
-            <image src='{{item}}' style='width:122rpx;height:122rpx;display:inline-block;margin-right:10rpx;' mode='scaleToFill'></image>
-            <image src="/images/shanchu.png" class='icon icon-shanchu' style='width:20rpx;height:20rpx;transform:translate(-150%,-510%);'
-              catchtap='chehui' data-index="{{index}}"></image>
-          </block>
-          <image src='/images/add.png' style='width:118rpx; height:118rpx;display:inline-block;border:2rpx solid #ccc;margin-right:10rpx;'
-            bindtap="chooseImage" wx:if="{{isAdd}}"></image> -->
-          <!-- <block wx:for="{{tempFilePaths}}" wx:key="item">
-            <view class="choose-img-item">
-              <image src='{{item}}' mode='widthFix'></image>
-              <image src="/images/shanchu.png" class='icon icon-shanchu' catchtap='chehui' data-index="{{index}}" mode='widthFix'></image>
-            </view>
-          </block> -->
           <block wx:for="{{imageUrl}}" wx:key="item">
             <view class="choose-img-item">
               <image wx:if="{{item}}" src="{{imgHost}}{{item}}" mode='widthFix'></image>
               <image src="/images/shanchu.png" class='icon icon-shanchu' catchtap='chehui' data-index="{{index}}" mode='widthFix'></image>
             </view>
           </block>
- 
-          <view class="choose-img-item" wx:if="{{imageUrl.length < 9}}">
+          <view class="choose-img-item" wx:if="{{imageUrl.length < 9}}" style="border: 1rpx solid #bebebe;">
             <image src='/images/add.png' bindtap="chooseImage" mode='widthFix'></image>
           </view>
-          
-          
         </view>
       </view>
     </view>
 
-
-    <view style='width:100%;height:20rpx; background:#f2f2f2;'></view>
+    <view style='width:100%;height:40rpx; background:#f2f2f2;'></view>
     <view style='width:100%;background:#f2f2f2;'>
       <form class='form' report-submit="true" bindsubmit="submit">
         <view style='background:white;'>
-          <view style='width:95%;height:12%;display:flex;justify-content:center;margin-left:5%;padding:20rpx 0;align-items:center;border-bottom:2rpx solid #f2f2f2;'>
-            <image src='/images/loc.png' style='width:30rpx;' mode='widthFix'></image>
+          <view class='form-item'>
+            <image src='/images/loc.png' style='width:26rpx; margin-right: 10rpx;' mode='widthFix'></image>
             <view style='width:100%;margin-left:10rpx;font-size:28rpx;'>{{model.address}}</view>
           </view>
           <view class='form-item'>
             <label class="form-item__label" for="name">称呼</label>
-            <input class="form-item__input" placeholder='请输入称呼（何先生/何小姐）' name="name" id='name' value="{{model.appellation}}" bindinput="nameInput"></input>
+            <input class="form-item__input" placeholder='请输入称呼' name="name" id='name' value="{{model.appellation}}" bindinput="nameInput"></input>
           </view>
           <view class='form-item'>
             <label class="form-item__label" for="phone">手机</label>
             <input class="form-item__input" type="number" placeholder='请输入手机号码' name="phone" id='phone' bindinput='phoneInput' value="{{model.phone}}"></input>
+            <button size="mini" type="primary" wx:if="{{isGetPhone}}" bindgetphonenumber="getPhoneNumber" open-type="getPhoneNumber">获取手机号</button>
           </view>
-          <view style='width:100%;height:20rpx;background:#F2F2F2;'></view>
+          <view style='width:100%;height:40rpx;background:#F2F2F2;'></view>
           <!-- <view class='form-item' style='border:none;'>
             <label class="form-item__label" for="top">置顶</label>
             <input class="form-item__input" placeholder='未开启' name="top" id='top'></input>
