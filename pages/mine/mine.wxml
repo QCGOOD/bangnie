@@ -24,13 +24,13 @@
       </view>
       <image src='/images/inDetails.png'   class="navInto"></image>
     </view>
-    <view  class='item_box' data-path="/pages/myMessage/myMessage" bindtap='jumpPage'>
+    <!-- <view  class='item_box' data-path="/pages/myMessage/myMessage" bindtap='jumpPage'>
       <view  class='item_inline'>
         <image src='/images/mess.png'  class='mymessage'></image>
         <text >我的消息</text>
       </view>
       <image src='/images/inDetails.png'  class="navInto"></image>
-    </view>
+    </view> -->
   </view>
   <!-- <view  class='ques' data-path="/pages/que/que" bindtap='jumpPage'>
     <view  class='item_box' >

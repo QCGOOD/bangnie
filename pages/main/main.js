@@ -35,8 +35,6 @@ Page({
     }
     console.log(wx.getStorageSync("key"));
     that.setData({
-      width: app.width,
-      height: app.height,
       trueHeight: app.trueHeight,
       selectData: wx.getStorageSync("city"),
       newSearch: {

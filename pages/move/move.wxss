@@ -1,94 +1,47 @@
-/* pages/move/move.wxss */
+/* pages/main/main.wxss */
 
-/*标题lan开始  */
+page {
+  background: #f0f0f0;
+}
 
-#navgationBar {
-  font-size: 18px;
-  /* font-weight: bold; */
-  background: red;
-  /* transform: translateY(50%); */
-  display: flex;
-  /* flex-direction: column-reverse; */
-  justify-content: center;
-  align-items: flex-end;
-  box-sizing: border-box;
-   padding-bottom: 15rpx; 
-  /* padding-left:40rpx; */
-}
-.img{
-   position:absolute;
-   z-index: 2;
-   transform: translateY(60%); 
-   /* background: green; */
-   
-}
-/*标题lan结束  */
-/*栏目开始  */
-.curcle{
-  width:100%;
-  height:90rpx;
-  /* background: yellowgreen; */
+/*朋友圈开始  */
+
+.curcle {
+  padding: 0 20rpx;
+  width: 100%;
   display: flex;
   justify-content: space-around;
   align-items: center;
-   /* border-bottom:5px solid #888888; */
-   /* margin-bottom: 20rpx; */
+  box-sizing: border-box;
+  background: white;
 }
-.curcle view{
-  
-  padding-bottom: 20rpx;
-  padding-top: 20rpx;
-  
+
+.curcle.flexd {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
 }
-.on{
-  color:#F56F4B;
-  border-bottom:5px solid #F56F4B;
+
+.curcle view {
+  padding: 30rpx 0;
+  font-size: 30rpx;
+  font-weight: bold;
 }
-.off{
-  color:#888888;
+
+.on {
+  color: #f56f4b;
+  border-bottom: 5rpx solid #f56f4b;
 }
-/*栏目结束  */
-/*朋友圈开始  */
-.user_message{
-  width:100%;
-  height:12%;
-  /* background: purple; */
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
+
+.off {
+  color: #888;
+  border-bottom: 5rpx solid #fff;
 }
-.user_message image{
-  width:82rpx;
-  height:82rpx;
-  float:left;
-  margin-left:10px;
+
+.loading {
+  padding: 40rpx 0;
+  text-align: center;
+  font-size: 28rpx;
+  color: #666;
 }
-.user_message .name{
-  margin-left:10px;
-  float: left;
-}
-.content{
-  width:100%;
-  height:auto;
-  /* background: green; */
-}
-.address{
-  margin:10rpx 0rpx;
-  /* background: yellow; */
-}
-.others{
-  display: flex;
-  justify-content: flex-start;
-  /* background: yellow; */
-}
-.others1{
-  margin-right:20rpx;
-  /* background: pink; */
-  width:135rpx;
-}
-.else_intro{
-  position:relative;top:0;left:50%;transform: translateX(-50%);width:330rpx;height:60rpx;
-  color:#848484;
-  font-size:36rpx;
-}
-/*朋友圈结束  */

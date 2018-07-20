@@ -33,14 +33,14 @@
 <!--栏目结束  -->
 
 <!--广告栏开始  -->
-<view class='ad'>
+<!-- <view class='ad'>
   <image src='/images/adImage.png' style='flex:0 0 70rpx;' mode='widthFix'></image>
   <view class='ad_text'>
     <block wx:for="{{adData}}" wx:key="{{index}}">
       <text style='color:#303030;font-size:24rpx;'>  ·{{item.text}}</text>
     </block>
   </view>
-</view>
+</view> -->
 <!--广告栏结束-->
 
 <!--朋友圈开始-->
@@ -86,7 +86,7 @@
           <text class="num">{{item.commentQuantity}}</text>
         </view>
         <view class="list" catchtap='onLike' data-index="{{index}}" data-type="newData">
-          <text class='icon i-dianzan {{item.isPraise ? "i-color" : ""}}'></text>
+          <text class='icon i-dianzan {{item.isPraise ? "i-color like-active" : ""}}'></text>
           <text class="num">{{item.praiseQuantity}}</text>
         </view>
         <view class="list">
