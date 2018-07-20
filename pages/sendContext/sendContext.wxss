@@ -1,14 +1,24 @@
 
-
+.send-context {
+  padding-top: 20rpx 0 50rpx 0;
+  background: rgb(242, 242, 242);
+}
 .btn {
   padding: 50rpx 100rpx;
-  background: #fff;
+  /* background: #fff; */
 }
 .btn button {
   background: #f8794d;
   height: 87rpx;
   border-radius: 87rpx;
   color: white;
+}
+.address {
+  display: flex;
+  padding: 10rpx 30rpx;
+  align-items: center;
+  color: #8f8f8f;
+  font-size: 28rpx;
 }
 .form {
   /* padding: 20rpx; */
@@ -21,31 +31,38 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 90%;
-  height: 80rpx;
-  margin: 0 5%;
-  border-bottom: 2rpx solid #f2f2f2;
+  height: 100rpx;
+  margin: 0 30rpx;
+  border-bottom: 1rpx solid #f2f2f2;
 }
 
 .form-item .form-item__label {
-  flex: 160rpx 0 0;
+  /* flex: 160rpx 0 0; */
+  /* flex-shrink: 0;
+  margin-right: 30rpx; */
+  flex-shrink:0;
+  margin-right:20rpx;
+  width:60rpx;
+  /* text-align:center; */
+
 }
 
 .form-item .form-item__input {
   flex: 1;
-  text-align: right;
+  /* text-align: right; */
 }
 
 .choose-img {
   display: flex;
   flex-wrap: wrap;
-  padding-bottom: 20rpx;
+  /* padding-bottom: 20rpx; */
+  padding: 0 50rpx 20rpx 50rpx;
 }
 .choose-img-item {
-  width: 210rpx;
-  height: 210rpx;
-  margin-right: 10rpx;
-  margin-bottom: 10rpx;
+  width: 100rpx;
+  height: 100rpx;
+  margin-right: 125rpx;
+  margin-bottom: 40rpx;
   overflow: hidden;
   line-height: 1;
   background: rgba(0, 0, 0, 0.027);
@@ -59,7 +76,7 @@
 }
 .choose-img-item .icon-shanchu {
   position: absolute;
-  width: 50rpx;
+  width: 30rpx;
   top: 0;
   right: 0;
 }

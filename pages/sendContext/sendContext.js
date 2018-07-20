@@ -14,33 +14,33 @@ Page({
       formId: ''
     },
     tempFilePaths: [],
-    imageUrl: [],
+    imageUrl: [
+      // '/attachments/member/508a5be1e4a44cb6a0b79fb258a4444b.png',
+      // '/attachments/member/508a5be1e4a44cb6a0b79fb258a4444b.png',
+      // '/attachments/member/508a5be1e4a44cb6a0b79fb258a4444b.png',
+      // '/attachments/member/508a5be1e4a44cb6a0b79fb258a4444b.png',
+      // '/attachments/member/508a5be1e4a44cb6a0b79fb258a4444b.png',
+    ],
     name: '',
     id: '',
     imgHost: app.imgHost,
     count: 0,
+    height: 0,
+    isGetPhone: false
   },
   onLoad (options) {
-    console.log(options)
-    // console.log(this.data.model)
-    console.log('onLoad == ', this.data)
+    
+    this.setData({
+      height: app.height
+    })
     this.data.name = options.name
     if (options.id) {
       this.setData({
         id: options.id
       })
       this.detail(options.id)
-      // this.data.model = {
-      //   wego168SessionKey: wx.getStorageSync("key"),
-      //   id: options.id,
-      //   address: wx.getStorageSync("LCDetails"),
-      //   content: '',
-      //   imgUrl: '',
-      //   phone: '',
-      //   appellation: '',
-      //   formId: ''
-      // }
     } else {
+      this.memberAuthenticate();
       this.data.model = {
         wego168SessionKey: wx.getStorageSync("key"),
         areaId: wx.getStorageSync("id"),
@@ -61,7 +61,6 @@ Page({
       model: this.data.model,
       name: this.data.name
     })
-    console.log('onLoad === ', this.data.model)
   },
   contentInput (e) {
     this.data.model.content = e.detail.value
@@ -167,35 +166,6 @@ Page({
       wx.hideLoading()
       console.log(this.data.imageUrl)
     }
-    return
-    // let tempFilePaths = this.data.tempFilePaths
-    // let imageUrl = this.data.imageUrl
-    if (imageUrl.length < tempFilePaths.length) {
-      let path = tempFilePaths[tempFilePaths.length - (tempFilePaths.length - imageUrl.length)]
-      console.log('path === ', path)
-      this.uploadImg(path)
-    } else {
-      wx.hideLoading()
-      console.log(this.data.imageUrl)
-      // if (imageUrl.length !== tempFilePaths.length) {
-      //   this.setData({
-      //     imageUrl: []
-      //   })
-      //   this.loopImg()
-      // } else {
-      //   let imageUrl = ''
-      //   this.data.imageUrl.map(item => {
-      //     imageUrl += item + ','
-      //   })
-      //   imageUrl = imageUrl.substring(0, imageUrl.length - 1)
-      //   this.data.model.imgUrl = imageUrl
-      //   this.setData({
-      //     model: this.data.model
-      //   })
-      //   wx.hideLoading()
-      //   this.save();
-      // }
-    }
   },
   showToast(title, icon) {
     wx.showToast({
@@ -245,30 +215,18 @@ Page({
     wx.showLoading({
       title: '正在发布'
     })
-    console.log(this.data.model)
-    wx.request({
-      url: `${app.http}/app/information/save`,
-      method: "POST",
-      header: {
-        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-      },
-      data: this.data.model,
-      success: (res) => {
-        wx.hideLoading();
-        console.log(res.data);
-        let data = res.data
-        if (data.code === 20000) {
-          this.showToast('发布成功，等待审核')
-          setTimeout(() => {
-            wx.redirectTo({
-              url: '/pages/sendSuccess/sendSuccess'
-            })
-          }, 2000)
-        } else {
-          console.log(data.message)
-          this.showToast(data.message)
-        }
-      }
+    this.postData('/app/information/save', this.data.model).then(res => {
+      wx.hideLoading()
+      this.showToast('发布成功，请等待审核')
+      setTimeout(() => {
+        wx.redirectTo({
+          url: '/pages/sendSuccess/sendSuccess'
+        })
+      }, 2000)
+    }).catch(err => {
+      wx.hideLoading()
+      console.log(data.message)
+      this.showToast(data.message)
     })
   },
   update() {
@@ -276,79 +234,144 @@ Page({
     wx.showLoading({
       title: '正在发布'
     })
-    console.log(this.data.model)
-    wx.request({
-      url: `${app.http}/app/information/update`,
-      method: "POST",
-      header: {
-        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-      },
-      data: this.data.model,
-      success: (res) => {
-        wx.hideLoading();
-        console.log(res.data);
-        let data = res.data
-        if (data.code === 20000) {
-          this.showToast('发布成功，等待审核')
-          setTimeout(() => {
-            wx.redirectTo({
-              url: '/pages/sendSuccess/sendSuccess'
-            })
-          }, 2000)
-        } else {
-          console.log(data.message)
-          this.showToast(data.message)
-        }
-      }
+    this.postData('/app/information/update', this.data.model).then(res => {
+      wx.hideLoading()
+      this.showToast('发布成功，请等待审核')
+      setTimeout(() => {
+        wx.redirectTo({
+          url: '/pages/sendSuccess/sendSuccess'
+        })
+      }, 2000)
+    }).catch(err => {
+      wx.hideLoading()
+      console.log(data.message)
+      this.showToast(data.message)
     })
   },
   detail(id) {
     wx.showLoading({
-      title: '加载中'
+      title: '数据加载中'
     })
-    wx.request({
-      url: `${app.http}/app/information/get`,
-      method: "GET",
-      header: {
-        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-      },
-      data: {
-        id: id,
-        wego168SessionKey: wx.getStorageSync("key"),
-      },
-      success: (res) => {
-        wx.hideLoading();
-        console.log(res.data);
-        if (res.data.code === 20000) {
-          let data = res.data.data
-          let model = {}
-          model.wego168SessionKey = wx.getStorageSync("key")
-          model.content = data.content
-          model.id = data.id
-          model.phone = data.phone
-          model.appellation = data.appellation
-          model.address = data.address
-          console.log(data.imgUrl)
-          if (data.imgUrl) {
-            if (new RegExp(",").test(data.imgUrl)) {
-              console.log(12313)
-              this.data.imageUrl = data.imgUrl.split(',')
-            } else {
-              console.log('fsdfsfdsfsd')
-              this.data.imageUrl[0] = data.imgUrl
-            }
-          }
-          this.setData({
-            model: model,
-            imageUrl: this.data.imageUrl
-          })
-          console.log(this.data.model)
-          console.log(this.data.imageUrl)
-          console.log(data)
+    this.getData('/app/information/get', {id: id}).then(res => {
+      wx.hideLoading();
+      let data = res.data.data
+      let model = {}
+      model.content = data.content
+      model.id = data.id
+      model.phone = data.phone
+      model.appellation = data.appellation
+      model.address = data.address
+      if (data.imgUrl) {
+        if (new RegExp(",").test(data.imgUrl)) {
+          console.log(12313)
+          this.data.imageUrl = data.imgUrl.split(',')
         } else {
-          this.showToast(data.message)
+          console.log('fsdfsfdsfsd')
+          this.data.imageUrl[0] = data.imgUrl
         }
       }
+      this.setData({
+        model: model,
+        imageUrl: this.data.imageUrl
+      })
+    }).catch(err => {
+      wx.hideLoading();
+      this.showToast(data.message)
     })
-  }
+  },
+  memberAuthenticate() {
+    this.getData('/app/memberAuthenticate/get').then(res => {
+      console.log(res.data)
+      if (res.data.data && res.data.data.phoneNumber) {
+        this.data.model.phone = res.data.data.phoneNumber
+        this.setData({
+          model: this.data.model,
+          isGetPhone: false
+        })
+      } else {
+        this.setData({
+          isGetPhone: true
+        })
+      }
+    })
+  },
+  getPhoneNumber(e) {
+    console.log(e)
+    if (e.detail.encryptedData) {
+      let params = {
+        encryptedData: e.detail.encryptedData,
+        iv: e.detail.iv
+      }
+      this.postData('/app/phone', params).then(res => {
+        console.log(res.data)
+        this.data.model.phone = res.data.message
+        this.setData({
+          model: this.data.model
+        })
+      })
+    }
+  },
+  getData (url, params = {}) {
+    params.wego168SessionKey = wx.getStorageSync("key")
+    return new Promise((resolve, reject) => {
+      wx.request({
+        url: app.http + url,
+        data: params,
+        method: 'GET', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
+        success: res => {
+          if (res.data.code === 20000) {
+            resolve(res)
+          } else {
+            wx.showToast({
+              title: res.data.message || '系统出错',
+              icon: 'none',
+              duration: 2000
+            })
+            reject(res)
+          }
+        },
+        fail: err => {
+          wx.showToast({
+            title: res.data.message || '系统出错',
+            icon: 'none',
+            duration: 2000
+          })
+          reject(err)
+        }
+      })
+    })
+  },
+  postData (url, params = {}) {
+    params.wego168SessionKey = wx.getStorageSync("key")
+    return new Promise((resolve, reject) => {
+      wx.request({
+        url: app.http + url,
+        data: params,
+        method: 'POST',
+        header: {
+          'content-type': 'application/x-www-form-urlencoded'
+        },
+        success: res => {
+          if (res.data.code === 20000) {
+            resolve(res)
+          } else {
+            wx.showToast({
+              title: res.data.message || '系统出错',
+              icon: 'none',
+              duration: 2000
+            })
+            reject(err)
+          }
+        },
+        fail: err => {
+          wx.showToast({
+            title: res.data.message || '系统出错',
+            icon: 'none',
+            duration: 2000
+          })
+          reject(err)
+        },
+      })
+    })
+  },
 })

@@ -1,9 +1,9 @@
 
 <view wx:if='{{nochange}}'>
-  <view class='hgroup'>
+  <!-- <view class='hgroup'>
     <view class='h1'>发布的信息一定要真实</view>
     <view class='h2'>不可发布虚假消息</view>
-  </view>
+  </view> -->
   <!--栏目开始  -->
   <view class='mask'></view>
   <view class='service'>
