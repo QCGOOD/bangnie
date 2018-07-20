@@ -9,6 +9,6 @@
     <button bindtap="back">回到首页</button>
   </view>
 </view>
-<authorize is-authorize="{{isAuthorize}}" bindmyevent="closeAuthorize"></authorize>
+<!-- <authorize is-authorize="{{isAuthorize}}" bindmyevent="closeAuthorize"></authorize> -->
 
 
