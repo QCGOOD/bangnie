@@ -1,233 +1,192 @@
-// pages/move/move.js
+// pages/main/main.js
 var app = getApp().globalData;
+var page;
+var rq = require("../../utils/util.js");
 Page({
-
-  /**
-   * 页面的初始数据
-   */
   data: {
-    swiperIndex:0,
-    swiperData: [{
-      index: 0,
-      text: "最新"
-    }, {
-      index: 1,
-      text: "最热"
-    }, ], //滑块数据
-    userData: [{ name: '徐若海', timeStamp: '3分钟前', avatarUrl: "/images/service1.png", text: "这里只是一段测试的文字！这里只是一段测试的文字！这里只是一段测试的文字！这里只是一段测试的文字！", content: ["/images/content1.png", "/images/content1.png", "/images/content2.png", "/images/content3.png", "/images/content4.png",], address: "anhuitaihu", others: 'dianzan' }, { name: '徐若海', timeStamp: '3分钟前', avatarUrl: "/images/service1.png", text: "这里只是一段测试的文字！这里只是一段测试的文字！这里只是一段测试的文字！这里只是一段测试的文字！", content: ["/images/content1.png", "/images/content1.png", "/images/content2.png", "/images/content3.png", "/images/content4.png",], address: "anhuitaihu", others: 'dianzan' }, { name: '徐若海', timeStamp: '3分钟前', avatarUrl: "/images/service1.png", text: "这里只是一段测试的文字！这里只是一段测试的文字！这里只是一段测试的文字！这里只是一段测试的文字！", content: ["/images/content1.png", "/images/content1.png", "/images/content2.png", "/images/content3.png", "/images/content4.png",], address: "anhuitaihu", others: 'dianzan' }, { name: '徐若海', timeStamp: '3分钟前', avatarUrl: "/images/service1.png", text: "这里只是一段测试的文字！这里只是一段测试的文字！这里只是一段测试的文字！这里只是一段测试的文字！", content: ["/images/content1.png", "/images/content1.png", "/images/content2.png", "/images/content3.png", "/images/content4.png",], address: "anhuitaihu", others: 'dianzan' },],
-  show:false,//是否有数据显示
-  userData1:[],
-  userData2:[],
-  page:1
+    //下拉列表的数据
+    selectData: '',
+    //选择的下拉列表下标
+    index: 0,
+    //导航处轮播图
+    imgUrls: [],
+    serviceData: [],
+    swiperIndex: 0,
+    newData: [],
+    hotData: [],
+    imgHost: app.imgHost,
+    newType: false,
+    hotType: false
   },
-
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function(options) {
-    var t=this;
-    console.log(app);
-    console.log(options.serviceId);
-    this.setData({
-      height: app.height,
-      trueheight:app.trueHeight,
-      categoryId: options.serviceId
+  onLoad: function (options) {
+    var that = this;
+    if (!wx.getStorageSync("city")) {
+      that.jumpChoosePage();
+    }
+    that.setData({
+      newData: [],
+      hotData: [],
+      newType: false,
+      hotType: false,
+      swiperIndex: 0,
+      selectData: wx.getStorageSync("city"),
+      newSearch: {
+        pageNum: 1,
+        pageSize: 20,
+        pageTotal: -1,
+        type: 1,
+        wego168SessionKey: wx.getStorageSync("key"),
+        areaId: wx.getStorageSync("id"),
+        categoryId: options.serviceId,
+        mytype: 'newData'
+      },
+      hotSearch: {
+        pageNum: 1,
+        pageSize: 20,
+        pageTotal: -1,
+        type: 2,
+        wego168SessionKey: wx.getStorageSync("key"),
+        areaId: wx.getStorageSync("id"),
+        categoryId: options.serviceId,
+        mytype: 'hotData'
+      },
     });
-    t.getMessage(t.data.page, t.data.swiperIndex + 1, t.data.swiperIndex + 1,t.data.categoryId);
+    that.getMessage(this.data.newSearch);
   },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function() {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function() {
-
-  },
-
   /**
    * 页面上拉触底事件的处理函数
    */
-  onReachBottom: function() {
-
+  onReachBottom: function () {
+    if (this.data.swiperIndex == 0) {
+      this.getMessage(this.data.newSearch)
+    } else {
+      this.getMessage(this.data.hotSearch)
+    }
   },
-
   /**
-   * 用户点击右上角分享
+   * 是否存在下一页
    */
-  onShareAppMessage: function() {
-
+  isNext(data) {
+    if (data.pageNum <= Math.ceil(data.pageTotal / data.pageSize) || data.pageTotal == -1) {
+      return true
+    }
+    return false
   },
+
   //切换最新最热
-  change: function (e) {
-    var t=this;
-    console.log(e);
+  changeTabbar: function (e) {
+    let index = e.currentTarget.dataset.index
     this.setData({
-      swiperIndex: e.currentTarget.dataset.index,
-      page: 1
+      swiperIndex: index,
     });
-    if (e.currentTarget.dataset.index==0){
-      
-      t.getMessage(t.data.page, t.data.swiperIndex + 1, t.data.swiperIndex + 1, t.data.categoryId);
-    }else{
-      t.getMessage(t.data.page, t.data.swiperIndex + 1, t.data.swiperIndex + 1, t.data.categoryId);
+    if (index == 0) {
+      this.getMessage(this.data.newSearch);
+    } else {
+      this.getMessage(this.data.hotSearch);
     }
   },
-  ceshi: function (e) {
-    console.log(e);
-    if (e.detail.source == "touch") {
+  // 获取资讯列表
+  getMessage: function (data) {
+    var _this = this;
+    if (this.isNext(data)) {
+      wx.request({
+        url: `${app.http}/app/information/page`,
+        method: "GET",
+        data: data,
+        success: function (res) {
+          if (res.data.message == "用户未登录或登录已失效") {
+            wx.showToast({
+              title: '用户未登录或登录已失效',
+              icon: 'loading',
+              duration: 1000
+            });
+            wx.navigateTo({
+              url: '/pages/welcome/welcome',
+            })
+          }
+          try {
+            res.data.data.list.map(res => {
+              if (res.imgUrl != '') {
+                return res.imgUrl = res.imgUrl.split(',')
+              }
+            })
+          } catch (e) {
+            console.log(wx.getStorageSync("key"));
+          }
+          if (data.type == 1) {
+            _this.setData({
+              newData: [..._this.data.newData, ...res.data.data.list],
+            })
+            _this.data.newSearch.pageNum++;
+            _this.data.newSearch.pageTotal = res.data.data.total
+          } else {
+            _this.setData({
+              hotData: [..._this.data.hotData, ...res.data.data.list],
+            })
+            _this.data.hotSearch.pageNum++;
+            _this.data.hotSearch.pageTotal = res.data.data.total
+          }
+          wx.stopPullDownRefresh();
+        }
+      })
+    } else if (data.type == 1) {
       this.setData({
-        swiperIndex: e.detail.current
-      });
+        newType: true
+      })
+    } else {
+      this.setData({
+        hotType: true
+      })
     }
-
   },
-  // 回退到首页
-  back:function(){
-    wx.navigateBack({
-      delta:1
+  //点赞开始
+  onLike: function (e) {
+    console.log(e.currentTarget.dataset.type)
+    let index = e.currentTarget.dataset.index,
+      url = `${app.http}/app/praise/insert`,
+      type = e.currentTarget.dataset.type;
+
+    if (this.data[type][index].isPraise) {
+      // 取消点赞
+      url = `${app.http}/app/praise/delete`
+      this.data[type][index].isPraise = false
+      this.data[type][index].praiseQuantity -= 1
+    } else {
+      // 点赞
+      this.data[type][index].isPraise = true
+      this.data[type][index].praiseQuantity += 1
+    }
+    this.setData({
+      [type]: this.data[type]
     })
-  },
-// 获取资讯列表
-  getMessage: function (page, typekind, num,categoryId) {
-    var t = this;
-    console.log(typekind);
-    console.log("获取资讯列表执行了" + wx.getStorageSync("id") + page);
-    var categoryId = categoryId || "";
-    // console.log(categoryId);
-    console.log(categoryId);
-
     wx.request({
-      url: `${app.http}/app/information/page`,
-      method: "GET",
+      url: url,
+      method: "POST",
       header: {
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
       },
       data: {
         wego168SessionKey: wx.getStorageSync("key"),
-        areaId: wx.getStorageSync("id"),
-        categoryId: categoryId,
-        type: typekind,
-        pageNum: page,
-        pageSize: 5
+        sourceId: this.data[type][index].id
       },
       success: function (res) {
-        console.log(res);
-        if (res.data.message == "用户未登录或登录已失效") {
-          wx.showToast({
-            title: '用户未登录或登录已失效',
-            icon: 'loading',
-            duration: 1000
-          });
-          wx.navigateTo({
-            url: '/pages/welcome/welcome',
-          })
-        }
-        t.setData({
-          page:t.data.page+1
-        });
-        if(res.data.data.list.length>0){
-          t.setData({
-            show:true
-          });
-        }
-        let tempArr = [];
-        for (let i = 0; i < res.data.data.list.length; i++) {
-          let content = [];
-          let len;
-          // console.log("当前userData位置:", t.data.userData.length + 1);
-          // console.log(res.data.data.list[i].imgUrl.split(","));
-          if (res.data.data.list[i].imgUrl != '') {
-            content[i] = res.data.data.list[i].imgUrl.split(','); //记得修改
-            for (let l = 0; l < content[i].length; l++) {
-              content[i][l] = 'http://helpyou-1255600302.cosgz.myqcloud.com' + content[i][l]
-            }
-          } else {
-            content[i] = [];
-          }
-
-          //  if (content[i].length==0){
-          //     len=false;
-          //  }
-          tempArr[i] = {
-            name: res.data.data.list[i].username,
-            timeStamp: res.data.data.list[i].createTime,
-            avatarUrl: res.data.data.list[i].headImage,
-            text: res.data.data.list[i].content,
-            content: content[i],
-            address: res.data.data.list[i].address,
-            category: res.data.data.list[i].category,
-            others: [{
-              key: "/images/liulan.png",
-              value: res.data.data.list[i].visitQuantity
-
-            }, {
-              key: "/images/comments.png",
-              value: res.data.data.list[i].commentQuantity || 0
-            }, {
-              key: "/images/succ.png",
-              value: res.data.data.list[i].praiseQuantity,
-              flag: res.data.data.list[i].isPraise
-
-            }, {
-              key: "/images/share.png",
-              value: "111"
-            },],
-            message_id: res.data.data.list[i].id,
-            len: content[i].length,
-            error: false,
-            // pos: t.data.userData.length + 1,
-            isPraise: res.data.data.list[i].isPraise
-          };
-        };
-        if (num == 1) {
-          t.data.userData1 = t.data.userData1.concat(tempArr);
-          console.log(t.data.userData1);
-          t.setData({
-            userData1: t.data.userData1
-          });
-        } else {
-          t.data.userData2 = t.data.userData2.concat(tempArr);
-          console.log(t.data.userData2);
-          t.setData({
-            userData2: t.data.userData2
-          });
-        }
-
-
+        console.log('点赞功能 请求到数据了');
       }
+    });
+  },
+  //进入留言
+  jumpComments: function (e) {
+    wx.navigateTo({
+      url: '/pages/allcomments/allcomment?sourceId=' + e.currentTarget.dataset.sourceid,
     })
   },
-  //上滑到底部继续加载
-  lower:function(){
-    var t=this;
-    console.log("我被触发了");
-    t.getMessage(t.data.page, t.data.swiperIndex + 1, t.data.swiperIndex + 1, t.data.categoryId);
-  }
+  //进入说说的详情页面
+  jumpDetails: function (e) {
+    wx.navigateTo({
+      url: '/pages/details/details?id=' + e.currentTarget.dataset.id + "&isPraise=" + e.currentTarget.dataset.ispraise
+    })
+  },
 })

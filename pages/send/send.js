@@ -17,8 +17,7 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
-    console.log('onLoad == ', this.data)
+  onLoad (options) {
     var t=this;
     t.setData({
       width: app.width,
@@ -27,7 +26,10 @@ Page({
       LCDetails:wx.getStorageSync("LCDetails")
     });
     t.getKind();
-    
+  },
+
+  onShow () {
+    // this.getKind();
   },
 
   //从后台获取栏目列表
@@ -89,9 +91,8 @@ Page({
   //进入发布页
   nav:function(e){
     let dataset = e.currentTarget.dataset
-    console.log(e.currentTarget.dataset.id);
     wx.navigateTo({
-      url: `../sendContext/sendContext?id=${dataset.id}&name=${dataset.name}`
+      url: `../sendContext/sendContext?categoryId=${dataset.id}&name=${dataset.name}`
     })
     // this.setData({
     //   nochange:false,

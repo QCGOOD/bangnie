@@ -9,21 +9,20 @@ Page({
   },
 
   onLoad() {
-    wx.getSetting({
-      success: res => {
-        console.log("getSetting == ", res);
-        if (res.authSetting["scope.userInfo"]) {
-          this.setData({
-            isAuthorize: false
-          })
-          // this.getUserInfo();
-        } else {
-          this.setData({
-            isAuthorize: true
-          })
-        }
-      }
-    });
+    // wx.getSetting({
+    //   success: res => {
+    //     console.log("getSetting == ", res);
+    //     if (res.authSetting["scope.userInfo"]) {
+    //       this.setData({
+    //         isAuthorize: false
+    //       })
+    //     } else {
+    //       this.setData({
+    //         isAuthorize: true
+    //       })
+    //     }
+    //   }
+    // });
   },
   back() {
     wx.switchTab({

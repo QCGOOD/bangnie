@@ -4,11 +4,11 @@
   <view class="img">
     <image src="/images/send-success.png" mode='widthFix'></image>
   </view>
-  <view class="text">发布成功</view>
+  <view class="text">发布成功，请等待审核</view>
   <view class="btn">
     <button bindtap="back">回到首页</button>
   </view>
 </view>
-<authorize is-authorize="{{isAuthorize}}" bindmyevent="closeAuthorize"></authorize>
+<!-- <authorize is-authorize="{{isAuthorize}}" bindmyevent="closeAuthorize"></authorize> -->
 
 

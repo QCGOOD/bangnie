@@ -195,7 +195,7 @@ Page({
   //开始打电话
   call: function() {
     wx.makePhoneCall({
-      phoneNumber: '18814118034',
+      phoneNumber: this.data.detail.phone,
     })
   },
   //点赞开始

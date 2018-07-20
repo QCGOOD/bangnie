@@ -14,25 +14,44 @@ Page({
       formId: ''
     },
     tempFilePaths: [],
-    imageUrl: [],
+    imageUrl: [
+      // '/attachments/member/508a5be1e4a44cb6a0b79fb258a4444b.png',
+      // '/attachments/member/508a5be1e4a44cb6a0b79fb258a4444b.png',
+      // '/attachments/member/508a5be1e4a44cb6a0b79fb258a4444b.png',
+      // '/attachments/member/508a5be1e4a44cb6a0b79fb258a4444b.png',
+      // '/attachments/member/508a5be1e4a44cb6a0b79fb258a4444b.png',
+    ],
     name: '',
     id: '',
+    imgHost: app.imgHost,
+    count: 0,
+    height: 0,
+    isGetPhone: false
   },
   onLoad (options) {
-    console.log(options)
-    // console.log(this.data.model)
-    console.log('onLoad == ', this.data)
+    
+    this.setData({
+      height: app.height
+    })
     this.data.name = options.name
-    this.data.model = {
-      wego168SessionKey: wx.getStorageSync("key"),
-      areaId: wx.getStorageSync("id"),
-      categoryId: options.id,
-      address: wx.getStorageSync("LCDetails"),
-      content: '',
-      imgUrl: '',
-      phone: '',
-      appellation: '',
-      formId: ''
+    if (options.id) {
+      this.setData({
+        id: options.id
+      })
+      this.detail(options.id)
+    } else {
+      this.memberAuthenticate();
+      this.data.model = {
+        wego168SessionKey: wx.getStorageSync("key"),
+        areaId: wx.getStorageSync("id"),
+        categoryId: options.categoryId,
+        address: wx.getStorageSync("LCDetails"),
+        content: '',
+        imgUrl: '',
+        phone: '',
+        appellation: '',
+        formId: ''
+      }
     }
     if(options.id){
       this.setData({id: options.id})
@@ -42,7 +61,6 @@ Page({
       model: this.data.model,
       name: this.data.name
     })
-    console.log('onLoad === ', this.data.model)
   },
   contentInput (e) {
     this.data.model.content = e.detail.value
@@ -64,18 +82,22 @@ Page({
   },
   chooseImage() {
     wx.chooseImage({
-      count: 9 - this.data.tempFilePaths.length, // 默认9
-      sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+      count: 9 - this.data.imageUrl.length, // 默认9
+      // sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+      sizeType: ['compressed'], // 可以指定是原图还是压缩图，默认二者都有
       sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
       success: (res) => {
         // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
         var tempFilePaths = res.tempFilePaths
-        tempFilePaths.map(item => {
-          this.data.tempFilePaths.push(item)
-        })
+        
+        // tempFilePaths.map(item => {
+        //   this.data.tempFilePaths.push(item)
+        // })
         this.setData({
-          tempFilePaths: this.data.tempFilePaths
+          tempFilePaths: tempFilePaths,
+          count: 0
         })
+        this.loopImg(this.data.tempFilePaths)
         // this.uploadFile(tempFilePaths[0])
       }
     })
@@ -83,9 +105,9 @@ Page({
   chehui(e) {
     let index = e.currentTarget.dataset.index
     console.log(index)
-    this.data.tempFilePaths.splice(index, 1)
+    this.data.imageUrl.splice(index, 1)
     this.setData({
-      tempFilePaths: this.data.tempFilePaths
+      imageUrl: this.data.imageUrl
     })
   },
   uploadFile(path) {
@@ -135,30 +157,14 @@ Page({
   },
   loopImg() {
     let tempFilePaths = this.data.tempFilePaths
-    let imageUrl = this.data.imageUrl
-    if (imageUrl.length < tempFilePaths.length) {
-      let path = tempFilePaths[tempFilePaths.length - (tempFilePaths.length - imageUrl.length)]
-      console.log('path === ', path)
-      this.uploadImg(path)
+    if (this.data.count < tempFilePaths.length) {
+      this.uploadImg(tempFilePaths[this.data.count])
+      this.setData({
+        count: this.data.count + 1
+      })
     } else {
-      if (imageUrl.length !== tempFilePaths.length) {
-        this.setData({
-          imageUrl: []
-        })
-        this.loopImg()
-      } else {
-        let imageUrl = ''
-        this.data.imageUrl.map(item => {
-          imageUrl += item + ','
-        })
-        imageUrl = imageUrl.substring(0, imageUrl.length - 1)
-        this.data.model.imgUrl = imageUrl
-        this.setData({
-          model: this.data.model
-        })
-        wx.hideLoading()
-        this.save();
-      }
+      wx.hideLoading()
+      console.log(this.data.imageUrl)
     }
   },
   showToast(title, icon) {
@@ -172,8 +178,6 @@ Page({
     this.setData({
       model: this.data.model
     })
-    console.log(this.data.model)
-    // return
     let model = this.data.model
     if (model.content === "") {
       this.showToast('请输入内容')
@@ -187,8 +191,21 @@ Page({
       this.showToast('请输入手机号码')
       return
     }
-    if (this.data.tempFilePaths.length > 0) {
-      this.loopImg()
+    if (this.data.imageUrl.length > 0) {
+      let imageUrl = ''
+      this.data.imageUrl.map(item => {
+        imageUrl += item + ','
+      })
+      imageUrl = imageUrl.substring(0, imageUrl.length - 1)
+      this.data.model.imgUrl = imageUrl
+      this.setData({
+        model: this.data.model
+      })
+    }
+    console.log(this.data.model)
+    // return
+    if (this.data.id) {
+      this.update()
     } else {
       this.save()
     }
@@ -198,52 +215,163 @@ Page({
     wx.showLoading({
       title: '正在发布'
     })
-    console.log(this.data.model)
-    wx.request({
-      url: `${app.http}/app/information/save`,
-      method: "POST",
-      header: {
-        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-      },
-      data: this.data.model,
-      success: (res) => {
-        wx.hideLoading();
-        console.log(res.data);
-        let data = res.data
-        if (data.code === 20000) {
-          this.showToast('发布成功', 'success')
-          wx.redirectTo({
-            url: '/pages/sendSuccess/sendSuccess'
-          })
+    this.postData('/app/information/save', this.data.model).then(res => {
+      wx.hideLoading()
+      this.showToast('发布成功，请等待审核')
+      setTimeout(() => {
+        wx.redirectTo({
+          url: '/pages/sendSuccess/sendSuccess'
+        })
+      }, 2000)
+    }).catch(err => {
+      wx.hideLoading()
+      console.log(data.message)
+      this.showToast(data.message)
+    })
+  },
+  update() {
+    // return
+    wx.showLoading({
+      title: '正在发布'
+    })
+    this.postData('/app/information/update', this.data.model).then(res => {
+      wx.hideLoading()
+      this.showToast('发布成功，请等待审核')
+      setTimeout(() => {
+        wx.redirectTo({
+          url: '/pages/sendSuccess/sendSuccess'
+        })
+      }, 2000)
+    }).catch(err => {
+      wx.hideLoading()
+      console.log(data.message)
+      this.showToast(data.message)
+    })
+  },
+  detail(id) {
+    wx.showLoading({
+      title: '数据加载中'
+    })
+    this.getData('/app/information/get', {id: id}).then(res => {
+      wx.hideLoading();
+      let data = res.data.data
+      let model = {}
+      model.content = data.content
+      model.id = data.id
+      model.phone = data.phone
+      model.appellation = data.appellation
+      model.address = data.address
+      if (data.imgUrl) {
+        if (new RegExp(",").test(data.imgUrl)) {
+          console.log(12313)
+          this.data.imageUrl = data.imgUrl.split(',')
         } else {
-          console.log(data.message)
-          this.showToast(data.message)
+          console.log('fsdfsfdsfsd')
+          this.data.imageUrl[0] = data.imgUrl
         }
+      }
+      this.setData({
+        model: model,
+        imageUrl: this.data.imageUrl
+      })
+    }).catch(err => {
+      wx.hideLoading();
+      this.showToast(data.message)
+    })
+  },
+  memberAuthenticate() {
+    this.getData('/app/memberAuthenticate/get').then(res => {
+      console.log(res.data)
+      if (res.data.data && res.data.data.phoneNumber) {
+        this.data.model.phone = res.data.data.phoneNumber
+        this.setData({
+          model: this.data.model,
+          isGetPhone: false
+        })
+      } else {
+        this.setData({
+          isGetPhone: true
+        })
       }
     })
   },
-  detail() {
-    wx.request({
-      url: `${app.http}/app/information/get`,
-      method: "GET",
-      header: {
-        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-      },
-      data: {id: this.data.id},
-      success: (res) => {
-        wx.hideLoading();
-        console.log(res.data);
-        let data = res.data
-        if (data.code === 20000) {
-          this.showToast('发布成功', 'success')
-          wx.redirectTo({
-            url: '/pages/sendSuccess/sendSuccess'
-          })
-        } else {
-          console.log(data.message)
-          this.showToast(data.message)
-        }
+  getPhoneNumber(e) {
+    console.log(e)
+    if (e.detail.encryptedData) {
+      let params = {
+        encryptedData: e.detail.encryptedData,
+        iv: e.detail.iv
       }
+      this.postData('/app/phone', params).then(res => {
+        console.log(res.data)
+        this.data.model.phone = res.data.message
+        this.setData({
+          model: this.data.model
+        })
+      })
+    }
+  },
+  getData (url, params = {}) {
+    params.wego168SessionKey = wx.getStorageSync("key")
+    return new Promise((resolve, reject) => {
+      wx.request({
+        url: app.http + url,
+        data: params,
+        method: 'GET', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
+        success: res => {
+          if (res.data.code === 20000) {
+            resolve(res)
+          } else {
+            wx.showToast({
+              title: res.data.message || '系统出错',
+              icon: 'none',
+              duration: 2000
+            })
+            reject(res)
+          }
+        },
+        fail: err => {
+          wx.showToast({
+            title: res.data.message || '系统出错',
+            icon: 'none',
+            duration: 2000
+          })
+          reject(err)
+        }
+      })
     })
-  }
+  },
+  postData (url, params = {}) {
+    params.wego168SessionKey = wx.getStorageSync("key")
+    return new Promise((resolve, reject) => {
+      wx.request({
+        url: app.http + url,
+        data: params,
+        method: 'POST',
+        header: {
+          'content-type': 'application/x-www-form-urlencoded'
+        },
+        success: res => {
+          if (res.data.code === 20000) {
+            resolve(res)
+          } else {
+            wx.showToast({
+              title: res.data.message || '系统出错',
+              icon: 'none',
+              duration: 2000
+            })
+            reject(err)
+          }
+        },
+        fail: err => {
+          wx.showToast({
+            title: res.data.message || '系统出错',
+            icon: 'none',
+            duration: 2000
+          })
+          reject(err)
+        },
+      })
+    })
+  },
 })

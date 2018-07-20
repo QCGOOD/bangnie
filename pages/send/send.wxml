@@ -1,15 +1,16 @@
 
-<view class='container' style="position:fixed; height: 100%; width: 100%; padding:0 5%; background:white;" wx:if="{{nochange}}">
-  <view style='height:50%;width:100%; padding: 0 30rpx;'>
-    <view style='font-size:32rpx;padding-top:2%;padding-top:10%;'>发布的信息一定要真实</view>
-    <view style='font-size:28rpx;padding-top:2%;color:#808080;'>不可发布虚假消息</view>
-  </view>
+<view wx:if='{{nochange}}'>
+  <!-- <view class='hgroup'>
+    <view class='h1'>发布的信息一定要真实</view>
+    <view class='h2'>不可发布虚假消息</view>
+  </view> -->
   <!--栏目开始  -->
+  <view class='mask'></view>
   <view class='service'>
-    <block wx:for="{{serviceData}}" wx:key="item">
-      <view class='service_item' bindtap='nav' data-id="{{item.service_id}}" data-name="{{item.text}}">
+    <block wx:for='{{serviceData}}' wx:key='item'>
+      <view class='service_item' bindtap='nav' data-id='{{item.service_id}}' data-name='{{item.text}}'>
         <image src='{{item.url}}' class='img' />
-        <text style='font-size:28rpx;'>{{item.text}}</text>
+        <text style='font-size:24rpx;'>{{item.text}}</text>
       </view>
     </block>
   </view>
