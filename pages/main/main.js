@@ -11,6 +11,7 @@ Page({
     //导航处轮播图
     imgUrls: [],
     serviceData: [],
+    isAuthorizePhone: false,
     flag: true,
     adData: [{
       text: "蔡当局蔡当局蔡当局蔡当局蔡当局蔡当局蔡当局蔡当局"
@@ -30,6 +31,7 @@ Page({
   onLoad: function(options) {
     var that = this;
     page = 1;
+    this.judgePhone()
     if (!wx.getStorageSync("city")) {
       that.jumpChoosePage();
     }
@@ -84,6 +86,57 @@ Page({
         })
       }
     }).exec()
+  },
+  // 关闭手机授权
+  closeAuthorizePhone() {
+    this.setData({
+      isAuthorizePhone: false
+    })
+  },
+  //判断是否需要获取手机号
+  judgePhone: function () {
+    var t = this;
+    wx.request({
+      url: `${app.http}/app/isNeed`,
+      method: "GET",
+      header: {
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+      },
+      data: {
+        wego168SessionKey: wx.getStorageSync("key")
+      },
+      success: function (res) {
+        if(res.data.code == 20000){
+          t.setData({
+            isAuthorizePhone: res.data.data
+          });
+        }
+      }
+    });
+  },
+  // 获取用户的绑定手机号
+  getPhoneNumber: function (e) {
+    var t = this;
+    console.log(e);
+    t.closeAuthorizePhone();
+    console.log(e.detail.encryptedData, e.detail.iv);
+    if (e.detail.errMsg == "getPhoneNumber:ok") {
+      wx.request({
+        url: `${app.http}/app/phone`,
+        method: "POST",
+        header: {
+          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+        },
+        data: {
+          wego168SessionKey: wx.getStorageSync("key"),
+          encryptedData: e.detail.encryptedData,
+          iv: e.detail.iv
+        },
+        success: function (res) {
+
+        }
+      });
+    }
   },
   /**
    * 页面相关事件处理函数--监听用户下拉动作

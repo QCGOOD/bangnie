@@ -24,7 +24,7 @@ Component({
     onGotUserInfo(e) {
       console.log(e)
       if (e.detail.userInfo) {
-        this.triggerEvent('myevent')
+        this.triggerEvent('myevent', e)
       }
     },
     

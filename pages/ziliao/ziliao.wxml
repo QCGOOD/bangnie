@@ -9,7 +9,7 @@
   <view style='width:100%;height:240rpx;background:white;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;'>
     <view style='width:100%;height:auto;background:white;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;'>
       <image src='{{userData.headImage}}' style='border-radius:50%;width:160rpx;height:160rpx;background-color: #f2f2f2;'></image>
-      <image src='/images/vip.png' style='width:28rpx;height:28rpx;transform:translate(-100%,200%);display:{{!vip?"none":"inline-block"}}' ></image>
+      <image wx:if="{{userData.bindStatus != 0}}" src='/images/vip.png' style='width:28rpx;height:28rpx;transform:translate(-100%,200%);display:{{!vip?"none":"inline-block"}}' ></image>
     </view>
     <view style='width:100%;height:auto;background:white;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;'>
       <text style='margin-top:10rpx;'>{{userData.name}}</text>
@@ -45,11 +45,11 @@
     </view>  -->
     <view class='form-item'>
       <label class="form-item__label" for="name">称呼</label>
-      <input class="form-item__input" placeholder='请输入称呼（何先生/何小姐）' name="name" id='name' value="{{userData.name}}"></input>
+      <input class="form-item__input" placeholder='请输入称呼（何先生/何小姐）' name="name" id='name' value="{{userData.appellation}}"></input>
     </view>
     <view class='form-item'>
       <label class="form-item__label" for="phone">手机</label>
-      <text class="form-item__input" placeholder='15011934278' name="phone" id='phone'>{{userData.phone?userData.phone:'无'}}</text>
+      <text class="form-item__input" placeholder='15011934278' name="phone" id='phone'>{{userData.phoneNumber?userData.phoneNumber:'无'}}</text>
     </view>
     <view style='width:100%;height:20rpx;background:#f0f0f0;'></view>
     <view class='form-item'>

@@ -1,11 +1,11 @@
 
 <!--标题设置结束  -->
-<view class='container' style='width:{{width}}px;height:{{height-50}}px;' wx:if="{{!show}}">
+<view class='container'>
 
   <view  class='user'>
     <view>
-      <image wx:if="userData.headImage" src='{{userData.headImage}}'  class="v" style="background-color: #f2f2f2;"></image>
-      <image src='/images/vip.png' style='width:28rpx;height:28rpx;transform:translateX(-100%);display:{{!vip?"none":"inline-block"}}' ></image>
+      <image src='{{userData.headImage}}'  class="v" style="background-color: #f2f2f2;"></image>
+      <image wx:if="{{userData.bindStatus != 0}}" src='/images/vip.png' style='width:28rpx;height:28rpx;transform:translateX(-100%);display:{{!vip?"none":"inline-block"}}' ></image>
     </view>
 
     <view  class='user_message' bindtap="intoZiliao">
@@ -13,7 +13,7 @@
         <text >{{userData.name?userData.name:'未设置'}}</text>
         <image src='/images/write.png' ></image>
       </view>
-      <view  class='phone'>{{userData.phone?userData.phone:'无'}}</view>
+      <view  class='phone'>{{userData.phoneNumber?userData.phoneNumber:'无'}}</view>
     </view>
   </view>
   <view  class='mysend'>
@@ -22,8 +22,15 @@
         <image src='/images/putfor.png' style='width:30rpx;height:30rpx;'></image>
         <text style='margin-left:15rpx;'>我发起的</text>
       </view>
-      <image src='/images/inDetails.png'   class="navInto"></image>
+      <image src='/images/inDetails.png' class="navInto"></image>
     </view>
+    <button class='item_box' open-type="contact">
+      <view style='padding-left:7.5%;'>
+        <image src='/images/kefu.png'  class='kefu_img'></image>
+        <text >联系客服</text>
+      </view>
+      <image src='/images/inDetails.png' class="navInto"></image>
+    </button>
     <!-- <view  class='item_box' data-path="/pages/myMessage/myMessage" bindtap='jumpPage'>
       <view  class='item_inline'>
         <image src='/images/mess.png'  class='mymessage'></image>
@@ -32,21 +39,15 @@
       <image src='/images/inDetails.png'  class="navInto"></image>
     </view> -->
   </view>
-  <!-- <view  class='ques' data-path="/pages/que/que" bindtap='jumpPage'>
-    <view  class='item_box' >
+  <view  class='ques'>
+    <!-- <view  class='item_box' data-path="/pages/que/que" bindtap='jumpPage'>
       <view  class='que_inline'>
         <image src='/images/qe.png'  class='que_img'></image>
         <text >常见问题</text>
       </view>
       <image src='/images/inDetails.png'  class="navInto"></image>
-    </view>
-    <view class='item_box' data-path="/pages/kefu/kefu" bindtap='jumpPage'>
-      <view style='padding-left:7.5%;'>
-        <image src='/images/kefu.png'  class='kefu_img'></image>
-        <text >联系客服</text>
-      </view>
-      <image src='/images/inDetails.png'   class="navInto"></image>
-    </view>
-  </view> -->
+    </view> -->
+    
+  </view>
 </view>
 <!--各个分栏目展示  -->

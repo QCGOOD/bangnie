@@ -147,3 +147,14 @@
   <view class='loading' wx:if="{{hotType}}">没有数据了~</view>
   <view class='loading' wx:else>数据加载中...</view>
 </view>
+
+<!-- 授权获取手机号 -->
+<view class="authorize-phone" wx:if="{{isAuthorizePhone}}">
+  <view class="box">
+    <view class="text">需要授权您的手机号</view>
+    <view class="btn-wrap">
+      <button class="auth-btn" size="mini" type="primary" bindtap="closeAuthorizePhone">拒绝</button>
+      <button class="auth-btn" open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber"	 size="mini" type="primary">授权</button>
+    </view>
+  </view>
+</view>

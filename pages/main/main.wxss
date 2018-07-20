@@ -170,3 +170,35 @@ page {
   font-size: 28rpx;
   color: #666;
 }
+
+
+/* 授权手机号 */
+.authorize-phone {
+  z-index: 10;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.authorize-phone .box {
+  background: #fff;
+  width: 600rpx;
+  border-radius: 10rpx;
+  text-align: center;
+  padding: 30rpx;
+  
+}
+.authorize-phone .box .auth-btn{
+  display: inline-block;
+  margin: 0 10px;
+}
+.authorize-phone .box .text {
+  padding: 30rpx 20rpx;
+  font-size: 30rpx;
+}
+

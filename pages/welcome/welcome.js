@@ -10,6 +10,7 @@ Page({
     flag: true,
     inputValue: '',
     login: false,
+    isAuthorize: false,
     // key:''
     second: true,
     searchStr: {},
@@ -20,67 +21,118 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    var that = this;
-    // console.log(options.back)
-    //  page = 1;
-    this.checkLogin();
-    try {
-      if (!options.back) {
+    this.login();
+  },
 
-        this.login();
-
-        this.getCityList();
+  // 登录--换取code
+  login: function () {
+    var t = this;
+    //登录前监察网络状态
+    wx.getNetworkType({
+      success: function (res) {
+        // 返回网络类型, 有效值：
+        // wifi/2g/3g/4g/unknown(Android下不常见的网络类型)/none(无网络)
+        var networkType = res.networkType
+        if (networkType == "2g" || networkType == "3g") {
+          wx.showToast({
+            title: '网络不好，请重试~',
+            icon: 'loading',
+            duration: 1000
+          })
+        }
+      }
+    })
+    // 登录
+    wx.login({
+      success: res => {
+        // 发送 res.code 到后台换取 openId, sessionKey, unionId
         wx.request({
-          url: `${app.http}/app/recentlyArea`,
-          method: "GET",
+          url: `${app.http}/app/login`,
+          method: "POST",
           header: {
             'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
           },
           data: {
-            wego168SessionKey: wx.getStorageSync("key")
+            code: "" + res.code
           },
-          success: function (res) {
-            console.log(res);
-            try {
-              let id = "undefined" || res.data.data.id;
-              // console.log(res);
-              if (res.data.data.id != "undefined") {
-                that.setData({
-                  second: false
-                });
-                console.log("zhixingle");
-
-                wx.switchTab({
-                  url: '/pages/main/main',
-                })
-              } else {
-                that.setData({
-                  login: true
-                });
-
-              }
-            } catch (er) {
-              console.log("未知错误！");
-              // that.setData({
-              //   login: true
-              // });
-              // that.getCityList();
+          success: function (r) {
+            console.log("执行用户登录login");
+            console.log('换取sessionKey======', r);
+            if(r.data.code == 20000) {
+              t.setData({
+                key: r.data.data.wego168SessionKey
+              });
+              wx.setStorageSync('key', r.data.data.wego168SessionKey);
+              t.checkAuth();
+              console.log('qqMsap开始2')
+              t.qqMap();
+            }else{
+              wx.showModal({
+                title: '提示',
+                showCancel: false,
+                confirmText: '知道了',
+                content: r.data.message,
+                success: function (res) {
+                  if (res.confirm) {
+                    console.log('用户点击确定')
+                  } else if (res.cancel) {
+                    console.log('用户点击取消')
+                  }
+                }
+              })
             }
-          }
+          },
         })
-      } else {
-        that.setData({
-          login: true
-        });
-        that.getCityList();
       }
-    } catch (err) {
-      that.setData({
-        login: true
-      });
-      that.getCityList();
-      // that.getMessage(page);
-    }
+    })
+  },
+
+  //检测用户的授权状态
+  checkAuth () {
+    let t = this;
+    wx.getSetting({
+      success: res => {
+        console.log("getSetting == ", res);
+        if (res.authSetting["scope.userInfo"]) {
+          wx.getUserInfo({
+            success: (res) => {
+              console.log('用户信息=======',res)
+              if(res.errMsg == 'getUserInfo:ok') {
+                console.log(res.userInfo)
+                let data = {
+                  wego168SessionKey: this.data.key,
+                  name: res.userInfo.nickName,
+                  headImage: res.userInfo.avatarUrl,
+                  sex: res.userInfo.gender
+                };
+                this.saveUserInfo(data);
+              }
+            }
+          })
+          this.setData({
+            isAuthorize: false
+          })
+          t.nearCity()
+        } else {
+          this.setData({
+            isAuthorize: true
+          })
+        }
+      }
+    });
+  },
+
+  // 关闭授权
+  closeAuthorize() {
+    this.setData({
+      isAuthorize: false
+    })
+  },
+
+  // 腾讯地图
+  qqMap() {
+    console.log('qqMsap开始')
+    let that = this;
     //实例化腾讯地图德核心类
     qqMapWX = new QQMapWX({
       key: "BH5BZ-6NCWW-2HQR4-O7E7Y-Z6IZZ-OKBMQ"
@@ -108,23 +160,23 @@ Page({
         longitude: '' + longitude,
       }, //location的格式是传入一个字符对象
       success: function (res) {
-        console.log(res.result.address);
         wx.setStorage({
           key: "LCDetails",
           data: res.result.address,
         })
+        console.log('当前位置====', res);
         var len = res.result.address_component.city.length;
         that.setData({
           nation: res.result.address_component.nation,
           province: res.result.address_component.province,
-          city: res.result.address_component.city.substring(0, len - 1),
+          city: res.result.address_component.city,
         });
-        wx.showToast({
-          title: '请稍候~',
-          icon: 'loading'
-        })
-      },
-      fail: function (info) { }
+        console.log('当前城市====', res.result.address_component.city);
+        // wx.showToast({
+        //   title: '请稍候~',
+        //   icon: 'loading'
+        // })
+      }
     });
   },
   //得到输入城市的值
@@ -244,148 +296,61 @@ Page({
       duration: 1000
     });
   },
-  //检测用户的授权状态
-  checkLogin: function () {
+    // 用户同意授权-----保存用户基本信息
+  getUserInfo (e) {
     var t = this;
-    wx.getSetting({
-      success: function (res) {
-        console.log(res);
-        if (!res.authSetting["scope.userInfo"]) {
-          console.log("没有授权");
-          t.setData({
-            login: false
-          });
-        } else {
-          t.setData({
-            login: true
-          });
-          wx.showToast({
-            title: '自动登录中...',
-            icon: "loading",
-            duration: 500
-          })
-          // console.log(t.data.key);
-          // t.getCityList();
-          // wx.switchTab({
-          //   url: '/pages/main/main',
-          // })
-        }
-      },
-      fail: function () {
-        t.setData({
-          login: false
-        });
-      },
-    })
-  },
-  //用户授权登录事件，向后台传数据
-  getUserInfo: function (e) {
-    var t = this;
-
     console.log(e);
-    if (e.detail.userInfo) {
-      this.setData({
-        login: true
-      });
-      console.log("key值：", t.data.key);
-      wx.showToast({
-        title: '登录中...',
-        icon: "loading",
-        duration: 500
-      })
+    t.closeAuthorize()
+    if (e.detail.detail.errMsg == 'getUserInfo:ok') {
       let data = {
         wego168SessionKey: t.data.key,
-        name: e.detail.userInfo.nickName,
-        headImage: e.detail.userInfo.avatarUrl,
-        sex: e.detail.userInfo.gender
+        name: e.detail.detail.userInfo.nickName,
+        headImage: e.detail.detail.userInfo.avatarUrl,
+        sex: e.detail.detail.userInfo.gender
       };
-
-      wx.request({
-        url: `${app.http}/app/member/save`,
-        method: "POST",
-        header: {
-          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-          // 'Content-type': 'application/X-WWW-FORM-URLENCODED; charset=UTF-8'
-        },
-        data: data,
-        success: function (res) {
-          console.log(res);
-          t.getCityList();
-          t.judgePhone();
-        }
-
-      })
-    } else {
-      wx.showModal({
-        title: '注意',
-        showCancel: false,
-        confirmText: '好去授权',
-        content: '为了您更好的体验,请先同意授权',
-        success: function (res) {
-
-        }
-      })
+      t.saveUserInfo(data);
     }
 
   },
-  login: function () {
-    var t = this;
-    //登录前监察网络状态
-    wx.getNetworkType({
-      success: function (res) {
-        // 返回网络类型, 有效值：
-        // wifi/2g/3g/4g/unknown(Android下不常见的网络类型)/none(无网络)
-        // console.log(res);
-        var networkType = res.networkType
-        if (networkType == "2g" || networkType == "3g") {
-          wx.showToast({
-            title: '网络不好，请重试~',
-            icon: 'loading',
-            duration: 1000
-          })
-        }
+  saveUserInfo(data) {
+    wx.request({
+      url: `${app.http}/app/member/save`,
+      method: "POST",
+      header: {
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+      },
+      data: data,
+      success: (res) => {
+        console.log('保存用户信息====', res)
+        this.nearCity()
       }
     })
-    console.log("执行用户登录login");
-    // 登录
-    wx.login({
-      success: res => {
-        // 发送 res.code 到后台换取 openId, sessionKey, unionId
-        console.log(res);
-        wx.request({
-          url: `${app.http}/app/login`,
-          method: "POST",
-          header: {
-            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-          },
-          data: {
-            code: "" + res.code
-          },
-          success: function (r) {
-            console.log(r);
-            console.log("成功登录");
-            // console.log(r.data.data.wego168SessionKey);
-            if (r.data.data.wego168SessionKey == undefined) {
-              console.log("网络不好");
-            }
-            t.setData({
-              key: r.data.data.wego168SessionKey
-            });
-            wx.setStorage({
-              key: 'key',
-              data: r.data.data.wego168SessionKey,
-              success: function (res) {
-                t.setData({
-                  login_flag: true
-                });
-              }
-            })
-            t.getCityList();
-          },
-          fail: function (err) {
-            console.log("失败了", err);
-          }
-        })
+  },
+  // 最近城市
+  nearCity(){
+    let t = this;
+    wx.request({
+      url: `${app.http}/app/recentlyArea`,
+      method: "GET",
+      header: {
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+      },
+      data: {
+        wego168SessionKey: wx.getStorageSync("key")
+      },
+      success: function (res) {
+        console.log('最近城市====', res);
+        if (res.data.code == 20000) {
+          wx.setStorageSync('city', res.data.data.name);
+          wx.setStorageSync('id', res.data.data.name);
+          // 有最近城市 直接去首页
+          wx.switchTab({
+            url: '/pages/main/main',
+          })
+        }else{
+          
+          t.getCityList();
+        }
       }
     })
   },
@@ -411,7 +376,6 @@ Page({
         data: e.currentTarget.dataset.id,
       })
     }
-    // console.log(city);
     wx.switchTab({
       url: '/pages/main/main',
     })
@@ -455,64 +419,6 @@ Page({
         icon: "fail",
         duration: 1000
       })
-    }
-  },
-  //判断是否需要获取手机号
-  judgePhone: function () {
-    var t = this;
-    wx.request({
-      url: `${app.http}/app/isNeed`,
-      method: "GET",
-      header: {
-        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-      },
-      data: {
-        wego168SessionKey: wx.getStorageSync("key")
-      },
-      success: function (res) {
-        console.log(res);
-        t.setData({
-          phone_flag: res.data.data
-        });
-      }
-    });
-  },
-  // 获取用户的绑定手机号
-  getPhoneNumber: function (e) {
-    var t = this;
-    console.log(e);
-    t.setData({
-      phone_flag: false
-    });
-    console.log(e.detail.encryptedData, e.detail.iv);
-    if (e.detail.errMsg == "getPhoneNumber:ok") {
-      wx.request({
-        url: `${app.http}/app/phone`,
-        method: "POST",
-        header: {
-          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-        },
-        data: {
-          wego168SessionKey: wx.getStorageSync("key"),
-          encryptedData: e.detail.encryptedData,
-          iv: e.detail.iv
-        },
-        success: function (res) {
-          console.log(res);
-          t.setData({
-            phone_flag: false
-          });
-          if (res.data.errMsg == "request:ok") {
-            t.setData({
-              phone_flag: false
-            });
-          }
-        }
-      });
-    } else {
-      t.setData({
-        phone_flag: false
-      });
     }
   },
 })

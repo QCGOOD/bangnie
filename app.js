@@ -73,7 +73,8 @@ App({
     trueHeight: systemData.getSystem().windowHeight,
     pixelRatio: systemData.getSystem().pixelRatio,
     // key: systemData.login(),
-    http: 'https://abn.wego168.com/helpyou/api/v1/',
+    // http: 'https://abn.wego168.com/helpyou/api/v1',
+    http: 'http://192.168.1.18:8011/helpyou/api/v1',
     
     // url: 'http://192.168.1.18:8011/helpyou/api/v1',
 

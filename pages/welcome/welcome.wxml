@@ -1,5 +1,5 @@
 <!-- 内容开始 -->
-<view id='box' style='width:100%;height:auto;' >
+<view id='box' hidden="{{isAuthorize}}" style='width:100%;height:auto;' >
   <view style='width:100%;height:auto;' wx:if="{{!phone_flag}}">
     <view class='search'>
       <icon class="weui-icon-search" type="search" size="14" ></icon>
@@ -9,22 +9,20 @@
       <view class='title'>当前定位的城市</view>
       <view class="item" bindtap='click2' data-value="{{city}}">{{city}}</view>
     </view>
-    <block wx:for="{{cityData}}">
+    <block wx:for="{{cityData}}" wx:key="{{index}}">
       <view class='chooseone'>
         <view class='title'>{{item.name}}</view>
         <view class="for">
-          <view class='item' wx:for="{{item.childList}}" bindtap='click' wx:for-item="child_item" data-value="{{child_item.name}}" data-id="{{child_item.id}}">{{child_item.name}}</view>
+          <view class='item' wx:for="{{item.childList}}" bindtap='click' wx:for-item="child_item" wx:for-key="child_index" wx:key="{{index}}" data-value="{{child_item.name}}" data-id="{{child_item.id}}">{{child_item.name}}</view>
         </view>
       </view>
     </block>
   </view>
-  <view wx:if="{{phone_flag}}" style='position:fixed;top:50%;left:0;transformY(-50%);width:100%;height:100rpx;'>
+  <!-- <view wx:if="{{phone_flag}}" style='position:fixed;top:50%;left:0;transformY(-50%);width:100%;height:100rpx;'>
     <button open-type="getPhoneNumber" style="width:90%;margin:0 5%;" bindgetphonenumber="getPhoneNumber">获取手机号</button>
-  </view>
+  </view> -->
 </view>
- <view class='login' style='position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:590rpx;height:600rpx;background:#ccc;' wx:if="{{!login}}">
- <view style='width:590rpx;height:100rpx;display:flex;justify-content:center;align-items:center;margin-top:10rpx;color:white;'>请授权登录</view>
-  <button open-type='getUserInfo' bindgetuserinfo='getUserInfo' class='btn'>登录</button>
-</view> 
+  <!-- 授权获取基本信息 -->
+  <authorize is-authorize="{{isAuthorize}}" bindmyevent="getUserInfo"></authorize>
 
 <!-- 内容结束 -->
