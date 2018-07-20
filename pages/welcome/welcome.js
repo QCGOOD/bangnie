@@ -342,7 +342,7 @@ Page({
         console.log('最近城市====', res);
         if (res.data.code == 20000) {
           wx.setStorageSync('city', res.data.data.name);
-          wx.setStorageSync('id', res.data.data.name);
+          wx.setStorageSync('id', res.data.data.id);
           // 有最近城市 直接去首页
           wx.switchTab({
             url: '/pages/main/main',
