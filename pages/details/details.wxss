@@ -40,17 +40,14 @@ page {
 
 .ad-wrap {
   width: 100%;
-  padding: 0 30rpx;
+  padding: 30rpx;
   margin: 20rpx 0;
   background: white;
   box-sizing: border-box;
 }
 
-.ad-wrap .ad-text {
-  display: flex;
-  align-items: center;
-  height: 70rpx;
-  font-size: 30rpx;
+.ad-wrap image {
+  display:block;
 }
 
 .button-group {

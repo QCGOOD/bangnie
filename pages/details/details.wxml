@@ -50,12 +50,15 @@
 
 <!--广告位开始  -->
 <view class='ad-wrap'>
-  <text class="ad-text">{{adImg.name}}</text>
+  <!-- <text class="ad-text">{{adImg.name}}</text> -->
   <image src='{{imgHost}}{{adImg.url}}' style='width:100%;' mode='widthFix'></image>
 </view>
 <view style='height:124rpx'></view>
 <!--底部固定栏开始  -->
 <view class='button-group'>
+  <view class='button' catchtap='share'>
+    <text class='icon i-fanhuishouye'></text> 首页
+  </view>
   <view class='button' catchtap='share'>
     <text class='icon i-fenxiang-da'></text> 分享
   </view>

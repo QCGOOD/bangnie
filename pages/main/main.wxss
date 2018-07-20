@@ -79,19 +79,16 @@ page {
 }
 
 .service_item {
-  width: 18%;
-  height: 50%;
-  display: flex;
-  align-content: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin: 20rpx 4rpx;
+  width: 25%;
+  margin: 20rpx 0rpx;
+  text-align: center;
 }
 
 .service_item image {
   width: 90rpx;
   height: 90rpx;
-  margin-bottom: 10rpx;
+  margin: 0 auto 10rpx;
+  display: block;
 }
 
 .service_item text {
