@@ -11,8 +11,11 @@
         </view>
         <view class="choose-img">
           <block wx:for="{{imageUrl}}" wx:key="item">
-            <view class="choose-img-item">
-              <image wx:if="{{item}}" src="{{imgHost}}{{item}}" mode='widthFix'></image>
+            <view class="img-item">
+              <view class="choose-img-item">
+                <image wx:if="{{item}}" src="{{imgHost}}{{item}}" mode='widthFix'></image>
+                
+              </view>
               <image src="/images/shanchu.png" class='icon icon-shanchu' catchtap='chehui' data-index="{{index}}" mode='widthFix'></image>
             </view>
           </block>

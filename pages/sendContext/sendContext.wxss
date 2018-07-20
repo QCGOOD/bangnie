@@ -56,27 +56,34 @@
   display: flex;
   flex-wrap: wrap;
   /* padding-bottom: 20rpx; */
-  padding: 0 50rpx 20rpx 50rpx;
+  padding: 20rpx 0;
+}
+.img-item {
+  position: relative;
+  width: 150rpx;
+  height: 150rpx;
+  margin-right: 100rpx;
+  margin-bottom: 40rpx;
 }
 .choose-img-item {
-  width: 100rpx;
-  height: 100rpx;
-  margin-right: 125rpx;
-  margin-bottom: 40rpx;
+  width: 150rpx;
+  height: 150rpx;
+  /* margin-right: 100rpx;
+  margin-bottom: 40rpx; */
   overflow: hidden;
   line-height: 1;
   background: rgba(0, 0, 0, 0.027);
   position: relative;
 }
-.choose-img-item:nth-child(3n) {
+.img-item:nth-child(3n) {
   margin-right: 0;
 }
 .choose-img-item image {
   width: 100%;
 }
-.choose-img-item .icon-shanchu {
+.img-item .icon-shanchu {
   position: absolute;
-  width: 30rpx;
-  top: 0;
-  right: 0;
+  width: 40rpx;
+  top: -10rpx;
+  right: -10rpx;
 }
