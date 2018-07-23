@@ -17,7 +17,7 @@ export default class DrawImageData {
         },
         {
           type: 'text',
-          text: opt.username,
+          text: opt.username || '小帮管家',
           css: [{
             top: `90rpx`,
             left: '220rpx',
@@ -41,7 +41,7 @@ export default class DrawImageData {
         },
         {
           type: 'image',
-          url: opt.headImage,
+          url: opt.headImage || '/images/admin_head_img2.jpg',
           css: {
             top: '250rpx',
             left: '100rpx',
@@ -52,7 +52,7 @@ export default class DrawImageData {
         },
         {
           type: 'text',
-          text: opt.username,
+          text: opt.username || '小帮管家',
           css: [{
             top: `260rpx`,
             left: '200rpx',
