@@ -1,16 +1,38 @@
 /* pages/canvas/canvas.wxss */
-.bottom_img{
-  display:flex;justify-content:center;flex-wrap:wrap;position:fixed;bottom:111rpx;left:50%;transform:translateX(-50%);
+
+.bottom_img {
+  display: flex;
+  align-items: center;
+  position: fixed;
+  bottom: 111rpx;
+  left: 50%;
+  transform: translateX(-50%);
 }
-.icon{
-  width:30rpx;display:block;transform:translateY(25%);
+
+.icon {
+  width: 30rpx;
 }
-.bottom_text{
-  font-size:30rpx;color:#ccc;margin-left:10rpx;
+
+.bottom_text {
+  font-size: 30rpx;
+  color: #ccc;
+  margin-left: 10rpx;
 }
-.save{
-  background:#F56F4B;position:fixed;bottom:0;left:0;width:100%;height:92rpx;display:flex;justify-content:center;align-items:center;font-size:32rpx;color:white;
+
+.save {
+  background: #f56f4b;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 92rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 32rpx;
+  color: white;
 }
-.canvas{
-  background:white;
+
+.canvas {
+  background: white;
 }

@@ -92,7 +92,7 @@ Page({
     })
   },
   //判断是否需要获取手机号
-  judgePhone: function () {
+  judgePhone: function() {
     var t = this;
     wx.request({
       url: `${app.http}/app/isNeed`,
@@ -103,8 +103,8 @@ Page({
       data: {
         wego168SessionKey: wx.getStorageSync("key")
       },
-      success: function (res) {
-        if(res.data.code == 20000){
+      success: function(res) {
+        if (res.data.code == 20000) {
           t.setData({
             isAuthorizePhone: res.data.data
           });
@@ -113,7 +113,7 @@ Page({
     });
   },
   // 获取用户的绑定手机号
-  getPhoneNumber: function (e) {
+  getPhoneNumber: function(e) {
     var t = this;
     console.log(e);
     t.closeAuthorizePhone();
@@ -130,7 +130,7 @@ Page({
           encryptedData: e.detail.encryptedData,
           iv: e.detail.iv
         },
-        success: function (res) {
+        success: function(res) {
 
         }
       });
@@ -229,6 +229,18 @@ Page({
             })
           } catch (e) {
             console.log(wx.getStorageSync("key"));
+          }
+          if (res.data.data.total == 0) {
+            if (data.type == 1) {
+              console.log('scsc')
+              _this.setData({
+                newType: true
+              })
+            } else {
+              _this.setData({
+                hotType: true
+              })
+            }
           }
           if (data.type == 1) {
             _this.setData({

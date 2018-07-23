@@ -7,7 +7,8 @@
     </view>
     <view class='locationAuto'>
       <view class='title'>当前定位的城市</view>
-      <view class="item" bindtap='click2' data-value="{{city}}">{{city}}</view>
+      <view class="item list" bindtap='click2' data-value="{{city}}">{{city}}</view>
+      <view class="item list" bindtap='clear'>重新定位</view>
     </view>
     <block wx:for="{{cityData}}" wx:key="{{index}}">
       <view class='chooseone'>
