@@ -1,5 +1,6 @@
 // pages/details/details.js
 var app = getApp().globalData;
+var appJs = getApp();
 var time = require('../../utils/util.js');
 Page({
   /**
@@ -9,6 +10,7 @@ Page({
     detail: {},
     commentsData: [], //留言信息的存储
     show: false, //对底部进行隐藏
+    isAuthorize: false,
     liuyan: false,
     lockRemark: false,
     imgHost: app.imgHost,
@@ -18,13 +20,96 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
+    wx.showLoading({title: '加载中…'})
+    this.checkAuth();
     this.setData({
       sourceId: options.id,
     });
-    this.getDetail(this.data.sourceId);
-    this.getComments(this.data.sourceId);
-    this.getImg();
+    if (!wx.getStorageSync('key')) {
+      appJs.loginReadyCallback = res => {
+        console.log('设置回调')
+        wx.setStorageSync('key', res);
+        this.getDetail(this.data.sourceId);
+        this.getComments(this.data.sourceId);
+        this.getImg();
+      }
+    }else{
+      this.getDetail(this.data.sourceId);
+      this.getComments(this.data.sourceId);
+      this.getImg();
+    }
   },
+  //检测用户的授权状态
+  checkAuth() {
+    wx.getSetting({
+      success: res => {
+        console.log("getSetting == ", res);
+        if (res.authSetting["scope.userInfo"]) {
+          wx.getUserInfo({
+            success: (res) => {
+              // console.log('用户信息=======', res)
+              if (res.errMsg == 'getUserInfo:ok') {
+                // console.log(res.userInfo)
+                let data = {
+                  wego168SessionKey: this.data.key,
+                  name: res.userInfo.nickName,
+                  headImage: res.userInfo.avatarUrl,
+                  sex: res.userInfo.gender
+                };
+                this.saveUserInfo(data);
+              }
+            }
+          })
+          this.setData({
+            isAuthorize: false
+          })
+        } else {
+          console.log('没有授权信息', this.data.isAuthorize)
+          this.setData({
+            isAuthorize: true
+          })
+        }
+      }
+    });
+  },
+
+  // 关闭授权
+  closeAuthorize() {
+    this.setData({
+      isAuthorize: false
+    })
+  },
+
+   // 用户点击
+   getUserInfo(e) {
+    var t = this;
+    console.log(e);
+    t.closeAuthorize()
+    if (e.detail.detail.errMsg == 'getUserInfo:ok') {
+      let data = {
+        wego168SessionKey: t.data.key,
+        name: e.detail.detail.userInfo.nickName,
+        headImage: e.detail.detail.userInfo.avatarUrl,
+        sex: e.detail.detail.userInfo.gender
+      };
+      t.saveUserInfo(data);
+    }
+  },
+
+  // 保存用户信息到后台/
+  saveUserInfo(data) {
+    wx.request({
+      url: `${app.http}/app/member/save`,
+      method: "POST",
+      header: {
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+      },
+      data: data,
+      success: (res) => {
+      }
+    })
+  },
+
   //用户分享操作
   share: function() {
     this.setData({
@@ -52,6 +137,7 @@ Page({
         id: id
       },
       success: function(res) {
+        wx.hideLoading()
         let getData = res.data.data;
         if (res.data.message == "用户未登录或登录已失效") {
           wx.showToast({
@@ -91,6 +177,7 @@ Page({
         pageNum: 1
       },
       success(res) {
+        console.log(res)
         _this.setData({
           commentsData: res.data.data.list
         })
@@ -110,6 +197,7 @@ Page({
         areaId: wx.getStorageSync("id")
       },
       success: function(res) {
+        if (!res.data.data.length > 0) return;
         _this.setData({
           adImg: res.data.data[0]
         })

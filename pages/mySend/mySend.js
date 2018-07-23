@@ -11,32 +11,46 @@ Page({
     height: app.height - 10,
     page:1,
     userData:[],
+    searchData: {}
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
-    var t = this;
+  onLoad (options) {
     this.setData({
       trueheight: app.trueHeight,
     });
-    t.getMessage(t.data.page);
+    this.setData({
+      searchData: {
+        wego168SessionKey: wx.getStorageSync("key"),
+        areaId: "",
+        categoryId:  "",
+        // wx.getStorageSync("id")
+        // wx.getStorageSync("categoryId") ||
+        pageNum: 1,
+        pageSize: 20,
+        pageTotal: -1,
+        listType:2
+      }
+    })
+    this.getMessage(this.data.searchData);
   },
 
   // 回退到首页
-  back: function () {
-
+  back () {
     wx.navigateBack({
       delta: 1
     })
   },
+
   // 显示选择框
   showSelect(e) {
     let index = e.currentTarget.dataset.index;
     let showSelect =`userData[${index}].showSelect`;
     this.setData({ [showSelect]: !this.data.userData[index].showSelect })
   },
+
   // 跳转
   jumpPage(e){
     console.log(e)
@@ -45,51 +59,72 @@ Page({
       url: '../send/send?id='+_id,
     })
   },
+
+    /**
+   * 下拉刷新
+   */
+  onPullDownRefresh() {
+    console.log('下拉')
+    this.onLoad();
+  },
+  /**
+   * 上拉加载
+   */
+  onReachBottom() {
+    console.log('上拉')
+    this.getMessage(this.data.searchData)
+  },
+  /**
+   * 是否存在下一页
+   */
+  isNext(data) {
+    if (data.pageNum <= Math.ceil(data.pageTotal / data.pageSize) || data.pageTotal == -1) {
+      return true
+    }
+    return false
+  },
+
   // 获取资讯列表
-  getMessage: function (page) {
-    wx.showLoading()
-    var t = this;
-    console.log("获取资讯列表执行了" + wx.getStorageSync("id") + page);
-    var categoryId = wx.getStorageSync("categoryId") || "";
-
-    wx.request({
-      url: `${app.http}/app/information/page`,
-      method: "GET",
-      header: {
-        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-      },
-      data: {
-        wego168SessionKey: wx.getStorageSync("key"),
-        areaId: wx.getStorageSync("id"),
-        categoryId: categoryId,
-        pageNum: page,
-        pageSize: 3,
-        listType:2
-      },
-      success: function (res) {
-        wx.hideLoading()
-        if (res.data.message == "用户未登录或登录已失效") {
-          appJs.toast('用户未登录或登录已失效')
-          wx.navigateTo({
-            url: '/pages/welcome/welcome',
-          })
-        }
-        let tempArr = [];
-        res.data.data.list.map((item, i) => {
-          item.showSelect = false;
-          if(item.imgUrl != "") {
-            item.imgUrl = item.imgUrl.split(',')
-          }else{
-            item.imgUrl = []
+  getMessage(data) {
+    var _this = this;
+    if (this.isNext(data)) {
+      wx.showLoading()
+      wx.request({
+        url: `${app.http}/app/information/page`,
+        method: "GET",
+        header: {
+          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+        },
+        data: data,
+        success: function (res) {
+          wx.hideLoading()
+          if (res.data.message == "用户未登录或登录已失效") {
+            appJs.toast('用户未登录或登录已失效')
+            wx.navigateTo({
+              url: '/pages/welcome/welcome',
+            })
           }
+          let tempArr = [];
+          res.data.data.list.map((item, i) => {
+            item.showSelect = false;
+            if(item.imgUrl != "") {
+              item.imgUrl = item.imgUrl.split(',')
+            }else{
+              item.imgUrl = []
+            }
+          })
+        _this.setData({
+          userData: [..._this.data.userData, ...res.data.data.list],
         })
-
-        console.log(res.data.data.list)
-        t.setData({
-          userData: res.data.data.list
-        })
-      }
-    })
+        _this.data.searchData.pageNum++;
+        _this.data.searchData.pageTotal = res.data.data.total
+        wx.stopPullDownRefresh();
+        // _this.setData({
+        //   userData: res.data.data.list
+        // })
+        }
+      })
+    }
   },
   //进入留言
   jumpComments: function (e) {

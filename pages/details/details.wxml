@@ -39,7 +39,7 @@
 </view>
 <view class='comment-list' wx:for="{{commentsData}}" wx:key="{{item.id}}">
   <view class='user-wrap'>
-    <image src="{{item.memberHeadImage}}"></image>
+    <image style="background-color:#f2f2f2;" src="{{item.memberHeadImage}}"></image>
     <view class='user__info'>
       <view class='name'>{{item.memberName}}</view>
       <view class='time'>{{item.createTime}}</view>
@@ -95,3 +95,6 @@
   <input placeholder='请输入' cursor-spacing='15' auto-focus confirm-type="send" bindblur='onInputBlur' maxlength='100' bindconfirm="sendLY" bindinput='onNeirongChange'></input>
   <button class='btn' catchtap='sendLY' disabled='{{lockRemark}}'>发送</button>
 </view>
+
+<!-- 授权获取基本信息 -->
+<authorize is-authorize="{{isAuthorize}}" bindmyevent="getUserInfo"></authorize>
