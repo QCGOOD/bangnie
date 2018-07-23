@@ -85,6 +85,6 @@ App({
     
     // url: 'http://192.168.1.18:8011/helpyou/api/v1',
 
-    imgHost: 'http://helpyou-1255600302.cosgz.myqcloud.com',
+    imgHost: 'https://helpyou-1255600302.cosgz.myqcloud.com',
   }
 })
