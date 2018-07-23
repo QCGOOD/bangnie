@@ -1,19 +1,4 @@
-<!--pages/canvas/canvas.wxml-->
-<!--标题设置开始  -->
-<!-- <image class='img' src='/images/back.png' style='width:36px;height:36px;' bindtap='back' />
-<view id="navgationBar" style='width:100%;height:{{height*0.092}}px;background:white;'>分享图</view> -->
-<!--标题设置结束  -->
-<!--canvas画板开始  -->
-<canvas canvas-id='sharehidden' class='canvas' style='width:{{width}}px;height:{{trueheight*0.85}}px;'>
-</canvas>
-<!--底部内容开始  -->
-<view class='bottom_img'>
-  <image src='/images/QC.png'  mode='widthFix' class='icon'></image>
-  <view  class='bottom_text'>技术•企成科技</view>
+<view>
+  <painter palette="{{template}}" bind:imgOK="onImgOK" />
+  <button class='save' bind:tap='saveImage'>保存图片</button>
 </view>
-<view class='save'  bindtap='save'>保存图片</view>
-<!--底部内容结束  -->
-<canvas canvas-id='share' class='canvas' style='width:{{width}}px;height:{{trueheight*0.8}}px;' hidden='{{canShow}}'>
-<!-- <cover-image src='/images/'></cover-image> -->
-</canvas>
-<!--canvas画板结束  -->
