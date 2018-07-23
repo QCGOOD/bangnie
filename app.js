@@ -9,35 +9,11 @@ App({
     var logs = wx.getStorageSync('logs') || []
     logs.unshift(Date.now())
     wx.setStorageSync('logs', logs)
-    
-    console.log("app发送时：", systemData.getSystem(), systemData.getSystem().windowHeight
-  );
-      
-    
-    // // 登录
-    // wx.login({
-    //   success: res => {
-    //     // 发送 res.code 到后台换取 openId, sessionKey, unionId
-    //     console.log(res);
-    //     wx.request({
-    //       url: 'http://192.168.1.18:8011/helpyou/api/v1/app/login',
-    //       method:"POST",
-    //       header:{
-    //         'content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
-    //       },
-    //       data:{
-    //         code:""+res.code
-    //       },
-    //       success:function(r){
-    //         console.log(r.data.data.wego168SessionKey);
-    //         var data = r.data.data.wego168SessionKey
-    //         t.globalData.key = data;
-    //       }
 
-    //     })
-    //   }
-    // })
-    // 获取用户信息
+    this.login();
+
+  
+  // 获取用户信息
     wx.getSetting({
       success: res => {
         console.log(wx.getStorageInfoSync("key"));
@@ -59,6 +35,66 @@ App({
       }
     })
   },
+  // 登录--换取code
+  login: function () {
+    var t = this;
+    //登录前监察网络状态
+    wx.getNetworkType({
+      success: function (res) {
+        // 返回网络类型, 有效值：
+        // wifi/2g/3g/4g/unknown(Android下不常见的网络类型)/none(无网络)
+        var networkType = res.networkType
+        if (networkType == "2g" || networkType == "3g") {
+          wx.showToast({
+            title: '网络不好，请重试~',
+            icon: 'loading',
+            duration: 1000
+          })
+        }
+      }
+    })
+    // 登录
+    wx.login({
+      success: res => {
+        // 发送 res.code 到后台换取 openId, sessionKey, unionId
+        wx.request({
+          url: `${t.http}/app/login`,
+          method: "POST",
+          header: {
+            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+          },
+          data: {
+            code: "" + res.code
+          },
+          success: function (r) {
+            console.log("执行用户登录login");
+            console.log('换取sessionKey======', r);
+            if(r.data.code == 20000) {
+              t.setData({
+                key: r.data.data.wego168SessionKey
+              });
+              wx.setStorageSync('key', r.data.data.wego168SessionKey);
+            }else{
+              wx.showModal({
+                title: '提示',
+                showCancel: false,
+                confirmText: '知道了',
+                content: r.data.message,
+                success: function (res) {
+                  // if (res.confirm) {
+                  //   console.log('用户点击确定')
+                  // } else if (res.cancel) {
+                  //   console.log('用户点击取消')
+                  // }
+                }
+              })
+            }
+          },
+        })
+      }
+    })
+  },
+  
   toast(text, icon) {
     wx.showToast({
       title: text,

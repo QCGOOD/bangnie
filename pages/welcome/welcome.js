@@ -21,7 +21,9 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    this.login();
+    // this.login();
+    t.checkAuth();
+    t.qqMap();
   },
 
   // 登录--换取code
@@ -42,6 +44,7 @@ Page({
         }
       }
     })
+    
     // 登录
     wx.login({
       success: res => {
@@ -63,9 +66,9 @@ Page({
                 key: r.data.data.wego168SessionKey
               });
               wx.setStorageSync('key', r.data.data.wego168SessionKey);
-              t.checkAuth();
-              console.log('qqMsap开始2')
-              t.qqMap();
+              // t.checkAuth();
+              // console.log('qqMsap开始2')
+              // t.qqMap();
             }else{
               wx.showModal({
                 title: '提示',
