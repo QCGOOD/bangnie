@@ -40,14 +40,6 @@
     </view> -->
   </view>
   <view  class='ques'>
-    <!-- <view  class='item_box' data-path="/pages/que/que" bindtap='jumpPage'>
-      <view  class='que_inline'>
-        <image src='/images/qe.png'  class='que_img'></image>
-        <text >常见问题</text>
-      </view>
-      <image src='/images/inDetails.png'  class="navInto"></image>
-    </view> -->
-    
   </view>
 </view>
 <!--各个分栏目展示  -->

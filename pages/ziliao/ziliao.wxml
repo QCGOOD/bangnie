@@ -1,8 +1,3 @@
-<!--pages/ziliao/ziliao.wxml-->
-<!--标题设置开始  -->
-<!-- <image class='img' src='/images/back.png' style='width:36px;height:36px;' bindtap='back' /> -->
-<!-- <view id="navgationBar" style='width:100%;height:{{height*0.092}}px;background:white;font-size: 32rpx;font-family: "冬青黑体",Noto;color:#1E1E1E;'>编辑资料</view> -->
-<!--标题设置结束  -->
 <!--内容  -->
 <view style='width:100%;height:20rpx;background:#f0f0f0;'></view>
 <view class='container' style='width:100%;height:{{height*0.903-10}}px;'>
