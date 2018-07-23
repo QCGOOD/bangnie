@@ -113,7 +113,7 @@ Page({
   uploadFile(path) {
     return new Promise((resolve, reject) => {
       wx.uploadFile({
-        url: app.http + 'attachments/images/tencent_cloud',
+        url: app.http + '/attachments/images/tencent_cloud',
         filePath: path,
         name: 'file',
         formData: {
@@ -152,7 +152,7 @@ Page({
       this.setData({
         imageUrl: []
       })
-      this.showToast('图片上传失败，请重新点击发布')
+      this.showToast('图片上传失败，请重新上传')
     })
   },
   loopImg() {
