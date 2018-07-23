@@ -1,5 +1,6 @@
 // pages/main/main.js
 var app = getApp().globalData;
+var appJs = getApp();
 var page;
 var rq = require("../../utils/util.js");
 Page({
@@ -14,63 +15,83 @@ Page({
     isAuthorizePhone: false,
     flag: true,
     adData: [{
-      text: "蔡当局蔡当局蔡当局蔡当局蔡当局蔡当局蔡当局蔡当局"
+      text: ""
     }, {
-      text: "四问汽车四问汽车四问汽车四问汽车四问汽车"
+      text: ""
     }], //广告数据
     swiperIndex: 0,
     newData: [],
     hotData: [],
     imgHost: app.imgHost,
     newType: false,
-    hotType: false
+    hotType: false,
+    isDetail: false
   },
-  /**
-   * 生命周期函数--监听页面加载
-   */
   onLoad: function(options) {
+    if (!wx.getStorageSync('key')) {
+      appJs.loginReadyCallback = res => {
+        console.log('设置回调')
+        wx.setStorageSync('key', res);
+      }
+    }
+    if(options.detail) {
+      this.setData({
+        isDetail: true
+      })
+      wx.navigateTo({
+        url: `../details/details?id=${options.id}`,
+        success: () => {
+          this.setData({isDetail: false})
+        }
+      })
+    }
+  },
+  onShow: function() {
+    if (this.data.isDetail) {
+      return false;
+    }
     var that = this;
     page = 1;
-    this.judgePhone()
-    if (!wx.getStorageSync("city")) {
-      that.jumpChoosePage();
-    }
-    console.log(wx.getStorageSync("key"));
-    that.setData({
-      trueHeight: app.trueHeight,
-      selectData: wx.getStorageSync("city"),
-      newSearch: {
-        pageNum: 1,
-        pageSize: 20,
-        pageTotal: -1,
-        type: 1,
-        wego168SessionKey: wx.getStorageSync("key"),
-        areaId: wx.getStorageSync("id"),
-        categoryId: '',
-        mytype: 'newData'
-      },
-      hotSearch: {
-        pageNum: 1,
-        pageSize: 20,
-        pageTotal: -1,
-        type: 2,
-        wego168SessionKey: wx.getStorageSync("key"),
-        areaId: wx.getStorageSync("id"),
-        categoryId: '',
-        mytype: 'hotData'
-      },
-    });
-    that.getImg();
-    that.getKind();
-    this.setData({
-      newData: [],
-      hotData: [],
-      newType: false,
-      hotType: false,
-      swiperIndex: 0
-    })
-    this.data.newSearch.pageNum = 1
-    that.getMessage(this.data.newSearch);
+      that.judgePhone()
+      if (!wx.getStorageSync("city")) {
+        that.jumpChoosePage();
+      }
+      console.log(wx.getStorageSync("key"));
+      that.setData({
+        trueHeight: app.trueHeight,
+        selectData: wx.getStorageSync("city"),
+        newSearch: {
+          pageNum: 1,
+          pageSize: 20,
+          pageTotal: -1,
+          type: 1,
+          wego168SessionKey: wx.getStorageSync("key"),
+          areaId: wx.getStorageSync("id"),
+          categoryId: '',
+          mytype: 'newData'
+        },
+        hotSearch: {
+          pageNum: 1,
+          pageSize: 20,
+          pageTotal: -1,
+          type: 2,
+          wego168SessionKey: wx.getStorageSync("key"),
+          areaId: wx.getStorageSync("id"),
+          categoryId: '',
+          mytype: 'hotData'
+        },
+      });
+      that.getImg();
+      that.getKind();
+      that.setData({
+        newData: [],
+        hotData: [],
+        newType: false,
+        hotType: false,
+        swiperIndex: 0
+      })
+      that.data.newSearch.pageNum = 1
+      that.getMessage(that.data.newSearch);
   },
   onPageScroll() {
     wx.createSelectorQuery().select('#tabbar').boundingClientRect(res => {

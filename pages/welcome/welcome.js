@@ -1,6 +1,7 @@
 var QQMapWX = require("../../libs/qqmap-wx-jssdk.min.js");
 var qqMapWX;
 var app = getApp().globalData;
+var appJs = getApp();
 Page({
   /**
    * 页面的初始数据
@@ -21,9 +22,23 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    var _this = this;
     // this.login();
-    t.checkAuth();
-    t.qqMap();
+    if (wx.getStorageSync('key')) {
+      console.log('key存在')
+      this.checkAuth();
+      this.qqMap();
+    }else{
+      // 能会在 Page.onLoad 之后才返回
+      // 所以此处加入 callback 以防止这种情况
+      appJs.loginReadyCallback = res => {
+        console.log('设置回调')
+        wx.setStorageSync('key', res);
+        _this.checkAuth();
+        _this.qqMap();
+      }
+
+    }
   },
 
   // 登录--换取code
@@ -200,12 +215,8 @@ Page({
   //获取城市列表
   getCityList: function() {
     var t = this;
-    // 正确代码
-    // console.log(wx.getStorageSync("key"));
-    // if (wx.getStorageSync("key")==undefined){
-    //     t.login();
-    // }
-    console.log(app.http);
+    wx.showLoading({title: '加载中…'})
+
     wx.request({
       url: `${app.http}/area/listWithChild`,
       // url: 'http://192.168.1.18:8011/helpyou/api/v1/area/listWithChild',
@@ -218,47 +229,19 @@ Page({
       },
       success: function(res) {
         console.log(res);
-        // console.log(res.data.data.list);
-        // console.log(res.data.data.list[1].childList)
-        try {
-          var lis = res.data.data.list;
-          for (let n = 0; n < lis.length; n++) {
-            for (let c = 0; c < lis[n].childList.length; c++) {
-              //     // console.log(res.data.data.list[n].childList[c].id);
-              //     let name = res.data.data.list[n].childList[c].name;
-              //     let id = res.data.data.list[n].childList[c].id;
-              t.data.searchStr[res.data.data.list[n].childList[c].name] = res.data.data.list[n].childList[c].id;
-            }
+        wx.hideLoading()
+        var lis = res.data.data.list;
+        for (let n = 0; n < lis.length; n++) {
+          for (let c = 0; c < lis[n].childList.length; c++) {
+            t.data.searchStr[res.data.data.list[n].childList[c].name] = res.data.data.list[n].childList[c].id;
           }
-          // console.log(t.data.searchStr);
-          t.setData({
-            searchStr: t.data.searchStr
-          });
-          try {
-            t.data.cityData = res.data.data.list;
-            t.setData({
-              cityData: t.data.cityData,
-            });
-          } catch (err) {
-            console.log("登录失效");
-            t.setData({
-              login: false
-            });
-            t.login();
-            // t.getCityList();
-          }
-        } catch (e) {
-          console.log("trycatch已经执行了");
-          t.login();
-          t.setData({
-            net_flag: t.data.net_flag + 1
-          });
         }
-      },
-      fail: function() {
-        console.log("登录失效");
         t.setData({
-          login: false
+          searchStr: t.data.searchStr
+        });
+        t.data.cityData = res.data.data.list;
+        t.setData({
+          cityData: t.data.cityData,
         });
       }
     })

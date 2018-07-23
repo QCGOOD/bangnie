@@ -33,13 +33,13 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 2,
+			"current": 3,
 			"list": [
 				{
-					"id": -1,
+					"id": 0,
 					"name": "详情",
 					"pathName": "pages/details/details",
-					"query": ""
+					"query": "id=c059082209714424b1a6ba2c1e475ec9&isPraise=undefined"
 				},
 				{
 					"id": -1,
@@ -52,6 +52,12 @@
 					"name": "画图",
 					"pathName": "pages/canvas/canvas",
 					"query": "sourceId=28514d96312b455ba5b423b1caceac56"
+				},
+				{
+					"id": 3,
+					"name": "首页",
+					"pathName": "pages/main/main",
+					"query": "id=c059082209714424b1a6ba2c1e475ec9&detail=true"
 				}
 			]
 		}
