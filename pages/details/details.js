@@ -47,9 +47,9 @@ Page({
         if (res.authSetting["scope.userInfo"]) {
           wx.getUserInfo({
             success: (res) => {
-              console.log('用户信息=======', res)
+              // console.log('用户信息=======', res)
               if (res.errMsg == 'getUserInfo:ok') {
-                console.log(res.userInfo)
+                // console.log(res.userInfo)
                 let data = {
                   wego168SessionKey: this.data.key,
                   name: res.userInfo.nickName,
