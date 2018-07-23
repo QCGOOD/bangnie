@@ -39,6 +39,11 @@ Page({
       this.getImg();
     }
   },
+  onShareAppMessage() {
+    return {
+      title: '好帖子就是要分享的，戳我查看详情',
+    }  
+  },
   //检测用户的授权状态
   checkAuth() {
     wx.getSetting({
