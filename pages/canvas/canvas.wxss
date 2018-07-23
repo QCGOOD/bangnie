@@ -1,38 +1,16 @@
-/* pages/canvas/canvas.wxss */
-
-.bottom_img {
-  display: flex;
-  align-items: center;
-  position: fixed;
-  bottom: 111rpx;
-  left: 50%;
-  transform: translateX(-50%);
+/* src/pages/xml2can/xml2can.wxss */
+page {
+  padding-bottom: 90rpx;
+  background: #f2f2f2;
 }
-
-.icon {
-  width: 30rpx;
-}
-
-.bottom_text {
-  font-size: 30rpx;
-  color: #ccc;
-  margin-left: 10rpx;
-}
-
 .save {
-  background: #f56f4b;
   position: fixed;
   bottom: 0;
-  left: 0;
   width: 100%;
-  height: 92rpx;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 32rpx;
-  color: white;
-}
-
-.canvas {
-  background: white;
+  height: 90rpx;
+  line-height: 90rpx;
+  border-radius: 0;
+  font-size: 28rpx;
+  color: #fff;
+  background: #f8794d;
 }

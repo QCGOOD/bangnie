@@ -244,5 +244,10 @@ Page({
       current: this.data.detail.imgUrl[e.target.dataset.index],
       urls: this.data.detail.imgUrl
     })
+  },
+  homePage() {
+    wx.redirectTo({
+      url: '/pages/welcome/welcome'
+    });
   }
 })
