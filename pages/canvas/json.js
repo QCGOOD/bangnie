@@ -106,7 +106,9 @@ function _iconText(text, top, left) {
 }
 
 function _imgList(img) {
-  console.log(img)
+  if(!img) {
+    return []
+  }
   let data = []
   let imgs = img.split(',');
   imgs.map((res, index) => {
