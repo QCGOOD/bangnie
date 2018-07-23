@@ -110,6 +110,12 @@ Page({
     })
   },
 
+  home() {
+    wx.switchTab({
+      url: '../main/main'
+    })
+  },
+
   //用户分享操作
   share: function() {
     this.setData({

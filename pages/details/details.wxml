@@ -4,9 +4,11 @@
 <!--详情开始  -->
 <view class="menssage-item detail">
   <view class="user-wrap">
-    <image src="{{detail.headImage}}"></image>
+    <image wx:if="{{detail.interveneType == '管理员发布'}}" style="background-color:#f2f2f2;" src="/images/admin_head_img2.jpg"></image>
+    <image wx:else style="background-color:#f2f2f2;" src="{{detail.headImage}}"></image>
     <view class='user__info'>
-      <view class='name'>{{detail.username}}</view>
+      <view wx:if="{{detail.interveneType == '管理员发布'}}" class='name admin'>小帮管家</view>
+      <view wx:else class='name'>{{detail.username}}</view>
       <view class='time'>{{detail.createTime}}</view>
     </view>
   </view>
@@ -56,7 +58,7 @@
 <view style='height:124rpx'></view>
 <!--底部固定栏开始  -->
 <view class='button-group'>
-  <view class='button' catchtap='share'>
+  <view class='button' catchtap='home'>
     <text class='icon i-fanhuishouye'></text> 首页
   </view>
   <view class='button' catchtap='share'>
@@ -74,7 +76,7 @@
 </view>
 
 <!--底部隐藏固定栏开始  -->
-<view class='mask' wx:if="{{show}}"></view>
+<!-- <view class='mask' wx:if="{{show}}"></view> -->
 <view wx:if="{{show}}" class='share-wrap'>
   <view class='item'>
     <button open-type='share'>
