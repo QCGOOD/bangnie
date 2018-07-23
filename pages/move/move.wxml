@@ -10,8 +10,10 @@
   <view>
     <view wx:for="{{newData}}" wx:key="{{newData.id}}" class="menssage-item" bindtap='jumpDetails' data-id="{{item.id}}">
       <view class="user-wrap">
-        <image src="{{item.headImage}}"></image>
+        <image wx:if="{{detail.interveneType == '管理员发布'}}" style="background-color:#f2f2f2;" src="/images/admin_head_img2.jpg"></image>
+        <image wx:else src="{{item.headImage}}"></image>
         <view class='user__info'>
+          <view wx:if="{{detail.interveneType == '管理员发布'}}" class='name admin'>小帮管家</view>
           <view class='name'>{{item.username}}</view>
           <view class='time'>{{item.createTime}}</view>
         </view>

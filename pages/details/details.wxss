@@ -104,6 +104,7 @@ page {
   color: #000;
   background: #fff;
   align-items: center;
+  border-top: 2px solid #f8794d;
 }
 
 .share-wrap button {

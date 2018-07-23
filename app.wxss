@@ -39,6 +39,9 @@
   font-size: 28rpx;
   color: #090909;
 }
+.user-wrap .user__info .admin {
+  color: #f84a12;
+}
 
 .user-wrap .user__info .time {
   margin-top: 8rpx;
