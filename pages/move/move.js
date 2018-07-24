@@ -1,5 +1,6 @@
 // pages/main/main.js
 var app = getApp().globalData;
+var appJs = getApp();
 var page;
 var rq = require("../../utils/util.js");
 Page({
@@ -92,44 +93,40 @@ Page({
   getMessage: function (data) {
     var _this = this;
     if (this.isNext(data)) {
+      wx.showLoading({title: '加载中…'})
       wx.request({
         url: `${app.http}/app/information/page`,
         method: "GET",
         data: data,
         success: function (res) {
-          if (res.data.message == "用户未登录或登录已失效") {
-            wx.showToast({
-              title: '用户未登录或登录已失效',
-              icon: 'loading',
-              duration: 1000
-            });
-            wx.navigateTo({
-              url: '/pages/welcome/welcome',
+          wx.hideLoading()
+          wx.stopPullDownRefresh();
+          if (res.data.code == 40000) {
+            appJs.apiLogin(() => {
+              _this.getMessage(data)
             })
-          }
-          try {
+          }else if (res.data.code == 20000) {
             res.data.data.list.map(res => {
               if (res.imgUrl != '') {
                 return res.imgUrl = res.imgUrl.split(',')
               }
             })
-          } catch (e) {
-            console.log(wx.getStorageSync("key"));
-          }
-          if (data.type == 1) {
-            _this.setData({
-              newData: [..._this.data.newData, ...res.data.data.list],
-            })
-            _this.data.newSearch.pageNum++;
-            _this.data.newSearch.pageTotal = res.data.data.total
+            if (data.type == 1) {
+              _this.setData({
+                newData: [..._this.data.newData, ...res.data.data.list],
+              })
+              _this.data.newSearch.pageNum++;
+              _this.data.newSearch.pageTotal = res.data.data.total
+            } else {
+              _this.setData({
+                hotData: [..._this.data.hotData, ...res.data.data.list],
+              })
+              _this.data.hotSearch.pageNum++;
+              _this.data.hotSearch.pageTotal = res.data.data.total
+            }
           } else {
-            _this.setData({
-              hotData: [..._this.data.hotData, ...res.data.data.list],
-            })
-            _this.data.hotSearch.pageNum++;
-            _this.data.hotSearch.pageTotal = res.data.data.total
+            appJs.toast(res.data.message)
           }
-          wx.stopPullDownRefresh();
         }
       })
     } else if (data.type == 1) {
