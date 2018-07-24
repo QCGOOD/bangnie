@@ -30,7 +30,7 @@ Page({
   onLoad: function(options) {
     var that = this;
     page = 1;
-    that.judgePhone()
+    // that.judgePhone()
     if (!wx.getStorageSync("city")) {
       that.jumpChoosePage();
     }
@@ -89,7 +89,7 @@ Page({
       isAuthorizePhone: false
     })
   },
-  //判断是否需要获取手机号
+  // 判断是否需要获取手机号
   judgePhone: function() {
     var t = this;
     wx.request({
@@ -133,11 +133,7 @@ Page({
           iv: e.detail.iv
         },
         success: function(res) {
-          // if (res.data.code == 40000) {
-          //   appJs.apiLogin(() => {
-          //     t.getPhoneNumber()
-          //   })
-          // }
+
         }
       });
     }
@@ -212,11 +208,13 @@ Page({
   getMessage: function(data) {
     var _this = this;
     if (this.isNext(data)) {
+      wx.showLoading({title: '加载中……'})
       wx.request({
         url: `${app.http}/app/information/page`,
         method: "GET",
         data: data,
         success: function(res) {
+          wx.hideLoading()
           if (res.data.code == 40000) {
             appJs.apiLogin(() => {
               _this.getMessage(data)
@@ -347,7 +345,8 @@ Page({
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
       },
       data: {
-        areaId: wx.getStorageSync("id")
+        areaId: wx.getStorageSync("id"),
+        type: 1 
       },
       success: function(res) {
         if (res.data.code == 40000) {

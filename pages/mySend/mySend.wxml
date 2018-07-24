@@ -25,9 +25,13 @@
         <view class="content" bindtap='intoDetails' data-id="{{item.id}}" data-isPraise="{{item.others[2].flag}}">
           <view class='content_text'>
             <text style='color:#7399D8;font-size:30rpx;'>#{{item.category}}#</text>{{item.content}}</view>
-          <view class='content_image' style='display:flex;justify-content:flex-start;flex-wrap:wrap;' wx:if="{{item.imgUrl.length > 0}}">
-            <block wx:for="{{item.imgUrl}}" wx:for-item="img_item" wx:for-key="img_index" wx:key="{{img_index}}">
-              <image src='{{imgHost+img_item}}' style='width:222rpx;margin:5px 2px;height:222rpx;background-color:#f2f2f2;' binderror='error' data-index="{{img_index}}" ></image>
+          <view class='images' wx:if="{{item.imgUrl.length > 0}}">
+            <!-- <block wx:for="{{item.imgUrl}}" wx:for-item="img_item" wx:for-key="img_index" wx:key="{{img_index}}">
+              <image src='{{imgHost+img_item}}' style='width:222rpx;margin:5px 2px;height:222rpx;background-color:#f2f2f2;' binderror='error' data-index="{{img_index}}" mode="aspectFit"></image>
+            </block> -->
+            <block wx:for="{{item.imgUrl}}" wx:key="img" wx:for-item="img">
+              <image wx:if="{{item.imgUrl.length > 1}}" class='img_more' mode='aspectFit' src="{{imgHost}}{{img}}" data-index="{{index}}"></image>
+              <image wx:else class='img_single' mode="widthFix" src="{{imgHost}}{{img}}" data-index="{{index}}"></image>
             </block>
           </view>
 

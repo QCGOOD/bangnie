@@ -345,16 +345,15 @@ Page({
         wego168SessionKey: wx.getStorageSync("key")
       },
       success: function(res) {
+        wx.hideLoading()
         console.log('最近城市===', res);
         if (res.data.code == 40000) {
           appJs.apiLogin(() => {
             t.nearCity()
           })
         } else if (res.data.code == 20000) {
-          wx.hideLoading()
           wx.setStorageSync('city', res.data.data.name);
           wx.setStorageSync('id', res.data.data.id);
-          
           if (t.data.back == 1) {
             return false;
           }

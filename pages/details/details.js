@@ -14,13 +14,13 @@ Page({
     liuyan: false,
     lockRemark: false,
     imgHost: app.imgHost,
+    sourceId: '',
     adImg: {}
   },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
-    wx.showLoading({title: '加载中…'})
     this.checkAuth();
     this.setData({
       sourceId: options.id,
@@ -208,7 +208,9 @@ Page({
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
       },
       data: {
-        areaId: wx.getStorageSync("id")
+        areaId: wx.getStorageSync("id"),
+        type: 2,
+        categoryId: this.data.sourceId
       },
       success: function(res) {
         if (res.data.code == 40000) {

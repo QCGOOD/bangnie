@@ -8,7 +8,8 @@ Page({
    */
   data: {
     userData: {},//存储用户已经有的信息
-    getCode: "false"
+    getCode: "false",
+    isGetPhone: false
   },
 
   /**
@@ -37,8 +38,8 @@ Page({
   },
   //编辑资料接口
   ziliao:function(){
-    wx.showLoading()
-    var t=this;
+    wx.showLoading({title: '加载中……'})
+    var _this = this;
     wx.request({
       url: `${app.http}/app/memberAuthenticate/get`,
       method:"GET",
@@ -50,53 +51,56 @@ Page({
       },
       success:function(res){
         wx.hideLoading()
-        if (res.data.message == "用户未登录或登录已失效") {
-          appJs.toast('用户未登录或登录已失效')
-          wx.navigateTo({
-            url: '/pages/welcome/welcome',
+        if (res.data.code == 40000) {
+          appJs.apiLogin(() => {
+            _this.getMessage(data)
           })
+        } else if (res.data.code == 20000) {
+          _this.setData({
+            userData: res.data.data
+          });
+        } else {
+          appJs.toast(res.data.message)
         }
-        t.setData({
-          userData: res.data.data
-        });
       }
     })
   },
-  //是否修改手机
-  phone_blur:function(e){
-    var t=this;
-    console.log(e);
-    t.setData({
-      blur:true
-    });
-    wx.request({
-      url: `${app.http}/app/memberAuthenticate/isNeed`,
-      method: "GET",
-      header: {
-        "Content-Type": "application/x-www-form-urlencoded;charset=utf-8"
-      },
-      data: {
-        wego168SessionKey: wx.getStorageSync("key"),
-        phoneByMember: e.detail.value
-      },
-      success: function (res) {
-        console.log(res);
-        if (res.data.data) {
-
-        }
-        t.setData({
-          getCode:"false",
-          phone:e.detail.value
-        });
-
+  memberAuthenticate() {
+    this.getData('/app/memberAuthenticate/get').then(res => {
+      console.log(res.data)
+      if (res.data.data && res.data.data.phoneNumber) {
+        this.data.userData.phoneNumber = res.data.data.phoneNumber
+        this.setData({
+          userData: this.data.userData,
+          isGetPhone: false
+        })
+      } else {
+        this.setData({
+          isGetPhone: true
+        })
       }
     })
+  },
+  getPhoneNumber(e) {
+    console.log(e)
+    if (e.detail.encryptedData) {
+      let params = {
+        encryptedData: e.detail.encryptedData,
+        iv: e.detail.iv
+      }
+      this.postData('/app/phone', params).then(res => {
+        console.log(res.data)
+        this.data.userData.phoneNumber = res.data.message
+        this.setData({
+          userData: this.data.userData
+        })
+      })
+    }
   },
   //提交表单数据
   formsubmit:function(e){
     var t=this;
     console.log(e);
-
     wx.request({
       url: `${app.http}/app/memberAuthenticate/update`,
       method: "POST",
@@ -144,6 +148,69 @@ Page({
         
 
       }
+    })
+  },
+  getData (url, params = {}) {
+    params.wego168SessionKey = wx.getStorageSync("key")
+    return new Promise((resolve, reject) => {
+      wx.request({
+        url: app.http + url,
+        data: params,
+        method: 'GET', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
+        success: res => {
+          if (res.data.code === 20000) {
+            resolve(res)
+          } else {
+            wx.showToast({
+              title: res.data.message || '系统出错',
+              icon: 'none',
+              duration: 2000
+            })
+            reject(res)
+          }
+        },
+        fail: err => {
+          wx.showToast({
+            title: res.data.message || '系统出错',
+            icon: 'none',
+            duration: 2000
+          })
+          reject(err)
+        }
+      })
+    })
+  },
+  postData (url, params = {}) {
+    params.wego168SessionKey = wx.getStorageSync("key")
+    return new Promise((resolve, reject) => {
+      wx.request({
+        url: app.http + url,
+        data: params,
+        method: 'POST',
+        header: {
+          'content-type': 'application/x-www-form-urlencoded'
+        },
+        success: res => {
+          if (res.data.code === 20000) {
+            resolve(res)
+          } else {
+            wx.showToast({
+              title: res.data.message || '系统出错',
+              icon: 'none',
+              duration: 2000
+            })
+            reject(err)
+          }
+        },
+        fail: err => {
+          wx.showToast({
+            title: res.data.message || '系统出错',
+            icon: 'none',
+            duration: 2000
+          })
+          reject(err)
+        },
+      })
     })
   },
 })
