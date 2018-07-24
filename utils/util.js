@@ -14,68 +14,38 @@ const formatNumber = n => {
   return n[1] ? n : '0' + n
 }
 //添加获取系统信息的方法
-const getSystem=()=>{
+const getSystem = () => {
   var sys;
   wx.getSystemInfo({
     success: function(res) {
       // console.log(res);
-      sys= res;
+      sys = res;
     },
   })
   return sys;
 }
-function request(urlLastAdded,method,data,resolve,reject){
+
+function request(urlLastAdded, method, data, resolve, reject) {
   // var result;
-  var app=getApp().globalData;
+  var app = getApp().globalData;
   wx.request({
-    url:app.http + urlLastAdded,
-    method:method,
-    header:{
+    url: app.http + urlLastAdded,
+    method: method,
+    header: {
       'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
     },
-    data:data,
-    success:function(res){
+    data: data,
+    success: function(res) {
       resolve(res);
     },
-    fail:function(err){
+    fail: function(err) {
       reject(err);
     },
   })
-  // console.log(result);
-  
 }
-// const login=()=>{
-//   var key;
-  
-//   wx.login({
-//       success: res => {
-//         // 发送 res.code 到后台换取 openId, sessionKey, unionId
-//         console.log(res);
-//         var app=getApp().globalData;
-//         wx.request({
-//           url: app.http+'app/login',
-//           method:"POST",
-//           header:{
-//             'content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
-//           },
-//           data:{
-//             code:""+res.code
-//           },
-//           success:function(r){
-//             // console.log(r.data.data.wego168SessionKey);
-//             key = r.data.data.wego168SessionKey;
-//           }
-          
-//         })
-//       }
-//     })
-//     return key;
-// }
-
 
 module.exports = {
   formatTime: formatTime,
-  getSystem:getSystem,
-  
-  request:request
+  getSystem: getSystem,
+  request: request
 }

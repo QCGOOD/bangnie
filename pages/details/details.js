@@ -354,8 +354,8 @@ Page({
     })
   },
   homePage() {
-    wx.redirectTo({
-      url: '/pages/welcome/welcome'
+    wx.switchTab({
+      url: '/pages/main/main'
     });
   }
 })
