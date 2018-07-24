@@ -32,6 +32,7 @@ Page({
         pageNum: 1,
         pageSize: 20,
         pageTotal: -1,
+        type: 1,
         listType:2
       }
     })
