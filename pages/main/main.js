@@ -103,7 +103,7 @@ Page({
       },
       success: function(res) {
         if (res.data.code == 40000) {
-          app.appJs(() => {
+          appJs.apiLogin(() => {
             t.judgePhone()
           })
         } else if (res.data.code == 20000) {
@@ -134,7 +134,7 @@ Page({
         },
         success: function(res) {
           // if (res.data.code == 40000) {
-          //   app.appJs(() => {
+          //   appJs.apiLogin(() => {
           //     t.getPhoneNumber()
           //   })
           // }
@@ -218,7 +218,7 @@ Page({
         data: data,
         success: function(res) {
           if (res.data.code == 40000) {
-            app.appJs(() => {
+            appJs.apiLogin(() => {
               _this.getMessage(data)
             })
           }
@@ -285,7 +285,7 @@ Page({
       },
       success: function(res) {
         if (res.data.code == 40000) {
-          app.appJs(() => {
+          appJs.apiLogin(() => {
             t.getKind()
           })
         }
@@ -351,7 +351,7 @@ Page({
       },
       success: function(res) {
         if (res.data.code == 40000) {
-          app.appJs(() => {
+          appJs.apiLogin(() => {
             _this.getImg()
           })
         }
