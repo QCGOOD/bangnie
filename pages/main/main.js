@@ -28,70 +28,47 @@ Page({
     isDetail: false
   },
   onLoad: function(options) {
-    if (!wx.getStorageSync('key')) {
-      appJs.loginReadyCallback = res => {
-        console.log('设置回调')
-        wx.setStorageSync('key', res);
-      }
-    }
-    if(options.detail) {
-      this.setData({
-        isDetail: true
-      })
-      wx.navigateTo({
-        url: `../details/details?id=${options.id}`,
-        success: () => {
-          this.setData({isDetail: false})
-        }
-      })
-    }
-  },
-  onShow: function() {
-    if (this.data.isDetail) {
-      return false;
-    }
     var that = this;
     page = 1;
-      that.judgePhone()
-      if (!wx.getStorageSync("city")) {
-        that.jumpChoosePage();
-      }
-      console.log(wx.getStorageSync("key"));
-      that.setData({
-        trueHeight: app.trueHeight,
-        selectData: wx.getStorageSync("city"),
-        newSearch: {
-          pageNum: 1,
-          pageSize: 20,
-          pageTotal: -1,
-          type: 1,
-          wego168SessionKey: wx.getStorageSync("key"),
-          areaId: wx.getStorageSync("id"),
-          categoryId: '',
-          mytype: 'newData'
-        },
-        hotSearch: {
-          pageNum: 1,
-          pageSize: 20,
-          pageTotal: -1,
-          type: 2,
-          wego168SessionKey: wx.getStorageSync("key"),
-          areaId: wx.getStorageSync("id"),
-          categoryId: '',
-          mytype: 'hotData'
-        },
-      });
-      that.getImg();
-      that.getKind();
-      that.setData({
-        newData: [],
-        hotData: [],
-        newType: false,
-        hotType: false,
-        swiperIndex: 0
-      })
-      that.data.newSearch.pageNum = 1
-      that.getMessage(that.data.newSearch);
+    that.judgePhone()
+    if (!wx.getStorageSync("city")) {
+      that.jumpChoosePage();
+    }
+    that.setData({
+      trueHeight: app.trueHeight,
+      selectData: wx.getStorageSync("city"),
+      newSearch: {
+        pageNum: 1,
+        pageSize: 20,
+        pageTotal: -1,
+        type: 1,
+        wego168SessionKey: wx.getStorageSync("key"),
+        areaId: wx.getStorageSync("id"),
+        categoryId: '',
+        mytype: 'newData'
+      },
+      hotSearch: {
+        pageNum: 1,
+        pageSize: 20,
+        pageTotal: -1,
+        type: 2,
+        wego168SessionKey: wx.getStorageSync("key"),
+        areaId: wx.getStorageSync("id"),
+        categoryId: '',
+        mytype: 'hotData'
+      },
+    });
+    that.getImg();
+    that.getKind();
+    that.setData({
+      newData: [],
+      hotData: [],
+      newType: false,
+      hotType: false,
+      swiperIndex: 0
+    })
+    that.data.newSearch.pageNum = 1
+    that.getMessage(that.data.newSearch);
   },
   onPageScroll() {
     wx.createSelectorQuery().select('#tabbar').boundingClientRect(res => {
@@ -125,7 +102,11 @@ Page({
         wego168SessionKey: wx.getStorageSync("key")
       },
       success: function(res) {
-        if (res.data.code == 20000) {
+        if (res.data.code == 40000) {
+          appJs.apiLogin(() => {
+            t.judgePhone()
+          })
+        } else if (res.data.code == 20000) {
           t.setData({
             isAuthorizePhone: res.data.data
           });
@@ -152,7 +133,11 @@ Page({
           iv: e.detail.iv
         },
         success: function(res) {
-
+          // if (res.data.code == 40000) {
+          //   appJs.apiLogin(() => {
+          //     t.getPhoneNumber()
+          //   })
+          // }
         }
       });
     }
@@ -232,14 +217,9 @@ Page({
         method: "GET",
         data: data,
         success: function(res) {
-          if (res.data.message == "用户未登录或登录已失效") {
-            wx.showToast({
-              title: '用户未登录或登录已失效',
-              icon: 'loading',
-              duration: 1000
-            });
-            wx.navigateTo({
-              url: '/pages/welcome/welcome',
+          if (res.data.code == 40000) {
+            appJs.apiLogin(() => {
+              _this.getMessage(data)
             })
           }
           try {
@@ -304,6 +284,11 @@ Page({
         pageSize: 10
       },
       success: function(res) {
+        if (res.data.code == 40000) {
+          appJs.apiLogin(() => {
+            t.getKind()
+          })
+        }
         for (let i = 0; i < res.data.data.list.length; i++) {
           t.data.serviceData[i] = {
             url: 'http://helpyou-1255600302.cosgz.myqcloud.com' + res.data.data.list[i].iconUrl,
@@ -365,6 +350,11 @@ Page({
         areaId: wx.getStorageSync("id")
       },
       success: function(res) {
+        if (res.data.code == 40000) {
+          appJs.apiLogin(() => {
+            _this.getImg()
+          })
+        }
         _this.setData({
           imgUrls: res.data.data
         });

@@ -25,19 +25,9 @@ Page({
     this.setData({
       sourceId: options.id,
     });
-    if (!wx.getStorageSync('key')) {
-      appJs.loginReadyCallback = res => {
-        console.log('设置回调')
-        wx.setStorageSync('key', res);
-        this.getDetail(this.data.sourceId);
-        this.getComments(this.data.sourceId);
-        this.getImg();
-      }
-    }else{
-      this.getDetail(this.data.sourceId);
-      this.getComments(this.data.sourceId);
-      this.getImg();
-    }
+    this.getDetail(this.data.sourceId);
+    this.getComments(this.data.sourceId);
+    this.getImg();
   },
   onShareAppMessage() {
     return {
@@ -56,7 +46,6 @@ Page({
               if (res.errMsg == 'getUserInfo:ok') {
                 // console.log(res.userInfo)
                 let data = {
-                  wego168SessionKey: this.data.key,
                   name: res.userInfo.nickName,
                   headImage: res.userInfo.avatarUrl,
                   sex: res.userInfo.gender
@@ -92,7 +81,6 @@ Page({
     t.closeAuthorize()
     if (e.detail.detail.errMsg == 'getUserInfo:ok') {
       let data = {
-        wego168SessionKey: t.data.key,
         name: e.detail.detail.userInfo.nickName,
         headImage: e.detail.detail.userInfo.avatarUrl,
         sex: e.detail.detail.userInfo.gender
@@ -103,6 +91,8 @@ Page({
 
   // 保存用户信息到后台/
   saveUserInfo(data) {
+    data.wego168SessionKey =  wx.getStorageSync("key");
+    var _this = this;
     wx.request({
       url: `${app.http}/app/member/save`,
       method: "POST",
@@ -111,6 +101,12 @@ Page({
       },
       data: data,
       success: (res) => {
+        console.log('保存用户信息', res)
+        if (res.data.code == 40000) {
+          appJs.apiLogin(() => {
+            _this.saveUserInfo(data)
+          })
+        }
       }
     })
   },
@@ -137,6 +133,7 @@ Page({
   //  获取详情的资讯
   getDetail: function(id) {
     var _this = this;
+    wx.showLoading({title: '加载中……'})
     wx.request({
       url: `${app.http}/app/information/get`,
       method: "GET",
@@ -150,25 +147,23 @@ Page({
       success: function(res) {
         wx.hideLoading()
         let getData = res.data.data;
-        if (res.data.message == "用户未登录或登录已失效") {
-          wx.showToast({
-            title: '用户未登录或登录已失效',
-            icon: 'loading',
-            duration: 1000
-          });
-          wx.navigateTo({
-            url: '/pages/welcome/welcome',
+        if (res.data.code == 40000) {
+          appJs.apiLogin(() => {
+            _this.getDetail(id)
           })
-        }
-        if (getData.imgUrl != '') {
-          getData.imgUrl = getData.imgUrl.split(',');
-          getData.imgUrl = getData.imgUrl.map(res => {
-            return _this.data.imgHost + res
+        } else if (res.data.code == 20000) {
+          if (getData.imgUrl != '') {
+            getData.imgUrl = getData.imgUrl.split(',');
+            getData.imgUrl = getData.imgUrl.map(res => {
+              return _this.data.imgHost + res
+            })
+          }
+          _this.setData({
+            detail: res.data.data
           })
+        }else{
+          appJs.toast(res.data.message)
         }
-        _this.setData({
-          detail: res.data.data
-        })
       }
     })
   },
@@ -188,10 +183,18 @@ Page({
         pageNum: 1
       },
       success(res) {
-        console.log(res)
-        _this.setData({
-          commentsData: res.data.data.list
-        })
+        console.log('留言列表===', res)
+        if (res.data.code == 40000) {
+          appJs.apiLogin(() => {
+            _this.getComments(id)
+          })
+        } else if (res.data.code == 20000) {
+          _this.setData({
+            commentsData: res.data.data.list
+          })
+        } else {
+          appJs.toast(res.data.message)
+        }
       }
     })
   },
@@ -208,10 +211,16 @@ Page({
         areaId: wx.getStorageSync("id")
       },
       success: function(res) {
-        if (!res.data.data.length > 0) return;
-        _this.setData({
-          adImg: res.data.data[0]
-        })
+        if (res.data.code == 40000) {
+          appJs.apiLogin(() => {
+            _this.getImg()
+          })
+        } else if (res.data.code == 20000){
+          if (!res.data.data.length > 0) return;
+          _this.setData({
+            adImg: res.data.data[0]
+          })
+        }
       }
     });
   },
@@ -249,6 +258,7 @@ Page({
     this.setData({
       lockRemark: true
     })
+    wx.showLoading({title: '发送中……'})
     wx.request({
       url: `${app.http}/app/comment/insert`,
       method: "POST",
@@ -261,20 +271,19 @@ Page({
         content: this.data.neirong
       },
       success: function(res) {
+        wx.hideLoading()
         if (res.data.code == 40000) {
-          wx.showToast({
-            title: res.data.message,
-            icon: 'none'
+          appJs.apiLogin(() => {
+            _this.getImg()
           })
-        } else {
+        } else if (res.data.code == 20000){
           _this.setData({
             liuyan: false
           })
-          wx.showToast({
-            title: '留言发布成功~',
-            icon: 'success'
-          })
+          appJs.toast('发布成功')
           _this.getComments(_this.data.sourceId)
+        } else {
+          appJs.toast(res.data.message)
         }
       },
       complete() {

@@ -22,6 +22,7 @@ Page({
       trueheight: app.trueHeight,
     });
     this.setData({
+      userData: [],
       searchData: {
         wego168SessionKey: wx.getStorageSync("key"),
         areaId: "",
@@ -65,6 +66,20 @@ Page({
    */
   onPullDownRefresh() {
     console.log('下拉')
+    // this.setData({
+    //   searchData: {
+    //     wego168SessionKey: wx.getStorageSync("key"),
+    //     areaId: "",
+    //     categoryId:  "",
+    //     // wx.getStorageSync("id")
+    //     // wx.getStorageSync("categoryId") ||
+    //     pageNum: 1,
+    //     pageSize: 20,
+    //     pageTotal: -1,
+    //     listType:2
+    //   }
+    // })
+    // this.getMessage(this.data.searchData);
     this.onLoad();
   },
   /**

@@ -6,6 +6,7 @@ Page({
   onLoad: function(options) {
     var _this = this;
     //获取留言列表
+    wx.showLoading({title: '加载中……'})
     wx.request({
       url: `${app.http}/app/comment/page`,
       method: "GET",
@@ -21,6 +22,7 @@ Page({
       },
       success: function(res) {
         console.log(res);
+        wx.hideLoading()
         if (res.data.message == "用户未登录或登录已失效") {
           wx.showToast({
             title: '用户未登录或登录已失效',
