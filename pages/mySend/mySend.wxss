@@ -68,8 +68,8 @@ page{
 .user_message_choose .select{
   display: flex;
   background:rgba(0,0,0,.7);
-  border-radius: 3px;
-  padding: 5px 0;
+  border-radius: 4px;
+  padding: 8px 0;
   width: 100px;
   text-align: center;
   overflow: hidden;

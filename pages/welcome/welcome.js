@@ -13,6 +13,7 @@ Page({
     login: false,
     isAuthorize: false,
     // key:''
+    back: null,
     second: true,
     searchStr: {},
     net_flag: 0
@@ -23,22 +24,27 @@ Page({
    */
   onLoad: function (options) {
     var _this = this;
+    if (options.back) {
+      this.setData({
+        back: options.back
+      })
+    }
     // this.login();
-    if (wx.getStorageSync('key')) {
-      console.log('key存在')
+    // if (wx.getStorageSync('key')) {
+    //   console.log('key存在')
       this.checkAuth();
       this.qqMap();
-    }else{
-      // 能会在 Page.onLoad 之后才返回
-      // 所以此处加入 callback 以防止这种情况
-      appJs.loginReadyCallback = res => {
-        console.log('设置回调')
-        wx.setStorageSync('key', res);
-        _this.checkAuth();
-        _this.qqMap();
-      }
+    // }else{
+    //   // 能会在 Page.onLoad 之后才返回
+    //   // 所以此处加入 callback 以防止这种情况
+    //   // appJs.loginReadyCallback = res => {
+    //   //   console.log('设置回调')
+    //   //   wx.setStorageSync('key', res);
+    //     _this.checkAuth();
+    //     _this.qqMap();
+    //   }
 
-    }
+    // }
   },
 
   // 登录--换取code
@@ -118,7 +124,6 @@ Page({
               if (res.errMsg == 'getUserInfo:ok') {
                 console.log(res.userInfo)
                 let data = {
-                  wego168SessionKey: this.data.key,
                   name: res.userInfo.nickName,
                   headImage: res.userInfo.avatarUrl,
                   sex: res.userInfo.gender
@@ -216,7 +221,6 @@ Page({
   getCityList: function() {
     var t = this;
     wx.showLoading({title: '加载中…'})
-
     wx.request({
       url: `${app.http}/area/listWithChild`,
       // url: 'http://192.168.1.18:8011/helpyou/api/v1/area/listWithChild',
@@ -228,21 +232,29 @@ Page({
         wego168SessionKey: wx.getStorageSync("key")
       },
       success: function(res) {
-        console.log(res);
+        console.log('城市列表===', res);
         wx.hideLoading()
-        var lis = res.data.data.list;
-        for (let n = 0; n < lis.length; n++) {
-          for (let c = 0; c < lis[n].childList.length; c++) {
-            t.data.searchStr[res.data.data.list[n].childList[c].name] = res.data.data.list[n].childList[c].id;
+        if (res.data.code == 40000) {
+          appJs.apiLogin(() => {
+            t.getCityList()
+          })
+        } else if (res.data.code == 20000) {
+          var lis = res.data.data.list;
+          for (let n = 0; n < lis.length; n++) {
+            for (let c = 0; c < lis[n].childList.length; c++) {
+              t.data.searchStr[res.data.data.list[n].childList[c].name] = res.data.data.list[n].childList[c].id;
+            }
           }
+          t.setData({
+            searchStr: t.data.searchStr
+          });
+          t.data.cityData = res.data.data.list;
+          t.setData({
+            cityData: t.data.cityData,
+          });
+        } else {
+          appJs.toast(res.data.message)
         }
-        t.setData({
-          searchStr: t.data.searchStr
-        });
-        t.data.cityData = res.data.data.list;
-        t.setData({
-          cityData: t.data.cityData,
-        });
       }
     })
   },
@@ -289,7 +301,6 @@ Page({
     t.closeAuthorize()
     if (e.detail.detail.errMsg == 'getUserInfo:ok') {
       let data = {
-        wego168SessionKey: t.data.key,
         name: e.detail.detail.userInfo.nickName,
         headImage: e.detail.detail.userInfo.avatarUrl,
         sex: e.detail.detail.userInfo.gender
@@ -299,6 +310,8 @@ Page({
 
   },
   saveUserInfo(data) {
+    var _this = this;
+    data.wego168SessionKey = wx.getStorageSync('key');
     wx.request({
       url: `${app.http}/app/member/save`,
       method: "POST",
@@ -308,6 +321,11 @@ Page({
       data: data,
       success: (res) => {
         console.log('保存用户信息====', res)
+        if (res.data.code == 40000) {
+          appJs.apiLogin(() => {
+            _this.saveUserInfo(data)
+          })
+        }
         this.nearCity()
         this.getCityList();
       }
@@ -316,6 +334,7 @@ Page({
   // 最近城市
   nearCity() {
     let t = this;
+    wx.showLoading({title: '加载中……'})
     wx.request({
       url: `${app.http}/app/recentlyArea`,
       method: "GET",
@@ -326,17 +345,25 @@ Page({
         wego168SessionKey: wx.getStorageSync("key")
       },
       success: function(res) {
-        console.log('最近城市====', res);
-        if (res.data.code == 20000) {
+        console.log('最近城市===', res);
+        if (res.data.code == 40000) {
+          appJs.apiLogin(() => {
+            t.nearCity()
+          })
+        } else if (res.data.code == 20000) {
+          wx.hideLoading()
           wx.setStorageSync('city', res.data.data.name);
           wx.setStorageSync('id', res.data.data.id);
-          // 有最近城市 直接去首页
+          
           if (t.data.back == 1) {
-            return
+            return false;
           }
+          // 有最近城市 直接去首页
           wx.switchTab({
             url: '/pages/main/main',
           })
+        } else {
+          appJs.toast(res.data.message)
         }
       }
     })

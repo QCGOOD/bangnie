@@ -65,7 +65,30 @@ App({
       }
     })
   },
-  
+  apiLogin(callback) {
+    var _this = this;
+    // 登录
+    wx.login({
+      success: res => {
+        // 发送 res.code 到后台换取 openId, sessionKey, unionId
+        wx.request({
+          url: `${_this.globalData.http}/app/login`,
+          method: "POST",
+          header: {
+            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+          },
+          data: {
+            code: "" + res.code
+          },
+          success: function (r) {
+            console.log('换取sessionKey===', r);
+            wx.setStorageSync('key', r.data.data.wego168SessionKey);
+            callback && callback()
+          }
+        })
+      }
+    })
+  },
   toast(text, icon) {
     wx.showToast({
       title: text,
