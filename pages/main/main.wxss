@@ -129,6 +129,7 @@ page {
 /*朋友圈开始  */
 
 .curcle {
+  position: relative;
   padding: 0 20rpx;
   width: 100%;
   display: flex;
@@ -136,6 +137,7 @@ page {
   align-items: center;
   box-sizing: border-box;
   background: white;
+  z-index: 2;
 }
 
 .curcle.flexd {
