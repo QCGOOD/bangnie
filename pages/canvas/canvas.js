@@ -17,6 +17,11 @@ Page({
   saveImage() {
     wx.saveImageToPhotosAlbum({
       filePath: this.imagePath,
+      success() {
+        wx.showToast({
+          title: '已保存到本地',
+        })
+      }
     });
   },
   //  获取详情的资讯

@@ -1,4 +1,4 @@
-<view>
   <painter palette="{{template}}" bind:imgOK="onImgOK" />
-  <button class='save' bind:tap='saveImage'>保存图片</button>
-</view>
+  <cover-view>
+    <button class='save' bind:tap='saveImage'>保存图片</button>
+  </cover-view>
