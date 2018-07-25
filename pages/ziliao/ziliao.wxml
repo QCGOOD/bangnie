@@ -44,7 +44,8 @@
     </view>
     <view class='form-item'>
       <label class="form-item__label" for="phone">手机</label>
-      <text class="form-item__input" placeholder='15011934278' name="phone" id='phone'>{{userData.phoneNumber?userData.phoneNumber:'无'}}</text>
+      <button wx:if="{{isGetPhone}}" size="mini" type="primary" bindgetphonenumber="getPhoneNumber" open-type="getPhoneNumber">获取手机号</button>
+      <text wx:else class="form-item__input" placeholder='无' name="phone" id='phone'>{{userData.phoneNumber}}</text>
     </view>
     <view style='width:100%;height:20rpx;background:#f0f0f0;'></view>
     <view class='form-item'>

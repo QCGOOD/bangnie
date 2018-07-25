@@ -25,11 +25,11 @@ Page({
       // trueheight:
       LCDetails:wx.getStorageSync("LCDetails")
     });
-    t.getKind();
+    // t.getKind();
   },
 
   onShow () {
-    // this.getKind();
+    this.getKind();
   },
 
   //从后台获取栏目列表
@@ -47,7 +47,7 @@ Page({
       data: {
         wego168SessionKey: wx.getStorageSync("key"),
         pageNum: 1,
-        pageSize: 10
+        pageSize: 50
       },
       success: function (res) {
         console.log(res);

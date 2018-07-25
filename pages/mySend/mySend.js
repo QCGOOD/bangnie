@@ -67,20 +67,6 @@ Page({
    */
   onPullDownRefresh() {
     console.log('下拉')
-    // this.setData({
-    //   searchData: {
-    //     wego168SessionKey: wx.getStorageSync("key"),
-    //     areaId: "",
-    //     categoryId:  "",
-    //     // wx.getStorageSync("id")
-    //     // wx.getStorageSync("categoryId") ||
-    //     pageNum: 1,
-    //     pageSize: 20,
-    //     pageTotal: -1,
-    //     listType:2
-    //   }
-    // })
-    // this.getMessage(this.data.searchData);
     this.onLoad();
   },
   /**
@@ -104,7 +90,7 @@ Page({
   getMessage(data) {
     var _this = this;
     if (this.isNext(data)) {
-      wx.showLoading()
+      wx.showLoading({title: '加载中……'})
       wx.request({
         url: `${app.http}/app/information/page`,
         method: "GET",
@@ -114,30 +100,30 @@ Page({
         data: data,
         success: function (res) {
           wx.hideLoading()
-          if (res.data.message == "用户未登录或登录已失效") {
-            appJs.toast('用户未登录或登录已失效')
-            wx.navigateTo({
-              url: '/pages/welcome/welcome',
+          if (res.data.code == 40000) {
+            appJs.apiLogin(() => {
+              _this.getMessage(data)
             })
-          }
-          let tempArr = [];
-          res.data.data.list.map((item, i) => {
-            item.showSelect = false;
-            if(item.imgUrl != "") {
-              item.imgUrl = item.imgUrl.split(',')
-            }else{
-              item.imgUrl = []
-            }
+          } else if (res.data.code == 20000) {
+            let tempArr = [];
+            res.data.data.list.map((item, i) => {
+              item.showSelect = false;
+              if(item.imgUrl != "") {
+                item.imgUrl = item.imgUrl.split(',')
+              }else{
+                item.imgUrl = []
+              }
+            })
+          _this.setData({
+            userData: [..._this.data.userData, ...res.data.data.list],
           })
-        _this.setData({
-          userData: [..._this.data.userData, ...res.data.data.list],
-        })
-        _this.data.searchData.pageNum++;
-        _this.data.searchData.pageTotal = res.data.data.total
-        wx.stopPullDownRefresh();
-        // _this.setData({
-        //   userData: res.data.data.list
-        // })
+          _this.data.searchData.pageNum++;
+          _this.data.searchData.pageTotal = res.data.data.total
+          wx.stopPullDownRefresh();
+          // _this.setData({
+          //   userData: res.data.data.list
+          // })
+          }
         }
       })
     }

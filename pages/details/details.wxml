@@ -51,7 +51,7 @@
 </view>
 
 <!--广告位开始  -->
-<view class='ad-wrap'>
+<view class='ad-wrap' wx:if="{{adImg.url}}">
   <!-- <text class="ad-text">{{adImg.name}}</text> -->
   <image src='{{imgHost}}{{adImg.url}}' style='width:100%;' mode='widthFix'></image>
 </view>

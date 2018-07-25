@@ -33,7 +33,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": -1,
+			"current": 3,
 			"list": [
 				{
 					"id": 0,
@@ -58,6 +58,12 @@
 					"name": "首页",
 					"pathName": "pages/main/main",
 					"query": "detail=true&id=22edbb1e685549eea135660adcd0ceb9&isPraise=undefined"
+				},
+				{
+					"id": -1,
+					"name": "首页",
+					"pathName": "pages/ziliao/ziliao",
+					"query": ""
 				}
 			]
 		}
