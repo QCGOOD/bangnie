@@ -112,7 +112,6 @@ function _imgList(img) {
   let data = []
   let imgs = img.split(',');
   imgs.map((res, index) => {
-    console.log(index)
     if (index < 2) {
       data.push({
         type: 'image',
