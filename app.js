@@ -5,7 +5,6 @@ App({
   onLaunch: function () {
     // 先清下缓存-防止新用户进来用的上次的sessionKey
     wx.removeStorageSync('key');
-    console.log(1111111)
     this.login();
   },
   // 登录--换取code
@@ -46,14 +45,18 @@ App({
             if(r.data.code == 20000) {
               wx.setStorageSync('key', r.data.data.wego168SessionKey);
               if (_this.loginReadyCallback) {
-                console.log('我是app.js')
+                console.log('我是app.js；回调了')
                 _this.loginReadyCallback(r.data.data.wego168SessionKey)
               }
+            } else {
+              setTimeout(() => {
+                _this.toast('登录失败请重试');
+              }, 500);
             }
           },
           fail: function () {
-            _this.toast('登录失败请重试');
             wx.hideLoading();
+            _this.toast('登录失败请重试');
           }
         })
       }
@@ -78,8 +81,14 @@ App({
           success: function (r) {
             wx.hideLoading();
             console.log('换取sessionKey===', r.data);
-            wx.setStorageSync('key', r.data.data.wego168SessionKey);
-            callback && callback()
+            if (r.data.code == 20000) {
+              wx.setStorageSync('key', r.data.data.wego168SessionKey);
+              callback && callback()
+            } else {
+              setTimeout(() => {
+                _this.toast('登录失败请重试');
+              }, 500);
+            }
           },
           fail: function () {
             _this.toast('登录失败请重试');
@@ -103,6 +112,7 @@ App({
     trueHeight: systemData.getSystem().windowHeight,
     pixelRatio: systemData.getSystem().pixelRatio,
     http: 'https://abn.wego168.com/helpyou/api/v1',
+    // http: 'http://192.168.1.18:8011/helpyou/api/v1',
     imgHost: 'https://helpyou-1255600302.cosgz.myqcloud.com',
   }
 })

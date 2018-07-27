@@ -3,9 +3,6 @@ var app = getApp().globalData;
 var appJs = getApp();
 Page({
 
-  /**
-   * 页面的初始数据
-   */
   data: {
     index: true,
     putfor: false,
@@ -17,18 +14,27 @@ Page({
     vip:true
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
   onLoad: function(options) {
     var t = this;
+    // 由于登录是网络请求, 能会在 Page.onLoad 之后才返回
+    // 所以此处加入 callback 以防止这种情况
+    if (!wx.getStorageSync('key')) {
+      appJs.loginReadyCallback = res => {
+        this.ziliao();
+      }
+    } else {
+      this.ziliao();
+    }
+    
     this.setData({
       width: app.width,
       height: app.height,
       trueheight: app.trueHeight,
     });
     
-    this.ziliao();
+  },
+  onShow() {
+    
   },
 
   // 点击事件
@@ -58,10 +64,10 @@ Page({
         wego168SessionKey: wx.getStorageSync("key")
       },
       success: function (res) {
-        // console.log('api用户信息', res);
+        console.log('api用户信息', res.data);
         if (res.data.code == 50103) {
           appJs.apiLogin(() => {
-            t.ziliao(data)
+            t.ziliao()
           })
         } else if (res.data.code == 20000) {
           t.setData({

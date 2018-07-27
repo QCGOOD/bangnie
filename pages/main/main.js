@@ -1,7 +1,6 @@
 // pages/main/main.js
 var app = getApp().globalData;
 var appJs = getApp();
-var page;
 
 Page({
   data: {
@@ -25,16 +24,15 @@ Page({
     isDetail: false
   },
   onLoad: function(options) {
-    
-    console.log(3333333);
+    console.log('我是主页');
     var that = this;
-    page = 1;
-    // that.judgePhone()
+    
+    // 请先选择城市
     if (!wx.getStorageSync("city")) {
-      that.jumpChoosePage();
+      this.jumpChoosePage();
       return;
     }
-    that.setData({
+    this.setData({
       trueHeight: app.trueHeight,
       selectData: wx.getStorageSync("city"),
       newSearch: {
@@ -57,17 +55,35 @@ Page({
       },
     });
     
-    that.setData({
+    this.setData({
       newData: [],
       hotData: [],
       newType: false,
       hotType: false,
       swiperIndex: 0
     })
-    that.data.newSearch.pageNum = 1;
-    that.getImg();
-    that.getKind();
+    this.data.newSearch.pageNum = 1;
+
+    // 轮播图
+    this.getImg();
+
+    // 由于登录是网络请求, 能会在 Page.onLoad 之后才返回
+    // 所以此处加入 callback 以防止这种情况
+    if (!wx.getStorageSync('key')) {
+      appJs.loginReadyCallback = res => {
+        this.getKind();
+      }
+    } else {
+      this.getKind();
+    }
   },
+
+  onShow() {
+    this.setData({
+      inputValue: ''
+    })
+  },
+
   onPageScroll() {
     wx.createSelectorQuery().select('#tabbar').boundingClientRect(res => {
       // console.log('滚动=====',  res)
@@ -122,8 +138,8 @@ Page({
       isAuthorize: false
     })
   },
-    // 用户点击
-    getUserInfo(e) {
+  // 用户点击
+  getUserInfo(e) {
     var t = this;
     t.closeAuthorize()
     if (e.detail.detail.userInfo) {
@@ -253,31 +269,17 @@ Page({
   },
   //输入框失焦事件
   blur: function() {
-    if (this.data.inputValue) {
-      this.setData({
-        flag: true,
-        inputValue: ''
-      });
-      if (this.data.inputValue.indexOf(this.data.searchStr) != -1) {
-
-      }
-    } else {
-      this.setData({
-        flag: true
+    if (this.data.inputValue && this.data.inputValue != '') {
+      wx.navigateTo({
+        url: '/pages/move/move?keyWord='+this.data.inputValue,
       })
     }
   },
   inputValue: function(e) {
-    if (e.detail.value.length > 0) {
-      this.setData({
-        flag: false,
-        inputValue: e.detail.value
-      });
-    } else {
-      this.setData({
-        flag: true
-      });
-    }
+    let value = e.detail.value;
+    this.setData({
+      inputValue: value.replace(/^\s\s*/, '').replace(/\s\s*$/, '')
+    });
   },
   // 获取资讯列表
   getMessage: function(data) {

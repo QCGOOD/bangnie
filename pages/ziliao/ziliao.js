@@ -135,9 +135,9 @@ Page({
             _this.ziliao(params)
           })
         } else if (res.data.code == 20000) {
-          this.data.userData.phoneNumber = res.data.message;
-          this.setData({
-            userData: this.data.userData,
+          _this.data.userData.phoneNumber = res.data.message;
+          _this.setData({
+            userData: _this.data.userData,
             isGetPhone: false
           })
         }

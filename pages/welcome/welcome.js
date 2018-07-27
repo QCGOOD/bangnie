@@ -2,10 +2,9 @@ var QQMapWX = require("../../libs/qqmap-wx-jssdk.min.js");
 var qqMapWX;
 var app = getApp().globalData;
 var appJs = getApp();
+
 Page({
-  /**
-   * 页面的初始数据
-   */
+
   data: {
     cityData: [],
     flag: true,
@@ -16,12 +15,12 @@ Page({
     back: null,
     second: true,
     searchStr: {},
+    searchCity: '',
+    searchType: 1,
+    city: '',
     net_flag: 0
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
   onLoad: function (options) {
     var _this = this;
     if (options.back) {
@@ -29,8 +28,23 @@ Page({
         back: options.back
       })
     }
-    this.getCityList();
+    // 获取定位
     this.qqMap();
+
+    // 由于登录是网络请求, 能会在 Page.onLoad 之后才返回
+    // 所以此处加入 callback 以防止这种情况
+    if (!wx.getStorageSync('key')) {
+      appJs.loginReadyCallback = res => {
+        // 查看授权
+        this.checkAuth();
+        // this.getCityList();
+        
+      }
+    } else {
+      // 查看授权
+      this.checkAuth();
+      // this.getCityList();
+    }
   },
 
   //检测用户的授权状态
@@ -42,9 +56,8 @@ Page({
         if (res.authSetting["scope.userInfo"]) {
           wx.getUserInfo({
             success: (res) => {
-              console.log('用户信息=======', res)
-              if (res.errMsg == 'getUserInfo:ok') {
-                console.log(res.userInfo)
+              console.log('用户信息===', res)
+              if (res.userInfo) {
                 let data = {
                   name: res.userInfo.nickName,
                   headImage: res.userInfo.avatarUrl,
@@ -58,6 +71,7 @@ Page({
             isAuthorize: false
           })
           t.nearCity()
+          t.getCityList();
         } else {
           this.setData({
             isAuthorize: true
@@ -98,12 +112,14 @@ Page({
 
   //获取当前的城市
   getCity: function(longitude, latitude) {
+    // 有缓存
     if (wx.getStorageSync('city')) {
       this.setData({
         city: wx.getStorageSync('city'),
       });
       return
     }
+    // 没有缓存
     var that = this;
     qqMapWX.reverseGeocoder({
       location: {
@@ -124,97 +140,73 @@ Page({
       }
     });
   },
-  //得到输入城市的值
-  inputValue: function(e) {
-    console.log("输入的是：", e.detail.value)
-    if (e.detail.value.length > 0) {
-      this.setData({
-        flag: false,
-        inputValue: e.detail.value
-      });
-    } else {
-      this.setData({
-        flag: true
-      });
-    }
-  },
+
   //获取城市列表
   getCityList: function() {
     var t = this;
     wx.showLoading({title: '加载中…'})
     wx.request({
       url: `${app.http}/area/listWithChild`,
-      // url: 'http://192.168.1.18:8011/helpyou/api/v1/area/listWithChild',
       method: "GET",
       header: {
         "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
       },
       data: {
-        wego168SessionKey: wx.getStorageSync("key")
+        wego168SessionKey: wx.getStorageSync("key"),
       },
       success: function(res) {
-        console.log('城市列表===', res);
+        console.log('城市列表===', res.data);
         wx.hideLoading()
         if (res.data.code == 50103) {
           appJs.apiLogin(() => {
             t.getCityList()
           })
         } else if (res.data.code == 20000) {
-          t.checkAuth();
+          t.setData({
+            cityData: res.data.data.list,
+          });
+          
           var lis = res.data.data.list;
           for (let n = 0; n < lis.length; n++) {
             for (let c = 0; c < lis[n].childList.length; c++) {
+              if (lis[n].childList[c].name == t.data.city) {
+                wx.setStorageSync('id', lis[n].childList[c].id)
+              }
               t.data.searchStr[res.data.data.list[n].childList[c].name] = res.data.data.list[n].childList[c].id;
             }
           }
           t.setData({
             searchStr: t.data.searchStr
           });
-          t.data.cityData = res.data.data.list;
-          t.setData({
-            cityData: t.data.cityData,
-          });
         } else {
-          appJs.toast(res.data.message)
+          t.toast(res.data.message)
         }
       }
     })
   },
-  //输入框的聚焦事件
-  focus: function() {
+    
+  //得到输入城市的值
+  inputValue: function(e) {
+    // console.log("输入的是：", e.detail.value)
     this.setData({
-      flag: false
-    })
+      searchCity: e.detail.value
+    });
   },
+
   //输入框失焦事件
   blur: function(e) {
+    console.log('失去焦点')
     var t = this;
-    if (this.data.inputValue) {
-      this.setData({
-        flag: false
-      })
-    } else {
+    if (this.data.searchCity && this.data.searchCity != '') {
       // this.setData({
-      //   flag: true
+      //   searchType: 3,
       // })
-      wx.showToast({
-        title: '不能输入为空哦~',
-        icon: "fail",
-        duration: 1000
+      this.getCityList();
+    } else {
+      this.setData({
+        searchType: 1,
       })
     }
-    for (let i in t.data.searchStr) {
-      // console.log(i);
-      if (e.detail.value == i) {
-        t.click(null, i, t.data.searchStr[i]);
-        return;
-      }
-    }
-    wx.showToast({
-      title: '当前城市未开放',
-      icon: "none",
-      duration: 1000
-    });
   },
   // 用户同意授权-----保存用户基本信息
   getUserInfo(e) {
@@ -227,6 +219,8 @@ Page({
         headImage: e.detail.detail.userInfo.avatarUrl,
         sex: e.detail.detail.userInfo.gender
       };
+      t.nearCity();
+      t.getCityList();
       t.saveUserInfo(data);
     }
 
@@ -282,21 +276,16 @@ Page({
             url: '/pages/main/main',
           })
         } else {
-          // appJs.toast(res.data.message)
+          // t.toast(res.data.message)
         }
       }
     })
   },
   // 点击选取城市
   click: function(e) {
-    wx.setStorage({
-      key: 'city',
-      data: e.currentTarget.dataset.value,
-    })
-    wx.setStorage({
-      key: 'id',
-      data: e.currentTarget.dataset.id,
-    })
+    console.log(e.currentTarget.dataset.value)
+    wx.setStorageSync('city', e.currentTarget.dataset.value)
+    wx.setStorageSync('id', e.currentTarget.dataset.id)
     wx.request({
       url: `${app.http}/app/choose`,
       method: "POST",
@@ -305,7 +294,7 @@ Page({
       },
       data: {
         wego168SessionKey: wx.getStorageSync("key"),
-        id: wx.getStorageSync("id")
+        id: e.currentTarget.dataset.id
       },
       success: function(res) {
         console.log(res);
@@ -314,26 +303,34 @@ Page({
     wx.switchTab({
       url: '/pages/main/main',
       success: function (e) { 
-        let page = getCurrentPages().pop(); 
-        if (page == undefined || page == null) return; 
+        var page = getCurrentPages().pop(); 
+          if (page == undefined || page == null) return; 
           page.onLoad(); 
       } 
     })
   },
   // 对定位城市的服务判断
-  click2: function(e) {
-    wx.showToast({
-      title: '请选择下列的城市！',
-      icon: "fail",
-      duration: 1000
-    })
+  click2(e) {
+    let cityId = wx.getStorageSync('id');
+    if (cityId) {
+      wx.switchTab({
+        url: '/pages/main/main',
+      })
+    } else {
+      this.toast('当前城市未开放');
+      // console.log(appJs)
+    }
   },
   clear() {
-    wx.removeStorage({
-      key: 'city',
-      success: (res) => {
-        this.qqMap();
-      },
-    })
-  }
+    wx.removeStorageSync('id')
+    wx.removeStorageSync('city')
+    this.qqMap();
+  },
+  toast(text, icon) {
+    wx.showToast({
+      title: text,
+      icon: icon || 'none',
+      duration:1000
+    });
+  },
 })
