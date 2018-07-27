@@ -33,7 +33,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 3,
+			"current": 2,
 			"list": [
 				{
 					"id": 0,
@@ -48,10 +48,10 @@
 					"query": ""
 				},
 				{
-					"id": -1,
+					"id": 2,
 					"name": "画图",
 					"pathName": "pages/canvas/canvas",
-					"query": "sourceId=28514d96312b455ba5b423b1caceac56"
+					"query": "sourceId=72bd11e0b90042ed89a3b233ef134128"
 				},
 				{
 					"id": 3,

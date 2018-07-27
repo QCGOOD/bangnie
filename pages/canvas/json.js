@@ -106,25 +106,25 @@ function _iconText(text, top, left) {
 }
 
 function _imgList(img) {
-  if(!img) {
+  if (!img) {
     return []
   }
   let data = []
   let imgs = img.split(',');
   imgs.map((res, index) => {
-    if (index > 2) {
-      return
+    console.log(index)
+    if (index < 2) {
+      data.push({
+        type: 'image',
+        url: app.imgHost + res,
+        css: {
+          top: '440rpx',
+          left: 70 + 30 + (230 * index) + 'rpx',
+          width: '200rpx',
+          height: '200rpx',
+        },
+      })
     }
-    data.push({
-      type: 'image',
-      url: app.imgHost + res,
-      css: {
-        top: '440rpx',
-        left: 70 + 30 + (230 * index) + 'rpx',
-        width: '200rpx',
-        height: '200rpx',
-      },
-    })
   })
   return data
 }
