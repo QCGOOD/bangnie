@@ -1,5 +1,7 @@
-// pages/send/send.js
+
 var app = getApp().globalData;
+var appJs = getApp();
+
 Page({
 
   /**
@@ -34,9 +36,7 @@ Page({
 
   //从后台获取栏目列表
   getKind: function () {
-    wx.showLoading({
-      title: '加载中'
-    })
+    wx.showLoading({title: '加载中…'})
     var t = this;
     wx.request({
       url: `${app.http}/category/page`,
@@ -50,38 +50,32 @@ Page({
         pageSize: 50
       },
       success: function (res) {
-        console.log(res);
-        if (res.data.message == "该用户未登录或会话过期") {
-          wx.showToast({
-            title: '该用户未登录或会话过期',
-            icon: 'loading',
-            duration: 1000
-          });
-          wx.navigateTo({
-            url: '/pages/welcome/welcome',
+        console.log('栏目', res);
+        if (res.data.code == 50103) {
+          appJs.apiLogin(() => {
+            _this.getKind()
           })
-        }
-        let serviceData = []
-        let serviceData2 = []
-        for (let i = 0; i < res.data.data.list.length; i++) {
-          serviceData.push({
-            url: 'http://helpyou-1255600302.cosgz.myqcloud.com' + res.data.data.list[i].iconUrl,
-            text: res.data.data.list[i].name,
-            service_id: res.data.data.list[i].id
+        } else if (res.data.code == 20000) {
+          let serviceData = []
+          // let serviceData2 = []
+          for (let i = 0; i < res.data.data.list.length; i++) {
+            serviceData.push({
+              url: 'http://helpyou-1255600302.cosgz.myqcloud.com' + res.data.data.list[i].iconUrl,
+              text: res.data.data.list[i].name,
+              service_id: res.data.data.list[i].id
+            });
+            // serviceData2.push({
+            //   url: 'http://helpyou-1255600302.cosgz.myqcloud.com' + res.data.data.list[i].iconUrl,
+            //   text: res.data.data.list[i].name,
+            //   service_id: res.data.data.list[i].id
+            // });
+          }
+          // serviceData = serviceData.concat(serviceData)
+          // serviceData = serviceData.concat(serviceData)
+          t.setData({
+            serviceData: serviceData
           });
-          serviceData2.push({
-            url: 'http://helpyou-1255600302.cosgz.myqcloud.com' + res.data.data.list[i].iconUrl,
-            text: res.data.data.list[i].name,
-            service_id: res.data.data.list[i].id
-          });
         }
-        // serviceData = serviceData.concat(serviceData)
-        // serviceData = serviceData.concat(serviceData)
-        console.log(serviceData);
-        t.setData({
-          serviceData: serviceData
-        });
-        
       },
       complete: () => {
         wx.hideLoading()

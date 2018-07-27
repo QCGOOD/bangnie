@@ -1,12 +1,18 @@
 var app = getApp().globalData;
+var appJs = getApp();
+
 Page({
   data: {
     comments: []
   },
   onLoad: function(options) {
+    this.getLeaveMsg(options.sourceId)
+  },
+
+  getLeaveMsg(id) {
     var _this = this;
     //获取留言列表
-    wx.showLoading({title: '加载中……'})
+    wx.showLoading({title: '加载中…'})
     wx.request({
       url: `${app.http}/app/comment/page`,
       method: "GET",
@@ -15,35 +21,34 @@ Page({
       },
       data: {
         wego168SessionKey: wx.getStorageSync("key"),
-        sourceId: options.sourceId,
+        sourceId: id,
         // content: this.data.neirong
-        pageSize: 20,
+        pageSize: 100,
         pageNum: 1
       },
       success: function(res) {
-        console.log(res);
+        console.log('留言列表', res.data);
         wx.hideLoading()
-        if (res.data.message == "该用户未登录或会话过期") {
-          wx.showToast({
-            title: '该用户未登录或会话过期',
-            icon: 'loading',
-            duration: 1000
-          });
-          wx.navigateTo({
-            url: '/pages/welcome/welcome',
+        if (res.data.code == 50103) {
+          appJs.apiLogin(() => {
+            _this.getLeaveMsg()
           })
-        }
-        if (res.data.data.list.length == 0) {
+        } else if (res.data.code == 20000) {
+          if (res.data.data.list.length == 0) {
+            _this.setData({
+              blank: true
+            });
+          }
           _this.setData({
-            blank: true
-          });
+            comments: res.data.data.list
+          })
+        } else {
+          appJs.toast('加载失败')
         }
-        _this.setData({
-          comments: res.data.data.list
-        })
       }
     })
   },
+
   //回到详情页面
   back: function() {
     wx.navigateBack({

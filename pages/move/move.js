@@ -9,12 +9,15 @@ Page({
     selectData: '',
     //选择的下拉列表下标
     index: 0,
+    kindActive: 0,
     //导航处轮播图
     imgUrls: [],
     serviceData: [],
     swiperIndex: 0,
     newData: [],
     hotData: [],
+    kindId: '',
+    name: '',
     imgHost: app.imgHost,
     newType: false,
     hotType: false
@@ -29,10 +32,6 @@ Page({
     }
     that.setData({
       newData: [],
-      hotData: [],
-      newType: false,
-      hotType: false,
-      swiperIndex: 0,
       selectData: wx.getStorageSync("city"),
       newSearch: {
         pageNum: 1,
@@ -40,19 +39,38 @@ Page({
         pageTotal: -1,
         type: 1,
         areaId: wx.getStorageSync("id"),
-        categoryId: options.serviceId,
-        mytype: 'newData'
+        categoryId: options.serviceId || '',
+        keyWord: options.keyWord || '',
+        mytype: 'newData',
       },
-      hotSearch: {
-        pageNum: 1,
-        pageSize: 20,
-        pageTotal: -1,
-        type: 2,
-        areaId: wx.getStorageSync("id"),
-        categoryId: options.serviceId,
-        mytype: 'hotData'
-      },
-    });
+    })
+    // that.setData({
+    //   newData: [],
+    //   hotData: [],
+    //   newType: false,
+    //   hotType: false,
+    //   swiperIndex: 0,
+    //   selectData: wx.getStorageSync("city"),
+    //   newSearch: {
+    //     pageNum: 1,
+    //     pageSize: 20,
+    //     pageTotal: -1,
+    //     type: 1,
+    //     areaId: wx.getStorageSync("id"),
+    //     categoryId: options.serviceId,
+    //     mytype: 'newData'
+    //   },
+    //   hotSearch: {
+    //     pageNum: 1,
+    //     pageSize: 20,
+    //     pageTotal: -1,
+    //     type: 2,
+    //     areaId: wx.getStorageSync("id"),
+    //     categoryId: options.serviceId,
+    //     mytype: 'hotData'
+    //   },
+    // });
+    that.getKind()
     that.getMessage(this.data.newSearch);
   },
   /**
@@ -81,12 +99,68 @@ Page({
     this.setData({
       swiperIndex: index,
     });
-    if (index == 0) {
-      this.getMessage(this.data.newSearch);
-    } else {
-      this.getMessage(this.data.hotSearch);
-    }
+    // if (index == 0) {
+    //   this.getMessage(this.data.newSearch);
+    // } else {
+    //   this.getMessage(this.data.hotSearch);
+    // }
   },
+
+  chooseKind(e) {
+    let id = e.currentTarget.dataset.id;
+    let index = e.currentTarget.dataset.index;
+    this.data.newSearch.categoryId = id;
+    this.data.newSearch.pageNum = 1;
+    this.data.newSearch.pageSize = 20;
+    this.data.newSearch.pageTotal = -1;
+    this.setData({
+      kindActive: index,
+      newData: [],
+      newSearch: this.data.newSearch
+    })
+    this.getMessage(this.data.newSearch);
+  },
+
+  //从后台获取栏目列表
+  getKind: function() {
+    var t = this;
+    wx.request({
+      url: `${app.http}/category/page`,
+      method: "GET",
+      header: {
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+      },
+      data: {
+        wego168SessionKey: wx.getStorageSync("key"),
+        pageNum: 1,
+        pageSize: 50
+      },
+      success: function(res) {
+        wx.stopPullDownRefresh();
+        console.log('栏目==', res.data)
+        if (res.data.code == 50103) {
+          appJs.apiLogin(() => {
+            t.getKind()
+          })
+        } else if (res.data.code == 20000) {
+          // t.getMessage(t.data.newSearch);
+          // for (let i = 0; i < res.data.data.list.length; i++) {
+
+          //   t.data.serviceData[i] = {
+          //     url: 'http://helpyou-1255600302.cosgz.myqcloud.com' + res.data.data.list[i].iconUrl,
+          //     text: res.data.data.list[i].name,
+          //     service_id: res.data.data.list[i].id
+          //   };
+          // }
+          
+          t.setData({
+            kindList: res.data.data.list
+          });
+        }
+      }
+    })
+  },
+
   // 获取资讯列表
   getMessage: function (data) {
     data.wego168SessionKey = wx.getStorageSync("key");

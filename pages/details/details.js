@@ -21,11 +21,20 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
-    console.log(2222222222)
+    console.log('我是详情页')
     this.setData({
       sourceId: options.id,
+      // sourceId: '72bd11e0b90042ed89a3b233ef134128',
     });
-    this.getDetail(this.data.sourceId);
+    // 由于登录是网络请求, 能会在 Page.onLoad 之后才返回
+    // 所以此处加入 callback 以防止这种情况
+    if (!wx.getStorageSync('key')) {
+      appJs.loginReadyCallback = res => {
+        this.getDetail(this.data.sourceId);
+      }
+    } else {
+      this.getDetail(this.data.sourceId);
+    }
   },
   onShareAppMessage() {
     return {
@@ -164,7 +173,7 @@ Page({
           })
           _this.getImg(res.data.data.categoryId);
         }else{
-          // appJs.toast(res.data.message)
+          appJs.toast(res.data.message)
         }
       }
     })

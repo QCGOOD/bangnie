@@ -4,6 +4,7 @@ var app = getApp().globalData;
 
 Page({
   data: {
+    warnforwx: 0,
     model: {
       wego168SessionKey: '',
       areaId: '',
@@ -13,16 +14,10 @@ Page({
       imgUrl: '',
       phone: '',
       appellation: '',
-      formId: ''
+      formId: '',
     },
     tempFilePaths: [],
-    imageUrl: [
-      // '/attachments/member/508a5be1e4a44cb6a0b79fb258a4444b.png',
-      // '/attachments/member/508a5be1e4a44cb6a0b79fb258a4444b.png',
-      // '/attachments/member/508a5be1e4a44cb6a0b79fb258a4444b.png',
-      // '/attachments/member/508a5be1e4a44cb6a0b79fb258a4444b.png',
-      // '/attachments/member/508a5be1e4a44cb6a0b79fb258a4444b.png',
-    ],
+    imageUrl: [],
     name: '',
     id: '',
     imgHost: app.imgHost,
@@ -250,13 +245,27 @@ Page({
         model: this.data.model
       })
     }
-    console.log(this.data.model)
-    // return
+    if (this.data.warnforwx == 0) {
+      this.setData({
+        warnforwx: 1
+      })
+      var reg = RegExp(/微信/);
+      if (this.data.model.content.match(reg)){
+        wx.showModal({
+          title: '温馨提醒',
+          content: '为了保护您的个人隐私和安全，建议不要提供个人微信号。',
+          showCancel: false,
+          confirmText: '知道了',
+        })
+      }
+      return false;
+    }
     if (this.data.id) {
       this.update()
     } else {
       this.save()
     }
+    
   },
   save() {
     // return

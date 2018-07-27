@@ -5,6 +5,6 @@
    "navigationBarTitleText": "帮你哦",
    "backgroundColor": "#eeeeee",
    "backgroundTextStyle": "light",
-   "enablePullDownRefresh": false
+   "enablePullDownRefresh": true
  
 }

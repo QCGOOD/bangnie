@@ -90,7 +90,7 @@ Page({
   getMessage(data) {
     var _this = this;
     if (this.isNext(data)) {
-      wx.showLoading({title: '加载中……'})
+      wx.showLoading({title: '加载中…'})
       wx.request({
         url: `${app.http}/app/information/page`,
         method: "GET",

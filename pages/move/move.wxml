@@ -1,11 +1,18 @@
 <!--朋友圈开始-->
-<view class="curcle flexd">
+<!-- <view class="curcle flexd">
   <block>
     <view data-index="0" bindtap="changeTabbar" class='{{(swiperIndex == 0)?"on":"off"}}'>最新发布</view>
     <view data-index="1" bindtap="changeTabbar" class='{{(swiperIndex == 1)?"on":"off"}}'>最热资讯</view>
   </block>
+</view> -->
+
+<view class="fenlei-wrap flexd">
+  <scroll-view class="fenlei flexd" scroll-x style="width:auto;overflow:hidden;">
+    <view class="fenlei-item {{kindActive == 0?'red-color':''}}" data-index="0" data-id="" bindtap="chooseKind">全部</view>
+    <view class="fenlei-item {{kindActive == index + 1?'red-color':''}}" wx:for="{{kindList}}" wx:key="{{index}}" data-id="{{item.id}}" data-index="{{index + 1}}" bindtap="chooseKind">{{item.name}}</view>
+  </scroll-view>
 </view>
-<view style="height:120rpx"/>
+<view style="height:60px"/>
 <view hidden='{{swiperIndex != 0}}'>
   <view>
     <view wx:for="{{newData}}" wx:key="{{newData.id}}" class="menssage-item" bindtap='jumpDetails' data-id="{{item.id}}">

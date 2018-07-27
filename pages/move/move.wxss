@@ -30,6 +30,34 @@ page {
   font-size: 30rpx;
   font-weight: bold;
 }
+.fenlei-wrap{
+  width: 100%;
+  height: 50px;
+  overflow: hidden;
+  background: #fff;
+  white-space: nowrap;
+  border-bottom: 1px solid #f2f2f2;
+}
+.fenlei-wrap.flexd {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 5;
+}
+.fenlei{
+  height: 100%;
+}
+.fenlei-item{
+  display: inline-block;
+  line-height: 50px;
+  padding: 0 30rpx;
+  font-size: 32rpx;
+  color: #808080;
+}
+
+.red-color{
+  color: #f56f4b;
+}
 
 .on {
   color: #f56f4b;
