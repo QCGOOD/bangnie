@@ -28,9 +28,9 @@
     <view class="address">
       <!-- <image src='/images/loc.png' style='width:22rpx;margin-right: 20rpx;' mode='widthFix'></image> -->
       <text class="icon i-didian" style='margin-right: 20rpx;'></text>
-      <view style='width:100%;font-size:28rpx;'>{{model.address}}</view>
+      <view class="text">{{model.address}}</view>
+      <button class="clear" size="mini" type="primary" bindtap="clearAddress" >重新定位</button>
     </view>
-    <view style='width:100%;height:40rpx; background:#f2f2f2;'></view>
     <view style='width:100%;background:#f2f2f2;'>
       <form class='form' report-submit="true" bindsubmit="submit">
         <view style='background:white;'>
@@ -50,6 +50,7 @@
             <input class="form-item__input" type="number" placeholder='请输入手机号码' maxlength="11"  name="phone" id='phone' bindinput='phoneInput' value="{{model.phone}}"></input>
             <button size="mini" type="primary" wx:if="{{isGetPhone}}" bindgetphonenumber="getPhoneNumber" open-type="getPhoneNumber">获取手机号</button>
           </view>
+          <view class="tips">提示: 请填写可以联系到您的手机号</view>
           <view style='width:100%;height:40rpx;background:#F2F2F2;'></view>
           <!-- <view class='form-item' style='border:none;'>
             <label class="form-item__label" for="top">置顶</label>

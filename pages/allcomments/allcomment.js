@@ -23,9 +23,9 @@ Page({
       success: function(res) {
         console.log(res);
         wx.hideLoading()
-        if (res.data.message == "用户未登录或登录已失效") {
+        if (res.data.message == "该用户未登录或会话过期") {
           wx.showToast({
-            title: '用户未登录或登录已失效',
+            title: '该用户未登录或会话过期',
             icon: 'loading',
             duration: 1000
           });

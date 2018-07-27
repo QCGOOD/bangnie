@@ -1,3 +1,5 @@
+var QQMapWX = require("../../libs/qqmap-wx-jssdk.min.js");
+var qqMapWX;
 var app = getApp().globalData;
 
 Page({
@@ -62,6 +64,52 @@ Page({
       name: this.data.name
     })
   },
+
+  // 腾讯地图
+  qqMap() {
+    let that = this;
+    //实例化腾讯地图德核心类
+    qqMapWX = new QQMapWX({
+      // key: "BH5BZ-6NCWW-2HQR4-O7E7Y-Z6IZZ-OKBMQ"
+      key: "WTHBZ-BZT36-YX6SJ-M5AJW-BGSDF-YVBT4"
+    });
+    //获取经纬度
+    wx.getLocation({
+      type: 'gcj02', //返回可以用于wx.openLocation的经纬度,使用德时候注意查看官方文档注意兼容问题
+      success: function(res) {
+        that.getCity(res.longitude, res.latitude);
+      },
+    })
+  },
+
+  //获取当前的城市
+  getCity: function(longitude, latitude) {
+    var that = this;
+    qqMapWX.reverseGeocoder({
+      location: {
+        latitude: '' + latitude,
+        longitude: '' + longitude,
+      }, //location的格式是传入一个字符对象
+      success: function(res) {
+        wx.setStorage({
+          key: "LCDetails",
+          data: res.result.address,
+        })
+        let address = 'model.address';
+        console.log('定位了')
+        that.setData({
+          [address]: wx.getStorageSync("LCDetails"),
+        })
+      }
+    });
+  },
+
+  // 清除缓存位置
+  clearAddress() {
+    wx.removeStorageSync('address');
+    this.qqMap();
+  },
+
   contentInput (e) {
     this.data.model.content = e.detail.value
     this.setData({
@@ -215,7 +263,9 @@ Page({
     wx.showLoading({
       title: '正在发布'
     })
-    this.postData('/app/information/save', this.data.model).then(res => {
+    let model = this.data.model;
+    model.wego168SessionKey = wx.getStorageSync("key");
+    this.postData('/app/information/save', model).then(res => {
       wx.hideLoading()
       this.showToast('发布成功，请等待审核')
       setTimeout(() => {
@@ -234,7 +284,9 @@ Page({
     wx.showLoading({
       title: '正在发布'
     })
-    this.postData('/app/information/update', this.data.model).then(res => {
+    let model = this.data.model;
+    model.wego168SessionKey = wx.getStorageSync("key");
+    this.postData('/app/information/update', model).then(res => {
       wx.hideLoading()
       this.showToast('发布成功，请等待审核')
       setTimeout(() => {
@@ -284,6 +336,7 @@ Page({
       console.log(res.data)
       if (res.data.data && res.data.data.phoneNumber) {
         this.data.model.phone = res.data.data.phoneNumber
+        this.data.model.appellation = res.data.data.appellation
         this.setData({
           model: this.data.model,
           isGetPhone: false
@@ -295,6 +348,44 @@ Page({
       }
     })
   },
+  // // 判断是否需要获取手机号
+  // judgePhone() {
+  //   var t = this;
+  //   wx.request({
+  //     url: `${app.http}/app/isNeed`,
+  //     method: "GET",
+  //     header: {
+  //       'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+  //     },
+  //     data: {
+  //       wego168SessionKey: wx.getStorageSync("key")
+  //     },
+  //     success: function(res) {
+  //       if (res.data.code == 50103) {
+  //         appJs.apiLogin(() => {
+  //           t.judgePhone()
+  //         })
+  //       } else if (res.data.code == 20000) {
+  //         t.setData({
+  //           isGetPhone: res.data.data
+  //         });
+  //       }
+  //     }
+  //   });
+  // },
+  // common.filterEmoji = function (name) {
+  //   let newName = ''
+  //   let is4Byte = function (str) {
+  //     return str.codePointAt(0) > 65535
+  //   }
+  //   for (let item of name) {
+  //     if (!is4Byte(item)) {
+  //       newName += item
+  //     }
+  //   }
+  //   newName = common.isEmpty(newName) ? '*' : newName
+  //   return newName
+  // }
   getPhoneNumber(e) {
     console.log(e)
     if (e.detail.encryptedData) {

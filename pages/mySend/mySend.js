@@ -100,7 +100,7 @@ Page({
         data: data,
         success: function (res) {
           wx.hideLoading()
-          if (res.data.code == 40000) {
+          if (res.data.code == 50103) {
             appJs.apiLogin(() => {
               _this.getMessage(data)
             })
@@ -248,8 +248,8 @@ Page({
         },
         success: function (res) {
           console.log(res);
-          if (res.data.code == 40000) {
-            appJs.toast('用户未登录或登录已失效')
+          if (res.data.code == 50103) {
+            appJs.toast('该用户未登录或会话过期')
             wx.navigateTo({
               url: '/pages/welcome/welcome',
             })

@@ -16,7 +16,8 @@ page {
   color: #808080;
 }
 .none {
-  padding-top: 40px;
+  padding-top: 100px;
+  text-align: center;
 }
 .none_text {
   margin-top: 40rpx;

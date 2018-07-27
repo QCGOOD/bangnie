@@ -2,23 +2,20 @@
 var app = getApp().globalData;
 var appJs = getApp();
 var page;
-var rq = require("../../utils/util.js");
+
 Page({
   data: {
-    //下拉列表的数据
     selectData: '',
-    //选择的下拉列表下标
     index: 0,
-    //导航处轮播图
     imgUrls: [],
     serviceData: [],
     isAuthorizePhone: false,
+    isAuthorize: false,
     flag: true,
-    adData: [{
-      text: ""
-    }, {
-      text: ""
-    }], //广告数据
+    adData: [
+      { text: ""}, 
+      { text: "" }
+    ], //广告数据
     swiperIndex: 0,
     newData: [],
     hotData: [],
@@ -28,11 +25,14 @@ Page({
     isDetail: false
   },
   onLoad: function(options) {
+    
+    console.log(3333333);
     var that = this;
     page = 1;
     // that.judgePhone()
     if (!wx.getStorageSync("city")) {
       that.jumpChoosePage();
+      return;
     }
     that.setData({
       trueHeight: app.trueHeight,
@@ -42,7 +42,6 @@ Page({
         pageSize: 20,
         pageTotal: -1,
         type: 1,
-        wego168SessionKey: wx.getStorageSync("key"),
         areaId: wx.getStorageSync("id"),
         categoryId: '',
         mytype: 'newData'
@@ -52,14 +51,12 @@ Page({
         pageSize: 20,
         pageTotal: -1,
         type: 2,
-        wego168SessionKey: wx.getStorageSync("key"),
         areaId: wx.getStorageSync("id"),
         categoryId: '',
         mytype: 'hotData'
       },
     });
-    that.getImg();
-    that.getKind();
+    
     that.setData({
       newData: [],
       hotData: [],
@@ -67,11 +64,13 @@ Page({
       hotType: false,
       swiperIndex: 0
     })
-    that.data.newSearch.pageNum = 1
-    that.getMessage(that.data.newSearch);
+    that.data.newSearch.pageNum = 1;
+    that.getImg();
+    that.getKind();
   },
   onPageScroll() {
     wx.createSelectorQuery().select('#tabbar').boundingClientRect(res => {
+      // console.log('滚动=====',  res)
       if (res.top < 0) {
         this.setData({
           flexd: true
@@ -82,6 +81,82 @@ Page({
         })
       }
     }).exec()
+  },
+
+  //检测用户的授权状态
+  checkAuth() {
+    let _this = this;
+    wx.getSetting({
+      success: res => {
+        if (res.authSetting["scope.userInfo"]) {
+          wx.getUserInfo({
+            success: (res) => {
+              console.log('用户信息=======', res)
+              if (res.userInfo) {
+                // console.log(res.userInfo)
+                let data = {
+                  name: res.userInfo.nickName,
+                  headImage: res.userInfo.avatarUrl,
+                  sex: res.userInfo.gender
+                };
+                _this.saveUserInfo(data);
+              }
+            }
+          })
+          _this.setData({
+            isAuthorize: false
+          })
+        } else {
+          console.log('没有授权信息', this.data.isAuthorize)
+          _this.setData({
+            isAuthorize: true
+          })
+        }
+      }
+    });
+  },
+
+  // 关闭授权
+  closeAuthorize() {
+    this.setData({
+      isAuthorize: false
+    })
+  },
+    // 用户点击
+    getUserInfo(e) {
+    var t = this;
+    t.closeAuthorize()
+    if (e.detail.detail.userInfo) {
+      let data = {
+        name: e.detail.detail.userInfo.nickName,
+        headImage: e.detail.detail.userInfo.avatarUrl,
+        sex: e.detail.detail.userInfo.gender
+      };
+      t.saveUserInfo(data);
+    }
+  },
+
+  // 保存用户信息到后台/
+  saveUserInfo(data) {
+    data.wego168SessionKey = wx.getStorageSync("key");
+    var _this = this;
+    wx.request({
+      url: `${app.http}/app/member/save`,
+      method: "POST",
+      header: {
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+      },
+      data: data,
+      success: (res) => {
+        console.log('提交的用户信息', data)
+        console.log('保存返回的用户信息', res.data)
+        if (res.data.code == 50103) {
+          appJs.apiLogin(() => {
+            _this.saveUserInfo(data)
+          })
+        }
+      }
+    })
   },
   // 关闭手机授权
   closeAuthorizePhone() {
@@ -102,7 +177,7 @@ Page({
         wego168SessionKey: wx.getStorageSync("key")
       },
       success: function(res) {
-        if (res.data.code == 40000) {
+        if (res.data.code == 50103) {
           appJs.apiLogin(() => {
             t.judgePhone()
           })
@@ -206,55 +281,54 @@ Page({
   },
   // 获取资讯列表
   getMessage: function(data) {
+    data.wego168SessionKey = wx.getStorageSync("key");
     var _this = this;
     if (this.isNext(data)) {
-      wx.showLoading({title: '加载中……'})
+      wx.showLoading({title: '加载中…'})
       wx.request({
         url: `${app.http}/app/information/page`,
         method: "GET",
         data: data,
         success: function(res) {
           wx.hideLoading()
-          if (res.data.code == 40000) {
+          if (res.data.code == 50103) {
             appJs.apiLogin(() => {
               _this.getMessage(data)
             })
-          }
-          try {
+          } else if (res.data.code == 20000){
+            _this.checkAuth()
             res.data.data.list.map(res => {
               if (res.imgUrl != '') {
                 return res.imgUrl = res.imgUrl.split(',')
               }
             })
-          } catch (e) {
-            console.log(wx.getStorageSync("key"));
-          }
-          if (res.data.data.total == 0) {
+            if (res.data.data.total == 0) {
+              if (data.type == 1) {
+                console.log('scsc')
+                _this.setData({
+                  newType: true
+                })
+              } else {
+                _this.setData({
+                  hotType: true
+                })
+              }
+            }
             if (data.type == 1) {
-              console.log('scsc')
               _this.setData({
-                newType: true
+                newData: [..._this.data.newData, ...res.data.data.list],
               })
+              _this.data.newSearch.pageNum++;
+              _this.data.newSearch.pageTotal = res.data.data.total
             } else {
               _this.setData({
-                hotType: true
+                hotData: [..._this.data.hotData, ...res.data.data.list],
               })
+              _this.data.hotSearch.pageNum++;
+              _this.data.hotSearch.pageTotal = res.data.data.total
             }
+            wx.stopPullDownRefresh();
           }
-          if (data.type == 1) {
-            _this.setData({
-              newData: [..._this.data.newData, ...res.data.data.list],
-            })
-            _this.data.newSearch.pageNum++;
-            _this.data.newSearch.pageTotal = res.data.data.total
-          } else {
-            _this.setData({
-              hotData: [..._this.data.hotData, ...res.data.data.list],
-            })
-            _this.data.hotSearch.pageNum++;
-            _this.data.hotSearch.pageTotal = res.data.data.total
-          }
-          wx.stopPullDownRefresh();
         }
       })
     } else if (data.type == 1) {
@@ -282,21 +356,24 @@ Page({
         pageSize: 10
       },
       success: function(res) {
-        if (res.data.code == 40000) {
+        console.log('栏目==', res.data)
+        if (res.data.code == 50103) {
           appJs.apiLogin(() => {
             t.getKind()
           })
+        } else if (res.data.code == 20000) {
+          t.getMessage(t.data.newSearch);
+          for (let i = 0; i < res.data.data.list.length; i++) {
+            t.data.serviceData[i] = {
+              url: 'http://helpyou-1255600302.cosgz.myqcloud.com' + res.data.data.list[i].iconUrl,
+              text: res.data.data.list[i].name,
+              service_id: res.data.data.list[i].id
+            };
+          }
+          t.setData({
+            serviceData: t.data.serviceData
+          });
         }
-        for (let i = 0; i < res.data.data.list.length; i++) {
-          t.data.serviceData[i] = {
-            url: 'http://helpyou-1255600302.cosgz.myqcloud.com' + res.data.data.list[i].iconUrl,
-            text: res.data.data.list[i].name,
-            service_id: res.data.data.list[i].id
-          };
-        }
-        t.setData({
-          serviceData: t.data.serviceData
-        });
       }
     })
   },
@@ -349,14 +426,16 @@ Page({
         type: 1 
       },
       success: function(res) {
-        if (res.data.code == 40000) {
+        console.log('首页轮播图', res.data)
+        if (res.data.code == 50103) {
           appJs.apiLogin(() => {
             _this.getImg()
           })
+        } else if (res.data.code == 20000) {
+          _this.setData({
+            imgUrls: res.data.data
+          })
         }
-        _this.setData({
-          imgUrls: res.data.data
-        });
       }
     });
   },
@@ -368,7 +447,7 @@ Page({
   },
   //重新选择城市
   jumpChoosePage: function() {
-    wx.redirectTo({
+    wx.navigateTo({
       url: '/pages/welcome/welcome?back=' + 1,
     })
   },

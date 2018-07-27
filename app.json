@@ -1,7 +1,9 @@
 {
   "pages": [
     "pages/welcome/welcome",
+    "pages/main/main",
     "pages/send/send",
+    "pages/mine/mine",
     "pages/sendSuccess/sendSuccess",
     "pages/sendContext/sendContext",
     "pages/details/details",
@@ -9,13 +11,11 @@
     "pages/que/que",
     "pages/kefu/kefu",
     "pages/myMessage/myMessage",
-    "pages/main/main",
     "pages/mySend/mySend",
     "pages/canvas/canvas",
     "pages/index/index",
     "pages/move/move",
     "pages/allcomments/allcomment",
-    "pages/mine/mine",
     "pages/logs/logs",
     "pages/food/food",
     "pages/but/but"

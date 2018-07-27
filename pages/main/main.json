@@ -2,5 +2,8 @@
   "navigationBarBackgroundColor": "#fff",
   "backgroundColor": "#fff",
   "enablePullDownRefresh": true,
-  "backgroundTextStyle": "dark"
+  "backgroundTextStyle": "dark",
+  "usingComponents": {
+    "authorize": "/components/authorize/authorize"
+  }
 }

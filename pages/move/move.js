@@ -39,7 +39,6 @@ Page({
         pageSize: 20,
         pageTotal: -1,
         type: 1,
-        wego168SessionKey: wx.getStorageSync("key"),
         areaId: wx.getStorageSync("id"),
         categoryId: options.serviceId,
         mytype: 'newData'
@@ -49,7 +48,6 @@ Page({
         pageSize: 20,
         pageTotal: -1,
         type: 2,
-        wego168SessionKey: wx.getStorageSync("key"),
         areaId: wx.getStorageSync("id"),
         categoryId: options.serviceId,
         mytype: 'hotData'
@@ -91,6 +89,7 @@ Page({
   },
   // 获取资讯列表
   getMessage: function (data) {
+    data.wego168SessionKey = wx.getStorageSync("key");
     var _this = this;
     if (this.isNext(data)) {
       wx.showLoading({title: '加载中…'})
@@ -101,7 +100,7 @@ Page({
         success: function (res) {
           wx.hideLoading()
           wx.stopPullDownRefresh();
-          if (res.data.code == 40000) {
+          if (res.data.code == 50103) {
             appJs.apiLogin(() => {
               _this.getMessage(data)
             })

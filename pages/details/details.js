@@ -21,13 +21,11 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
-    this.checkAuth();
+    console.log(2222222222)
     this.setData({
       sourceId: options.id,
     });
     this.getDetail(this.data.sourceId);
-    this.getComments(this.data.sourceId);
-    this.getImg();
   },
   onShareAppMessage() {
     return {
@@ -43,7 +41,7 @@ Page({
           wx.getUserInfo({
             success: (res) => {
               // console.log('用户信息=======', res)
-              if (res.errMsg == 'getUserInfo:ok') {
+              if (res.userInfo) {
                 // console.log(res.userInfo)
                 let data = {
                   name: res.userInfo.nickName,
@@ -77,9 +75,8 @@ Page({
    // 用户点击
    getUserInfo(e) {
     var t = this;
-    console.log(e);
     t.closeAuthorize()
-    if (e.detail.detail.errMsg == 'getUserInfo:ok') {
+    if (e.detail.detail.userInfo) {
       let data = {
         name: e.detail.detail.userInfo.nickName,
         headImage: e.detail.detail.userInfo.avatarUrl,
@@ -101,8 +98,9 @@ Page({
       },
       data: data,
       success: (res) => {
-        console.log('保存用户信息', res)
-        if (res.data.code == 40000) {
+        console.log('用户信息', data)
+        console.log('保存用户信息', res.data)
+        if (res.data.code == 50103) {
           appJs.apiLogin(() => {
             _this.saveUserInfo(data)
           })
@@ -133,7 +131,7 @@ Page({
   //  获取详情的资讯
   getDetail: function(id) {
     var _this = this;
-    wx.showLoading({title: '加载中……'})
+    wx.showLoading({title: '加载中…'})
     wx.request({
       url: `${app.http}/app/information/get`,
       method: "GET",
@@ -145,13 +143,16 @@ Page({
         id: id
       },
       success: function(res) {
+        console.log('详情', res.data)
         wx.hideLoading()
         let getData = res.data.data;
-        if (res.data.code == 40000) {
+        if (res.data.code == 50103) {
           appJs.apiLogin(() => {
             _this.getDetail(id)
           })
         } else if (res.data.code == 20000) {
+          _this.getComments(_this.data.sourceId);
+          _this.checkAuth();
           if (getData.imgUrl != '') {
             getData.imgUrl = getData.imgUrl.split(',');
             getData.imgUrl = getData.imgUrl.map(res => {
@@ -161,8 +162,9 @@ Page({
           _this.setData({
             detail: res.data.data
           })
+          _this.getImg(res.data.data.categoryId);
         }else{
-          appJs.toast(res.data.message)
+          // appJs.toast(res.data.message)
         }
       }
     })
@@ -184,7 +186,7 @@ Page({
       },
       success(res) {
         console.log('留言列表===', res)
-        if (res.data.code == 40000) {
+        if (res.data.code == 50103) {
           appJs.apiLogin(() => {
             _this.getComments(id)
           })
@@ -193,13 +195,13 @@ Page({
             commentsData: res.data.data.list
           })
         } else {
-          appJs.toast(res.data.message)
+          // appJs.toast(res.data.message)
         }
       }
     })
   },
   // 获取广告图片
-  getImg() {
+  getImg(categoryId) {
     var _this = this;
     wx.request({
       url: `${app.http}/attachment/list`,
@@ -210,14 +212,15 @@ Page({
       data: {
         areaId: wx.getStorageSync("id"),
         type: 2,
-        categoryId: this.data.sourceId
+        categoryId: categoryId
       },
       success: function(res) {
-        if (res.data.code == 40000) {
+        if (res.data.code == 50103) {
           appJs.apiLogin(() => {
             _this.getImg()
           })
         } else if (res.data.code == 20000){
+          console.log('广告图', res.data)
           if (!res.data.data.length > 0) return;
           _this.setData({
             adImg: res.data.data[0]
@@ -274,9 +277,9 @@ Page({
       },
       success: function(res) {
         wx.hideLoading()
-        if (res.data.code == 40000) {
+        if (res.data.code == 50103) {
           appJs.apiLogin(() => {
-            _this.getImg()
+            _this.sendLY()
           })
         } else if (res.data.code == 20000){
           _this.setData({
