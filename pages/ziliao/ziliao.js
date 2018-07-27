@@ -9,7 +9,7 @@ Page({
   data: {
     userData: {},//存储用户已经有的信息
     getCode: "false",
-    isGetPhone: false
+    isGetPhone: true
   },
 
   /**
@@ -24,7 +24,8 @@ Page({
       trueheight: app.trueHeight,
       vip: !options.vipvip
     });
-    t.ziliao();
+    this.ziliao();
+    this.judgePhone();
   },
 
   // 回退到首页
@@ -38,7 +39,7 @@ Page({
   },
   //编辑资料接口
   ziliao:function(){
-    wx.showLoading({title: '加载中……'})
+    wx.showLoading({title: '加载中…'})
     var _this = this;
     wx.request({
       url: `${app.http}/app/memberAuthenticate/get`,
@@ -51,9 +52,9 @@ Page({
       },
       success:function(res){
         wx.hideLoading()
-        if (res.data.code == 40000) {
+        if (res.data.code == 50103) {
           appJs.apiLogin(() => {
-            _this.getMessage(data)
+            _this.ziliao()
           })
         } else if (res.data.code == 20000) {
           _this.setData({
@@ -65,38 +66,86 @@ Page({
       }
     })
   },
-  memberAuthenticate() {
-    this.getData('/app/memberAuthenticate/get').then(res => {
-      console.log(res.data)
-      if (res.data.data && res.data.data.phoneNumber) {
-        this.data.userData.phoneNumber = res.data.data.phoneNumber
-        this.setData({
-          userData: this.data.userData,
-          isGetPhone: false
-        })
-      } else {
-        this.setData({
-          isGetPhone: true
-        })
+  // memberAuthenticate() {
+  //   this.getData('/app/memberAuthenticate/get').then(res => {
+  //     console.log(res.data)
+  //     if (res.data.data && res.data.data.phoneNumber) {
+  //       this.data.userData.phoneNumber = res.data.data.phoneNumber
+  //       this.setData({
+  //         userData: this.data.userData,
+  //         isGetPhone: false
+  //       })
+  //     } else {
+  //       this.setData({
+  //         isGetPhone: true
+  //       })
+  //     }
+  //   })
+  // },
+  // 判断是否需要获取手机号
+  judgePhone() {
+    var t = this;
+    wx.request({
+      url: `${app.http}/app/isNeed`,
+      method: "GET",
+      header: {
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+      },
+      data: {
+        wego168SessionKey: wx.getStorageSync("key")
+      },
+      success: function(res) {
+        if (res.data.code == 50103) {
+          appJs.apiLogin(() => {
+            t.judgePhone()
+          })
+        } else if (res.data.code == 20000) {
+          t.setData({
+            isGetPhone: res.data.data
+          });
+        }
       }
-    })
+    });
   },
+  // 保存手机号
   getPhoneNumber(e) {
     console.log(e)
     if (e.detail.encryptedData) {
       let params = {
         encryptedData: e.detail.encryptedData,
         iv: e.detail.iv
-      }
-      this.postData('/app/phone', params).then(res => {
-        console.log(res.data)
-        this.data.userData.phoneNumber = res.data.message
-        this.setData({
-          userData: this.data.userData
-        })
-      })
+      };
+      this.savePhoneNumber(params)
+      
     }
   },
+  savePhoneNumber(params) {
+    let _this = this;
+    params.wego168SessionKey = wx.getStorageSync("key");
+    wx.request({
+      url: `${app.http}/app/phone`,
+      method: "POST",
+      header: {
+        "Content-Type": "application/x-www-form-urlencoded;charset=utf-8"
+      },
+      data: params,
+      success: function (res) {
+        if (res.data.code == 50103) {
+          appJs.apiLogin(() => {
+            _this.ziliao(params)
+          })
+        } else if (res.data.code == 20000) {
+          this.data.userData.phoneNumber = res.data.message;
+          this.setData({
+            userData: this.data.userData,
+            isGetPhone: false
+          })
+        }
+        
+      }
+    })
+  },
+
   //提交表单数据
   formsubmit:function(e){
     var t=this;

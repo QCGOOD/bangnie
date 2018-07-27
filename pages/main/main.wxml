@@ -12,7 +12,7 @@
 <!--搜索框结束  -->
 
 <!--轮播图开始  -->
-<swiper indicator-dots="true" autoplay="2000" class='swiper'>
+<swiper wx:if="{{imgUrls.length > 0}}" indicator-dots="true" autoplay="2000" class='swiper'>
   <block wx:for="{{imgUrls}}" wx:key="{{item.id}}">
     <swiper-item>
       <image src="{{imgHost}}{{item.url}}" class="slide-image" />
@@ -161,3 +161,6 @@
     </view>
   </view>
 </view>
+
+<!-- 授权获取基本信息 -->
+<authorize is-authorize="{{isAuthorize}}" bindmyevent="getUserInfo"></authorize>

@@ -51,8 +51,8 @@ Page({
       },
       success: function (res) {
         wx.hideLoading()
-        if (res.data.message == "用户未登录或登录已失效") {
-          appJs.toast('用户未登录或登录已失效')
+        if (res.data.message == "该用户未登录或会话过期") {
+          appJs.toast('该用户未登录或会话过期')
           wx.navigateTo({
             url: '/pages/welcome/welcome',
           })

@@ -1,4 +1,6 @@
-
+page{
+  background-color: #f2f2f2;
+}
 .send-context {
   padding-top: 20rpx 0 50rpx 0;
   background: rgb(242, 242, 242);
@@ -15,16 +17,34 @@
 }
 .address {
   display: flex;
-  padding: 10rpx 30rpx;
-  align-items: center;
+  padding: 20rpx 30rpx;
+  align-items: baseline;
   color: #8f8f8f;
   font-size: 28rpx;
+  margin: 20rpx 0;
+  background-color: #fff;
+}
+.address .text{
+  flex: 1;
+  font-size:28rpx;
+  margin-right: 30rpx;
+}
+.address .clear{
+  margin-right: 0;
+  margin-left: auto;
 }
 .form {
   /* padding: 20rpx; */
   margin-top: 20rpx;
   font-size: 30rpx;
   background: #f2f2f2;
+}
+
+.tips{
+  background-color:#f2f2f2;
+  color: #808080;
+  font-size: 26rpx;
+  padding: 15rpx 30rpx;
 }
 
 .form-item {
