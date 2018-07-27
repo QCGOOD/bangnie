@@ -105,6 +105,19 @@ Page({
               _this.getMessage(data)
             })
           }else if (res.data.code == 20000) {
+            if (res.data.data.total == 0) {
+              if (data.type == 1) {
+                console.log('scsc')
+                _this.setData({
+                  newType: true
+                })
+              } else {
+                _this.setData({
+                  hotType: true
+                })
+              }
+              return
+            }
             res.data.data.list.map(res => {
               if (res.imgUrl != '') {
                 return res.imgUrl = res.imgUrl.split(',')
