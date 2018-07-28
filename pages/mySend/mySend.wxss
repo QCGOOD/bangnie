@@ -171,3 +171,10 @@ page{
   margin: 8rpx;
   height: 220rpx;
 }
+
+.loading {
+  padding: 40rpx 0;
+  text-align: center;
+  font-size: 28rpx;
+  color: #666;
+}

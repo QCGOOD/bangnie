@@ -4,6 +4,7 @@
   "enablePullDownRefresh": true,
   "backgroundTextStyle": "dark",
   "usingComponents": {
-    "authorize": "/components/authorize/authorize"
+    "authorize": "/components/authorize/authorize",
+    "qc": "/components/qc/qc"
   }
 }

@@ -24,7 +24,7 @@
 <!--栏目开始  -->
 <view class='service'>
   <block wx:for="{{serviceData}}" wx:key="item.service_id">
-    <view class='service_item' bindtap='jumpNav' data-service_id="{{item.service_id}}">
+    <view class='service_item' bindtap='jumpNav' data-index="{{index}}" data-service_id="{{item.service_id}}">
       <image src='{{item.url}}' />
       <text>{{item.text}}</text>
     </view>
@@ -69,9 +69,9 @@
           <text class="tag">#{{item.category}}#</text>{{item.content}}
         </view>
         <view class="images" wx:if="{{item.imgUrl.length > 0}}">
-          <block wx:for="{{item.imgUrl}}" wx:key="img" wx:for-item="img">
-            <image wx:if="{{item.imgUrl.length > 1}}" class='img_more' mode='aspectFit' src="{{imgHost}}{{img}}" data-index="{{index}}"></image>
-            <image wx:else class='img_single' mode="widthFix" src="{{imgHost}}{{img}}" data-index="{{index}}"></image>
+          <block wx:for="{{item.imgUrl}}"  wx:key="img" wx:for-item="img" wx:for-index="img_index">
+            <image wx:if="{{item.imgUrl.length > 1}}" class='img_more' mode='aspectFit' src="{{imgHost}}{{img}}" data-key="{{index}}" data-index="{{img_index}}" catchtap="onPreviewImage"></image>
+            <image wx:else class='img_single' mode="widthFix" src="{{imgHost}}{{img}}" data-key="{{index}}" data-index="{{img_index}}" catchtap="onPreviewImage"></image>
           </block>
         </view>
       </view>
@@ -117,9 +117,9 @@
           <text class="tag">#{{item.category}}#</text>{{item.content}}
         </view>
         <view class="images" wx:if="{{item.imgUrl}}">
-          <block wx:for="{{item.imgUrl}}" wx:key="img" wx:for-item="img">
-            <image wx:if="{{item.imgUrl.length > 1}}" class='img_more' mode='aspectFit' src="{{imgHost}}{{img}}" data-index="{{index}}"></image>
-            <image wx:else class='img_single' mode="widthFix" src="{{imgHost}}{{img}}" data-index="{{index}}"></image>
+          <block wx:for="{{item.imgUrl}}"wx:for-item="img"  wx:for-index="img_index" wx:key="img" >
+            <image wx:if="{{item.imgUrl.length > 1}}" class='img_more' mode='aspectFit' src="{{imgHost}}{{img}}" data-key="{{index}}" data-index="{{img_index}}" catchtap="onPreviewImage"></image>
+            <image wx:else class='img_single' mode="widthFix" src="{{imgHost}}{{img}}" data-key="{{index}}" data-index="{{img_index}}" catchtap="onPreviewImage"></image>
           </block>
         </view>
       </view>
@@ -150,7 +150,6 @@
   <view class='loading' wx:if="{{hotType}}">没有数据了~</view>
   <view class='loading' wx:else>数据加载中...</view>
 </view>
-
 <!-- 授权获取手机号 -->
 <view class="authorize-phone" wx:if="{{isAuthorizePhone}}">
   <view class="box">

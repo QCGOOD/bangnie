@@ -20,7 +20,10 @@
     </block>
   </view>
 </view>
-  <!-- 授权获取基本信息 -->
-  <authorize is-authorize="{{isAuthorize}}" bindmyevent="getUserInfo"></authorize>
+
+<qc></qc> 
+
+<!-- 授权获取基本信息 -->
+<authorize is-authorize="{{isAuthorize}}" bindmyevent="getUserInfo"></authorize>
 
 <!-- 内容结束 -->

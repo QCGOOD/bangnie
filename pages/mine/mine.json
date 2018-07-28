@@ -1,8 +1,7 @@
 {
   "enablePullDownRefresh": false,
-"navigationStyle": "custom"
-
-  
- 
-
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "qc": "/components/qc/qc"
+  }
 }

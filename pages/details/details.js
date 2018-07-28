@@ -38,7 +38,7 @@ Page({
   },
   onShareAppMessage() {
     return {
-      title: '好帖子就是要分享的，戳我查看详情',
+      title: '海外华人一站式服务平台',
     }  
   },
   //检测用户的授权状态
@@ -120,7 +120,15 @@ Page({
 
   home() {
     wx.switchTab({
-      url: '../main/main'
+      url: '../main/main',
+      success: function () {
+        let pages = getCurrentPages()
+        pages.map(item => {
+          if (item.route == 'pages/main/main') {
+            item.onLoad()
+          }
+        })
+      }
     })
   },
 
@@ -368,8 +376,15 @@ Page({
     })
   },
   homePage() {
-    wx.switchTab({
-      url: '/pages/main/main'
-    });
+    let page = getCurrentPages()
+    console.log(page)
+    // wx.switchTab({
+    //   url: '/pages/main/main',
+    //   successs: function () {
+    //     let page = getCurrentPages().pop(); 
+    //     if (page == undefined || page == null) return; 
+    //     page.onLoad(); 
+    //   }
+    // });
   }
 })

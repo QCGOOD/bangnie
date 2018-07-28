@@ -55,6 +55,7 @@
   <!-- <text class="ad-text">{{adImg.name}}</text> -->
   <image src='{{imgHost}}{{adImg.url}}' style='width:100%;' mode='widthFix'></image>
 </view>
+<qc></qc>
 <view style='height:124rpx'></view>
 <!--底部固定栏开始  -->
 <view class='button-group'>
@@ -93,10 +94,10 @@
   <view class='close' bindtap='clickback'>关闭</view>
 </view>
 
+
 <view class='remark-wrap' wx:if="{{liuyan}}">
   <input placeholder='请输入' cursor-spacing='15' auto-focus confirm-type="send" bindblur='onInputBlur' maxlength='100' bindconfirm="sendLY" bindinput='onNeirongChange'></input>
   <button class='btn' catchtap='sendLY' disabled='{{lockRemark}}'>发送</button>
 </view>
-
 <!-- 授权获取基本信息 -->
 <authorize is-authorize="{{isAuthorize}}" bindmyevent="getUserInfo"></authorize>

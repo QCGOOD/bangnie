@@ -47,6 +47,12 @@ Page({
     }
   },
 
+  onShareAppMessage() {
+    return {
+      title: '海外华人一站式服务平台',
+    }  
+  },
+
   //检测用户的授权状态
   checkAuth() {
     let t = this;
@@ -283,6 +289,7 @@ Page({
   },
   // 点击选取城市
   click: function(e) {
+    let _this = this;
     console.log(e.currentTarget.dataset.value)
     wx.setStorageSync('city', e.currentTarget.dataset.value)
     wx.setStorageSync('id', e.currentTarget.dataset.id)
@@ -303,9 +310,11 @@ Page({
     wx.switchTab({
       url: '/pages/main/main',
       success: function (e) { 
-        var page = getCurrentPages().pop(); 
+        if (_this.data.back == 1) {
+          var page = getCurrentPages().pop(); 
           if (page == undefined || page == null) return; 
           page.onLoad(); 
+        }
       } 
     })
   },

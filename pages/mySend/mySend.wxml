@@ -3,7 +3,7 @@
   <!-- <scroll-view style='width:100%;height:{{height}}px;' scroll-y="true" bindscrolltoupper="refresh" bindscrolltolower="lower"> -->
   <view>
     <block wx:for="{{userData}}" wx:key="{{index}}">
-      <view class='inBox' style='height:auto;margin-bottom:20rpx;background:white;padding:40rpx 30rpx 20rpx;position:relative;'>
+      <view class='inBox'  data-id="{{item.id}}" style='height:auto;margin-bottom:20rpx;background:white;padding:40rpx 30rpx 20rpx;position:relative;'>
         <view class='user_message'>
           <image src="{{item.headImage}}"></image>
           <view class='name'>
@@ -14,7 +14,7 @@
             <view class="select-wrap">
               <view class="select {{item.showSelect?'select-show':''}}">
                 <navigator class="select-btn" url="../sendContext/sendContext?id={{item.id}}&name={{item.category}}&categoryId={{item.categoryId}}">修改</navigator>
-                <text class="select-btn" data-id="{{item.id}}" catchtap="delete">删除</text>
+                <text class="select-btn" data-id="{{item.id}}" data-index="{{index}}" catchtap="delete">删除</text>
               </view>
             </view>
             <view class="icon-wrap" catchtap='showSelect' data-index="{{index}}">
@@ -22,7 +22,7 @@
             </view>
           </view>
         </view>
-        <view class="content" bindtap='intoDetails' data-id="{{item.id}}" data-isPraise="{{item.others[2].flag}}">
+        <view class="content" data-audit="{{item.isAudit}}" data-isPraise="{{item.others[2].flag}}" bindtap='intoDetails' >
           <view class='content_text'>
             <text style='color:#7399D8;font-size:30rpx;'>#{{item.category}}#</text>{{item.content}}</view>
           <view class='images' wx:if="{{item.imgUrl.length > 0}}">
@@ -62,10 +62,12 @@
         </view>
       </view>
     </block>
-    <view wx:if="{{!userData.length > 0}}" style="color: #808080;text-align:center;padding-top: 49vh;">暂无数据</view>
+    <view class='loading' wx:if="{{!moreData}}">没有数据了~</view>
+    <view class='loading' wx:else>数据加载中...</view>
   <!-- </scroll-view> -->
   </view>
 </view>
+<!-- <qc wx:if="{{!moreData}}"></qc> -->
 <!-- <view style='width:100%;height:auto;display:flex;flex-wrap:wrap;justify-content:space-between;'>
   <view style='width:30%;height:50rpx;background:yellow;'></view>
   <view style='width:30%;height:50rpx;background:green;'></view>

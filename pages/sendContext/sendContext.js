@@ -71,6 +71,7 @@ Page({
     //获取经纬度
     wx.getLocation({
       type: 'gcj02', //返回可以用于wx.openLocation的经纬度,使用德时候注意查看官方文档注意兼容问题
+      altitude: true,
       success: function(res) {
         that.getCity(res.longitude, res.latitude);
       },
@@ -85,6 +86,7 @@ Page({
         latitude: '' + latitude,
         longitude: '' + longitude,
       }, //location的格式是传入一个字符对象
+      coord_type: 5,
       success: function(res) {
         wx.setStorage({
           key: "LCDetails",
@@ -245,21 +247,23 @@ Page({
         model: this.data.model
       })
     }
-    if (this.data.warnforwx == 0) {
-      this.setData({
-        warnforwx: 1
-      })
-      var reg = RegExp(/微信/);
-      if (this.data.model.content.match(reg)){
+    // 敏感字
+    let reg = RegExp(/微信/);
+    if (this.data.model.content.match(reg)){
+      if (this.data.warnforwx == 0) {
+        this.setData({
+          warnforwx: 1
+        })
         wx.showModal({
           title: '温馨提醒',
           content: '为了保护您的个人隐私和安全，建议不要提供个人微信号。',
           showCancel: false,
           confirmText: '知道了',
         })
+        return false;
       }
-      return false;
     }
+    
     if (this.data.id) {
       this.update()
     } else {
@@ -276,12 +280,21 @@ Page({
     model.wego168SessionKey = wx.getStorageSync("key");
     this.postData('/app/information/save', model).then(res => {
       wx.hideLoading()
-      this.showToast('发布成功，请等待审核')
-      setTimeout(() => {
-        wx.redirectTo({
-          url: '/pages/sendSuccess/sendSuccess'
-        })
-      }, 2000)
+      if (res.data.data.isAudit) {
+        this.showToast('发布成功')
+        setTimeout(() => {
+          wx.redirectTo({
+            url: '/pages/details/details?id='+res.data.data.id
+          })
+        }, 1500)
+      } else {
+        this.showToast('提交成功，等待审核')
+        setTimeout(() => {
+          wx.redirectTo({
+            url: '/pages/sendSuccess/sendSuccess'
+          })
+        }, 1500)
+      }
     }).catch(err => {
       wx.hideLoading()
       console.log(data.message)
@@ -291,18 +304,25 @@ Page({
   update() {
     // return
     wx.showLoading({
-      title: '正在发布'
+      title: '正在修改'
     })
     let model = this.data.model;
     model.wego168SessionKey = wx.getStorageSync("key");
     this.postData('/app/information/update', model).then(res => {
       wx.hideLoading()
-      this.showToast('发布成功，请等待审核')
+      if (res.data.data.isAudit) this.showToast('修改成功');
+      else this.showToast('提交成功，等待审核');
+      
       setTimeout(() => {
-        wx.redirectTo({
-          url: '/pages/sendSuccess/sendSuccess'
+        wx.navigateBack({
+          delta: 1, // 回退前 delta(默认为1) 页面
+          success: function(res){
+            var page = getCurrentPages().pop(); 
+            if (page == undefined || page == null) return; 
+            page.onLoad(); 
+          }
         })
-      }, 2000)
+      }, 1500)
     }).catch(err => {
       wx.hideLoading()
       console.log(data.message)
@@ -322,6 +342,7 @@ Page({
       model.phone = data.phone
       model.appellation = data.appellation
       model.address = data.address
+      model.categoryId = data.categoryId
       if (data.imgUrl) {
         if (new RegExp(",").test(data.imgUrl)) {
           console.log(12313)

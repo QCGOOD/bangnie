@@ -26,7 +26,15 @@ Page({
   },
   back() {
     wx.switchTab({
-      url: '/pages/main/main'
+      url: '/pages/main/main',
+      success: function () {
+        let pages = getCurrentPages()
+        pages.map(item => {
+          if (item.route == 'pages/main/main') {
+            item.onLoad()
+          }
+        })
+      }
     })
   },
   closeAuthorize() {

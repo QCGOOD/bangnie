@@ -1,4 +1,4 @@
-// pages/main/main.js
+import timeText from '../../utils/timeText.js';
 var app = getApp().globalData;
 var appJs = getApp();
 
@@ -72,9 +72,11 @@ Page({
     if (!wx.getStorageSync('key')) {
       appJs.loginReadyCallback = res => {
         this.getKind();
+        this.getMessage(this.data.newSearch);
       }
     } else {
       this.getKind();
+      this.getMessage(this.data.newSearch);
     }
   },
 
@@ -82,6 +84,12 @@ Page({
     this.setData({
       inputValue: ''
     })
+  },
+
+  onShareAppMessage() {
+    return {
+      title: '海外华人一站式服务平台',
+    }  
   },
 
   onPageScroll() {
@@ -300,6 +308,8 @@ Page({
           } else if (res.data.code == 20000){
             _this.checkAuth()
             res.data.data.list.map(res => {
+              // res.timeText = timeText.getTimeText(res.createTime)
+              // console.log(timeText.getTimeText(res.createTime), res.createTime)
               if (res.imgUrl != '') {
                 return res.imgUrl = res.imgUrl.split(',')
               }
@@ -364,7 +374,7 @@ Page({
             t.getKind()
           })
         } else if (res.data.code == 20000) {
-          t.getMessage(t.data.newSearch);
+          
           for (let i = 0; i < res.data.data.list.length; i++) {
             t.data.serviceData[i] = {
               url: 'http://helpyou-1255600302.cosgz.myqcloud.com' + res.data.data.list[i].iconUrl,
@@ -441,6 +451,33 @@ Page({
       }
     });
   },
+
+  // 预览
+  onPreviewImage(e) {
+    
+    let key = e.currentTarget.dataset.key;
+    let index = e.currentTarget.dataset.index;
+    if (this.data.swiperIndex == 0) {
+      let list = [];
+      this.data.newData[key].imgUrl.map(item => {
+        list.push(this.data.imgHost + item)
+      })
+      wx.previewImage({
+        current: this.data.newData[key].imgUrl[index],
+        urls: list
+      })
+    } else {
+      let list2 = [];
+      this.data.hotData[key].imgUrl.map(item => {
+        list2.push(this.data.imgHost + item)
+      })
+      wx.previewImage({
+        current: this.data.hotData[key].imgUrl[index],
+        urls: list2
+      })
+    }
+  },
+
   //进入留言
   jumpComments: function(e) {
     wx.navigateTo({
@@ -455,8 +492,10 @@ Page({
   },
   //跳转测试
   jumpNav: function(e) {
+    let index = e.currentTarget.dataset.index;
+    let id = e.currentTarget.dataset.service_id;
     wx.navigateTo({
-      url: '/pages/move/move?serviceId=' + e.currentTarget.dataset.service_id,
+      url: `/pages/move/move?serviceId=${id}&index=${index+1}`,
     })
   },
   //进入说说的详情页面

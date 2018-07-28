@@ -1,4 +1,4 @@
-<view wx:if="{{!blank}}">
+<view>
   <view class='comment-list' wx:for="{{comments}}" wx:key="{{index}}">
     <view class='user-wrap'>
       <image src="{{item.memberHeadImage}}"></image>
@@ -10,7 +10,9 @@
     <view class="text">{{item.content}}</view>
   </view>
 </view>
-<view wx:else class='none'>
+<view class='loading' wx:if="{{!moreData}}">没有数据了~</view>
+<view class='loading' wx:else>数据加载中...</view>
+<!-- <view wx:else class='none'>
   <image src='/images/none.png' mode='widthFix' class='none_img'></image>
   <view class='none_text'>贫瘠之地，一毛不拔</view>
-</view>
+</view> -->

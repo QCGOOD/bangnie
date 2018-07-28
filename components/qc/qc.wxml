@@ -1,0 +1,4 @@
+<view class="copyright">
+  <image src="/images/qc-logo.png" class="qc-logo"  mode="widthFix"></image>
+  <text class="qc-title">企成互动 技术支持</text>
+</view>

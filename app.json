@@ -1,9 +1,9 @@
 {
   "pages": [
-    "pages/welcome/welcome",
     "pages/main/main",
     "pages/send/send",
     "pages/mine/mine",
+    "pages/welcome/welcome",
     "pages/sendSuccess/sendSuccess",
     "pages/sendContext/sendContext",
     "pages/details/details",

@@ -1,0 +1,17 @@
+/* 企成技术支持 */
+.copyright{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width:100%;
+  height:80rpx;
+  font-size:22rpx;
+  color:#999;
+  line-height: 80rpx;
+  overflow: hidden;
+}
+.copyright .qc-logo{
+  width:30px;
+  height:30px;
+  border-radius: 50%;
+}

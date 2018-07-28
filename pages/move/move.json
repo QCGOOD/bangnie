@@ -5,6 +5,9 @@
    "navigationBarTitleText": "帮你哦",
    "backgroundColor": "#eeeeee",
    "backgroundTextStyle": "light",
-   "enablePullDownRefresh": true
+   "enablePullDownRefresh": true,
+   "usingComponents": {
+    "qc": "/components/qc/qc"
+  }
  
 }

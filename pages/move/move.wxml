@@ -31,9 +31,9 @@
           <text class="tag">#{{item.category}}#</text>{{item.content}}
         </view>
         <view class="images" wx:if="{{item.imgUrl.length > 0}}">
-          <block wx:for="{{item.imgUrl}}" wx:key="img" wx:for-item="img">
-            <image wx:if="{{item.imgUrl.length > 1}}" class='img_more' mode='aspectFit' src="{{imgHost}}{{img}}" data-index="{{index}}"></image>
-            <image wx:else class='img_single' mode="widthFix" src="{{imgHost}}{{img}}" data-index="{{index}}"></image>
+          <block wx:for="{{item.imgUrl}}" wx:key="img" wx:for-item="img" wx:for-index="img_index">
+            <image wx:if="{{item.imgUrl.length > 1}}" class='img_more' mode='aspectFit' src="{{imgHost}}{{img}}" data-key="{{index}}" data-index="{{img_index}}" catchtap="onPreviewImage"></image>
+            <image wx:else class='img_single' mode="widthFix" src="{{imgHost}}{{img}}" data-key="{{index}}" data-index="{{img_index}}" catchtap="onPreviewImage"></image>
           </block>
         </view>
       </view>
@@ -79,9 +79,9 @@
           <text class="tag">#{{item.category}}#</text>{{item.content}}
         </view>
         <view class="images" wx:if="{{item.imgUrl}}">
-          <block wx:for="{{item.imgUrl}}" wx:key="img" wx:for-item="img">
-            <image wx:if="{{item.imgUrl.length > 1}}" class='img_more' mode='aspectFit' src="{{imgHost}}{{img}}" data-index="{{index}}"></image>
-            <image wx:else class='img_single' mode="widthFix" src="{{imgHost}}{{img}}" data-index="{{index}}"></image>
+          <block wx:for="{{item.imgUrl}}" wx:key="img" wx:for-item="img" wx:for-index="img_index">
+            <image wx:if="{{item.imgUrl.length > 1}}" class='img_more' mode='aspectFit' src="{{imgHost}}{{img}}" data-key="{{index}}" data-index="{{img_index}}" catchtap="onPreviewImage"></image>
+            <image wx:else class='img_single' mode="widthFix" src="{{imgHost}}{{img}}" data-key="{{index}}" data-index="{{img_index}}" catchtap="onPreviewImage"></image>
           </block>
         </view>
       </view>
@@ -112,3 +112,4 @@
   <view class='loading' wx:if="{{hotType}}">没有数据了~</view>
   <view class='loading' wx:else>数据加载中...</view>
 </view>
+<!-- <qc></qc> -->

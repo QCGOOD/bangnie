@@ -82,7 +82,7 @@ page{
   position: relative;
   width: 150rpx;
   height: 150rpx;
-  margin-right: 100rpx;
+  margin-right: 98rpx;
   margin-bottom: 40rpx;
 }
 .choose-img-item {

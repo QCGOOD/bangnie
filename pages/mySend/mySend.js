@@ -11,7 +11,8 @@ Page({
     height: app.height - 10,
     page:1,
     userData:[],
-    searchData: {}
+    searchData: {},
+    moreData: true,
   },
 
   /**
@@ -23,8 +24,8 @@ Page({
     });
     this.setData({
       userData: [],
+      moreData: true,
       searchData: {
-        wego168SessionKey: wx.getStorageSync("key"),
         areaId: "",
         categoryId:  "",
         // wx.getStorageSync("id")
@@ -89,6 +90,7 @@ Page({
   // 获取资讯列表
   getMessage(data) {
     var _this = this;
+    data.wego168SessionKey = wx.getStorageSync("key");
     if (this.isNext(data)) {
       wx.showLoading({title: '加载中…'})
       wx.request({
@@ -105,6 +107,11 @@ Page({
               _this.getMessage(data)
             })
           } else if (res.data.code == 20000) {
+            if (res.data.data.total == 0) { 
+              this.setData({
+                moreData: false
+              })
+            }
             let tempArr = [];
             res.data.data.list.map((item, i) => {
               item.showSelect = false;
@@ -114,17 +121,25 @@ Page({
                 item.imgUrl = []
               }
             })
-          _this.setData({
-            userData: [..._this.data.userData, ...res.data.data.list],
-          })
           _this.data.searchData.pageNum++;
           _this.data.searchData.pageTotal = res.data.data.total
           wx.stopPullDownRefresh();
-          // _this.setData({
-          //   userData: res.data.data.list
-          // })
+          _this.setData({
+            userData: [..._this.data.userData, ...res.data.data.list],
+            searchData: _this.data.searchData
+          })
+          if (!_this.isNext(data)) {
+            _this.setData({
+              moreData: false
+            })
+          }
+          
           }
         }
+      })
+    } else {
+      this.setData({
+        moreData: false
       })
     }
   },
@@ -188,81 +203,114 @@ Page({
     });
   },
   lower:function(){
-    console.log("我被处罚了");
-    this.getMessage(this.data.page);
-    },
-    //进入详情页面
-    intoDetails:function(e){
-      console.log(e);
-      wx.navigateTo({
-        url: '/pages/details/details?id=' + e.currentTarget.dataset.id + "&isPraise=" + e.currentTarget.dataset.ispraise
-      })
-    },
-    //点赞开始
-    onLike: function (e) {
-      let index = e.currentTarget.dataset.index;
-      let id = e.currentTarget.dataset.id;
-      let url = `${app.http}/app/praise/insert`;
-      let type =`userData[${index}]`;
-
-      if (this.data.userData[index].isPraise) {
-        // 取消点赞
-        url = `${app.http}/app/praise/delete`
-        this.data.userData[index].isPraise = false;
-        this.data.userData[index].praiseQuantity -= 1;
-      } else {
-        // 点赞
-        this.data.userData[index].isPraise = true;
-        this.data.userData[index].praiseQuantity += 1;
-      }
-      this.setData({
-        [type]: this.data.userData[index]
-      })
-      wx.request({
-        url: url,
-        method: "POST",
-        header: {
-          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-        },
-        data: {
-          wego168SessionKey: wx.getStorageSync("key"),
-          sourceId: id
-        },
-        success: function (res) {
-          console.log('点赞功能 请求到数据了');
-        }
-      });
-    },
-    //删除资讯
-    delete:function(e){
-      let t = this;
-      wx.request({
-        url: `${app.http}/app/information/delete`,
-        method: "POST",
-        header: {
-          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-        },
-        data: {
-          wego168SessionKey: wx.getStorageSync("key"),
-          id: e.currentTarget.dataset.id
-        },
-        success: function (res) {
-          console.log(res);
-          if (res.data.code == 50103) {
-            appJs.toast('该用户未登录或会话过期')
-            wx.navigateTo({
-              url: '/pages/welcome/welcome',
-            })
-          }else if(res.data.code == 20000) {
-            appJs.toast('删除成功')
-            setTimeout(() => {
-              t.getMessage(t.data.page);
-            }, 500);
-          }else{
-            appJs.toast(res.data.message)
-          }
-          
-        }
-      })
+  console.log("我被处罚了");
+  this.getMessage(this.data.page);
+  },
+  //进入详情页面
+  intoDetails:function(e){
+    let isAudit = e.currentTarget.dataset.audit;
+    if (!isAudit) {
+      appJs.toast('审核未通过,不可查看')
+      return;
     }
+    wx.navigateTo({
+      url: '/pages/details/details?id=' + e.currentTarget.dataset.id + "&isPraise=" + e.currentTarget.dataset.ispraise
+    })
+  },
+  //点赞开始
+  onLike: function (e) {
+    let index = e.currentTarget.dataset.index;
+    let id = e.currentTarget.dataset.id;
+    let url = `${app.http}/app/praise/insert`;
+    let type =`userData[${index}]`;
+
+    if (this.data.userData[index].isPraise) {
+      // 取消点赞
+      url = `${app.http}/app/praise/delete`
+      this.data.userData[index].isPraise = false;
+      this.data.userData[index].praiseQuantity -= 1;
+    } else {
+      // 点赞
+      this.data.userData[index].isPraise = true;
+      this.data.userData[index].praiseQuantity += 1;
+    }
+    this.setData({
+      [type]: this.data.userData[index]
+    })
+    wx.request({
+      url: url,
+      method: "POST",
+      header: {
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+      },
+      data: {
+        wego168SessionKey: wx.getStorageSync("key"),
+        sourceId: id
+      },
+      success: function (res) {
+        console.log('点赞功能 请求到数据了');
+      }
+    });
+  },
+
+  //删除资讯
+  delete:function(e){
+    let t = this;
+    let id = e.currentTarget.dataset.id;
+    let index = e.currentTarget.dataset.index;
+    this.apiDelete(id, index)
+  },
+
+  apiDelete(id, index) {
+    let t = this;
+    wx.request({
+      url: `${app.http}/app/information/delete`,
+      method: "POST",
+      header: {
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+      },
+      data: {
+        wego168SessionKey: wx.getStorageSync("key"),
+        id: id
+      },
+      success: function (res) {
+        console.log('删除资讯', res);
+        if (res.data.code == 50103) {
+          appJs.apiLogin(() => {
+            t.apiDelete(id, index)
+          })
+        }else if(res.data.code == 20000) {
+          appJs.toast('删除成功')
+          t.data.userData.splice(index, 1)
+          t.setData({
+            userData: t.data.userData
+          })
+          // setTimeout(() => {
+          //   t.getMessage(t.data.searchData);
+          // }, 500);
+        }else{
+          appJs.toast('删除失败')
+        }
+      }
+    })
+  },
+
+    // 预览
+    onPreviewImage(e) {
+      let key = e.currentTarget.dataset.key;
+      let index = e.currentTarget.dataset.index;
+      let list = [];
+      this.data.userData[key].imgUrl.map(item => {
+        list.push(this.data.imgHost + item)
+      })
+      wx.previewImage({
+        current: this.data.userData[key].imgUrl[index],
+        urls: list
+      })
+    },
+  // onShareAppMessage() {
+  //   return {
+  //     title: '海外华人一站式服务平台',
+  //   }  
+  // },
 })

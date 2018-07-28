@@ -30,8 +30,14 @@ Page({
     if (!wx.getStorageSync("city")) {
       that.jumpChoosePage();
     }
+    // if (options.index) {
+    //   this.setData({
+    //     kindActive: options.index
+    //   })
+    // }
     that.setData({
       newData: [],
+      kindActive: options.index || 0,
       selectData: wx.getStorageSync("city"),
       newSearch: {
         pageNum: 1,
@@ -260,6 +266,31 @@ Page({
       }
     });
   },
+  // 预览
+  onPreviewImage(e) {
+    let key = e.currentTarget.dataset.key;
+    let index = e.currentTarget.dataset.index;
+    if (this.data.swiperIndex == 0) {
+      let list = [];
+      this.data.newData[key].imgUrl.map(item => {
+        list.push(this.data.imgHost + item)
+      })
+      wx.previewImage({
+        current: this.data.newData[key].imgUrl[index],
+        urls: list
+      })
+    } else {
+      let list2 = [];
+      this.data.hotData[key].imgUrl.map(item => {
+        list2.push(this.data.imgHost + item)
+      })
+      wx.previewImage({
+        current: this.data.hotData[key].imgUrl[index],
+        urls: list2
+      })
+    }
+  },
+
   //进入留言
   jumpComments: function (e) {
     wx.navigateTo({

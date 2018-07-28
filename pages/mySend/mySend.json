@@ -1,3 +1,7 @@
 {
-  "enablePullDownRefresh": true
+  "navigationBarTitleText": "我发起的",
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "qc": "/components/qc/qc"
+  }
 }
