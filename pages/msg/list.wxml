@@ -1,0 +1,22 @@
+<view class="masg-wrap">
+  <view class="msg" wx:if="{{list.length > 0}}" wx:for="{{list}}" wx:key="{{index}}" data-id="{{item.id}}" bindtap="jumpPage">
+    <view class="left">
+      <image wx:if="{{item.imageUrl}}" src="{{imgHost+item.imageUrl}}"></image>
+      <image wx:else src="/images/admin_head_img2.jpg"></image>
+    </view>
+    <view class="right">
+      <view class="right-top">
+        <text class="title">系统消息</text>
+        <text class="time">{{item.createTime}}</text>
+      </view>
+      <view class="content">
+        <text class="ellipsis">{{item.content}}</text>
+      </view>
+    </view>
+  </view>
+  <view wx:if="{{!list.length > 0}}" class="page-null">
+    <image src='/images/none.png' mode='widthFix'></image>
+    <text>贫瘠之地，一毛不拔</text>
+  </view>
+</view>
+

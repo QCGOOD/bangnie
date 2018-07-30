@@ -216,6 +216,11 @@ Page({
               _this.data.hotSearch.pageNum++;
               _this.data.hotSearch.pageTotal = res.data.data.total
             }
+            if (th_thisis.isNext(data)) {
+              _this.setData({
+                newType: true
+              })
+            }
           } else {
             appJs.toast(res.data.message)
           }

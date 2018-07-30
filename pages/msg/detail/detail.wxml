@@ -1,0 +1,17 @@
+<view style="height: 10px;background-color: #f2f2f2;"></view>
+<view class="msg" wx:if="{{detail}}">
+  <view class="right">
+    <view class="right-top">
+      <text class="title">系统消息</text>
+      <text class="time">{{detail.createTime}}</text>
+    </view>
+    <view class="content">
+      <text>{{detail.content}}</text>
+    </view>
+  </view>
+</view>
+<view wx:if="{{!detail}}" class="page-null">
+  <image src='/images/none.png' mode='widthFix'></image>
+  <text>贫瘠之地，一毛不拔</text>
+</view>
+

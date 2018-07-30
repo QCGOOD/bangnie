@@ -6,6 +6,23 @@ page{
   font-family: "冬青黑体",Arial, Helvetica, sans-serif;
   letter-spacing: 2rpx;
 }
+
+.page-null{
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  text-align: center;
+  transform:translate(-50%,-40%);
+}
+.page-null image{
+  display: block;
+  margin: 20px auto;
+  width: 400rpx;
+}
+.page-null text{
+  color: #808080;
+  font-size: 30rpx;
+}
 /*标题lan开始  */
 
 #navgationBar {

@@ -145,8 +145,7 @@ page {
 /*我的发起结束  */
 
 .mysend {
-  margin: 10px auto;
-  background: white;
+  /* margin:  auto; */
   width: 100%;
   position: relative;
 }
@@ -157,6 +156,10 @@ cover-view {
   z-index: 15;
 }
 
+.margin-top{
+  margin-top: 30rpx !important;
+}
+
 .item_box {
   width: 100%;
   height: 100rpx;
@@ -164,11 +167,9 @@ cover-view {
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid #eee;
+  background-color: #fff;
 }
 
-.item_box text {
-  margin-left: 15rpx;
-}
 button.item_box{
   padding: 0;
   margin: 0;
@@ -178,9 +179,6 @@ button.item_box{
 }
 button.item_box::after{
   display: none;
-}
-.item_box text{
-  margin-left:15rpx;
 }
 
 .que_img {
@@ -195,18 +193,15 @@ button.item_box::after{
   transform: translateY(15%);
 }
 
-.que_inline {
-  padding-left: 7.5%;
-  display: flex;
-  justify-content: center;
-}
-
 .item_inline {
-  padding-left: 7.5%;
+  padding-left: 30rpx;
+}
+.item_inline image{
+  margin-right: 30rpx;
 }
 
 .navInto {
   width: 17rpx;
   height: 31rpx;
-  padding-right: 7.5%;
+  padding-right: 30rpx;
 }

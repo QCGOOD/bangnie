@@ -1,6 +1,14 @@
 /**app.wxss**/
 @import 'iconfont.wxss';
 
+
+.ellipsis{
+  display:block;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
 /* 信息流 */
 /* page {
   height: 100%;

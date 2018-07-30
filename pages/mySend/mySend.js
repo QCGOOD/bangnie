@@ -108,7 +108,7 @@ Page({
             })
           } else if (res.data.code == 20000) {
             if (res.data.data.total == 0) { 
-              this.setData({
+              _this.setData({
                 moreData: false
               })
             }
@@ -258,11 +258,24 @@ Page({
     let t = this;
     let id = e.currentTarget.dataset.id;
     let index = e.currentTarget.dataset.index;
-    this.apiDelete(id, index)
+    this.data.userData[index].showSelect = false;
+    this.setData({userData: this.data.userData})
+    wx.showModal({
+      title: '提示',
+      content: '删除后不可恢复，确认删除吗？',
+      success: (res) => {
+        if (res.confirm) {
+          this.apiDelete(id, index)
+        } else if (res.cancel) {
+          // console.log('用户点击取消')
+        }
+      }
+    })
   },
 
   apiDelete(id, index) {
     let t = this;
+    wx.showLoading({title: '正在删除…'})
     wx.request({
       url: `${app.http}/app/information/delete`,
       method: "POST",
@@ -285,12 +298,12 @@ Page({
           t.setData({
             userData: t.data.userData
           })
-          // setTimeout(() => {
-          //   t.getMessage(t.data.searchData);
-          // }, 500);
         }else{
           appJs.toast('删除失败')
         }
+      },
+      complete: function() {
+        wx.hideLoading()
       }
     })
   },

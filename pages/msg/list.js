@@ -18,6 +18,14 @@ Page({
       delta: 1
     })
   },
+
+  jumpPage(e) {
+    let id = e.currentTarget.dataset.id;
+    wx.navigateTo({
+      url: './detail/detail?id='+id,
+    })
+  },
+  
   // 获取列表
   getMessage: function () {
     wx.showLoading({title: '加载中…'})
@@ -40,6 +48,11 @@ Page({
             _this.getMessage()
           })
         } else if (res.data.code == 20000) {
+          if (res.data.data.list.length > 0) {
+            res.data.data.list.map(item => {
+              item.createTime = item.createTime.substr(0, 16)
+            })
+          }
           _this.setData({
             list: res.data.data.list
           });

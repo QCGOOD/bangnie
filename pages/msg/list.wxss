@@ -1,0 +1,68 @@
+page{
+  background-color: #f2f2f2;
+  font-size: 30rpx;
+}
+
+.msg{
+  display: flex;
+  padding: 30rpx 30rpx;
+  border-top: 1px solid #f2f2f2;
+  background-color: #fff;
+}
+.msg:last-child{
+  border-bottom: 1px solid #f2f2f2;
+}
+.msg .left{
+  width: 80rpx;
+  height: 80rpx;
+  margin-right: 30rpx;
+  border-radius: 50%;
+}
+.msg .left image{
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background-color: #f2f2f2;
+}
+.msg .right{
+  flex: 1;
+  color: #808080;
+  overflow: hidden;
+}
+.msg .right .right-top{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.msg .right .time{
+  font-size: 26rpx;
+}
+.msg .right .title{
+  color: #000;
+}
+.msg .right .content{
+  font-size: 28rpx;
+  margin-top: 10rpx;
+}
+.msg .right .content text{
+  word-break: break-all;
+  letter-spacing: 0.1em;
+}
+
+/* 没有数据 */
+.page-null{
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  text-align: center;
+  transform:translate(-50%,-40%);
+}
+.page-null image{
+  display: block;
+  margin: 20px auto;
+  width: 400rpx;
+}
+.page-null text{
+  color: #808080;
+  font-size: 30rpx;
+}
